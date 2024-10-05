@@ -35,7 +35,7 @@ local menuTypes = {
     -- Add more menu types here, for example:
 
     upgrade = {
-        items = {"Damage", "Range", "Speed"},
+        items = {"Damage", "Range", "Speed", "Destroy"},
         color = {0, 1, 0},
         onHover = function(itemIndex)
 
@@ -44,6 +44,8 @@ local menuTypes = {
             -- Handle upgrade selection
             if itemIndex == 1 then
                 selectedTower.powerLv = selectedTower.powerLv+1
+            elseif itemIndex == 4 then
+                table.remove(game.towerPlacement.towers, selectedTower.id)
             end
         end,
         drawItem = function(item, x, y, width, height)
