@@ -1,10 +1,12 @@
 game = {}
 
 require("game.map")
-require("game.towerPlacement")
 require("game.creatures")
+require("game.towerPlacement")
 require("game.tMenu")
 require("game.manager")
+require("game.enemyAi")
+
 local mainMenu = require("game.mainMenu")
 
 local currentState = "menu"
@@ -21,6 +23,7 @@ function love.load()
     game.creatures.load()
 
     mainMenu.load(switchToGame)
+    game.enemyAi.load()
 end
 
 function love.update(dt)
@@ -32,7 +35,9 @@ function love.update(dt)
         game.creatures.update(dt)
         game.towerPlacement.update(dt)
         game.tMenu.update(dt)
+        game.enemyAi.update(dt)
     end
+
 end
 
 function love.draw()
@@ -44,8 +49,9 @@ function love.draw()
         game.manager.draw()
         game.map.draw()
         game.creatures.draw()
-        game.towerPlacement.drawTowers()
+        game.towerPlacement.draw()
         game.tMenu.draw()
+        game.enemyAi.draw()
     end
 end
 

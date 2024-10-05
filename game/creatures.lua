@@ -9,6 +9,10 @@ require("game/creature/bomber")
 
 local creatureStore = {}
 
+getCreatureStore = function()
+    return creatureStore
+end
+
 
 
 function game.creatures.load()
@@ -28,20 +32,8 @@ function game.creatures.update(dt)
 
     for i, v in ipairs(game.towerPlacement.towers) do
         if v.currentSpawnCooldown == 0 then
-            if v.player == 1 then
-                game.creatures.spawnCreature(v.spawnType, v.x, v.y, 1, v.powerLv)
-
-            else
-                game.creatures.spawnCreature("attacker", 800, v.y, 2, v.powerLv)
-            end
+            game.creatures.spawnCreature(v.spawnType, v.x, v.y, v.player, v.powerLv)
             v.currentSpawnCooldown = v.spawningCooldown
-        end
-    end
-
-    if love.timer.getTime() % 1 < 0.03 then
-        --spawn test wave enemies
-        for i = 1, 1 do
-            game.creatures.spawnCreature("attacker", 800, 300, 2, 1)
         end
     end
 end
@@ -53,6 +45,7 @@ function game.creatures.draw()
 end
 
 function game.creatures.spawnCreature(type, x, y, player, powerLv)
+
     local meleeDamage = game.creature[type].meleeDamage * powerLv
     local rangedDamage = game.creature[type].rangedDamage * powerLv
     local newCreature = {

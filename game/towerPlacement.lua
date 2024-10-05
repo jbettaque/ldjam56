@@ -1,6 +1,32 @@
 game.towerPlacement = {}
 
-game.towerPlacement.towers = {}
+game.towerPlacement.towers = {
+    {
+        id = 1,
+        x = 700,
+        y = 100,
+        spawnType = "attacker",
+        player = 2,
+        health = 10000,
+        powerLv = 1,
+        spawningCooldown = 1,
+        currentSpawnCooldown = 0,
+        laserTurret = true
+    },
+    {
+        id = 2,
+        x = 100,
+        y = 300,
+        spawnType = "attacker",
+        player = 1,
+        health = 10000,
+        powerLv = 1,
+        spawningCooldown = 1,
+        currentSpawnCooldown = 0,
+        laserTurret = true
+    }
+
+}
 game.towerPlacement.towerTypes = {"circle", "rectangle", "image"}
 game.powerType = {1, 2, 3}
 game.towerPlacement.currentPlacingTower = nil
@@ -66,7 +92,7 @@ function game.towerPlacement.changeType(type)
     game.towerPlacement.currentPlacingTower.spawningCooldown = config.spawningCooldown
 end
 
-function game.towerPlacement.placeTower(x, y, towerType)
+function game.towerPlacement.placeTower(x, y, towerType, player)
     local config = towerConfig[towerType] or towerConfig.circle
 
     local newTower = {
@@ -75,11 +101,12 @@ function game.towerPlacement.placeTower(x, y, towerType)
         y = y,
         type = towerType,
         spawnType = config.spawnType,
-        player = 1,
+        player = player or 1,
         currentSpawnCooldown = 0,
         spawningCooldown = config.spawningCooldown,
+        currentSpawnCooldown = 0,
         health = config.health,
-        powerLv = config.powerLv
+        powerLv = config.powerLv,
     }
     game.towerPlacement.currentPlacingTower = newTower
     return newTower
@@ -88,6 +115,11 @@ end
 function game.towerPlacement.addTower(tower)
     towerX, towerY = x, y
     table.insert(game.towerPlacement.towers, tower)
+end
+
+function game.towerPlacement.draw()
+    game.towerPlacement.drawTowers()
+    game.towerPlacement.drawLaserTurret()
 end
 
 
@@ -142,11 +174,61 @@ end
 
 function game.towerPlacement.update(dt)
     for i, v in ipairs(game.towerPlacement.towers) do
+        game.towerPlacement.handleLaserTurret(v, dt)
         if v.currentSpawnCooldown > 0 then
             v.currentSpawnCooldown = v.currentSpawnCooldown - dt
             if v.currentSpawnCooldown < 0 then
                 v.currentSpawnCooldown = 0
             end
+        end
+    end
+
+
+end
+
+function game.towerPlacement.placeTowerForAi(x, y, towerType, player)
+    local config = towerConfig[towerType] or towerConfig.circle
+
+    local newTower = {
+        id = #game.towerPlacement.towers + 1,
+        x = x,
+        y = y,
+        type = towerType,
+        spawnType = config.spawnType,
+        player = player or 1,
+        currentSpawnCooldown = 0,
+        spawningCooldown = config.spawningCooldown,
+        currentSpawnCooldown = 0,
+        health = config.health,
+        powerLv = config.powerLv
+    }
+    game.towerPlacement.currentPlacingTower = newTower
+    game.towerPlacement.changeType(towerType)
+    game.towerPlacement.addTower(newTower)
+end
+
+function game.towerPlacement.handleLaserTurret(tower, dt)
+    if not getCreatureStore() then
+        print("No creatures")
+        return
+    end
+    if tower.laserTurret then
+        for j, creature in ipairs(getCreatureStore()) do
+            if creature.player ~= tower.player then
+                local distance = math.sqrt((creature.x - tower.x)^2 + (creature.y - tower.y)^2)
+                if distance <= 100 then
+                    creature.health = creature.health - 10
+                end
+            end
+        end
+    end
+end
+
+function game.towerPlacement.drawLaserTurret()
+    for i, tower in ipairs(game.towerPlacement.towers) do
+        if tower.laserTurret then
+            love.graphics.setColor(1, 0, 0)
+            love.graphics.circle("line", tower.x, tower.y, 100)
         end
     end
 end

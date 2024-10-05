@@ -3,7 +3,7 @@ game.manager.player1 = {
     money = 50
 }
 game.manager.player2 = {
-    money = 0
+    money = 50
 }
 
 function game.manager.addMoney(money)
