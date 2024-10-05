@@ -2,6 +2,8 @@ local mainMenu = {}
 
 button_height = 64
 
+local racket = love.audio.newSource("game/SFX/Racket.mp3", "static")
+local blob = love.audio.newSource("game/SFX/blop.mp3", "static")
 local function newButton(text, fn)
     return {
         text = text,
@@ -27,6 +29,8 @@ function mainMenu.load(switchToGame)
     end))
     table.insert(buttons, newButton("Exit Game", function()
         print("Exiting game")
+        blob:play()
+        love.timer.sleep(0.5)
         love.event.quit(0)
     end))
 end
@@ -52,8 +56,6 @@ function mainMenu.draw()
         local mx, my = love.mouse.getPosition()
         local hover = mx > buttonx and mx < buttonx + button_width and
                 my > buttony and my < buttony + button_height
-
-        local racket = love.audio.newSource("game/SFX/Racket.mp3", "static")
 
         if hover then
             color = {0, 1, 0}
@@ -91,6 +93,7 @@ function mainMenu.mousepressed(x, y, button)
 
         if button == 1 and x > buttonx and x < buttonx + (love.graphics.getWidth() * (1/3)) and
                 y > buttony and y < buttony + button_height then
+            blob:play()
             btn.fn()
         end
     end
