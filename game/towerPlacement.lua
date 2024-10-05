@@ -42,7 +42,7 @@ towerConfig = {
         width = 40,
         height = 40,
         spawnType = "bomber",
-        spawningCooldown = 1,
+        spawningCooldown = 4,
         draw = function(tower, mode)
             if tower.image then
                 love.graphics.draw(tower.image, tower.x, tower.y)
@@ -60,7 +60,9 @@ function game.towerPlacement.changeType(type)
     local spawnType = config.spawnType
     game.towerPlacement.currentPlacingTower.type = type
     game.towerPlacement.currentPlacingTower.spawnType = spawnType
+    game.towerPlacement.currentPlacingTower.spawningCooldown = config.spawningCooldown
 end
+
 function game.towerPlacement.placeTower(x, y, towerType)
     local config = towerConfig[towerType] or towerConfig.circle
 
@@ -79,6 +81,7 @@ function game.towerPlacement.placeTower(x, y, towerType)
     game.towerPlacement.currentPlacingTower = newTower
     return newTower
 end
+
 function game.towerPlacement.addTower(tower)
     towerX, towerY = x, y
     table.insert(game.towerPlacement.towers, tower)
