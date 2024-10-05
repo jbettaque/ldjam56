@@ -7,7 +7,6 @@ function game.creature.default.update(dt, creature, creatureStore)
         if creature.currentCooldown < 0 then
             creature.currentCooldown = 0
         end
-        print(creature.currentCooldown)
     end
 
     if game.creature[creature.type].move then
@@ -42,7 +41,7 @@ function game.creature.default.draw(creature)
     end
 
     if creature.currentCooldown > 0 then
-        love.graphics.setColor(0, 0, 0, 100)
+        love.graphics.setColor(1, 1, 1, 100)
         love.graphics.rectangle("fill", creature.x - 10, creature.y + 15, 20 * (creature.currentCooldown / game.creature[creature.type].cooldown), 5)
 
 
@@ -133,7 +132,6 @@ function game.creature.default.attack(dt, creature, creatureStore)
 
                     for i, tower in ipairs(game.towerPlacement.towers) do
                         if tower == nearestEnemy then
-                            print("Tower destroyed")
                             table.remove(game.towerPlacement.towers, i)
                             break
                         end

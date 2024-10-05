@@ -12,3 +12,8 @@
   - [x] stats
   - [ ] add more types
 - [ ] upgrades
+- [ ] currency
+  - [ ] gain on kill
+  - [ ] spend on upgrades
+  - [ ] display
+  - [ ] spend on buildings

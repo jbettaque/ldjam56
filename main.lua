@@ -12,7 +12,7 @@ end
 
 function love.update(dt)
     game.creatures.update(dt)
-
+    game.towerPlacement.update(dt)
     game.tMenu.update(dt)
 end
 

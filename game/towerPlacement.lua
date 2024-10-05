@@ -14,7 +14,8 @@ function game.towerPlacement.placeTower(x, y, towerType)
         type = towerType,
         player = 1,
         health = 1000,
-        powerLv = 10,
+        powerLv = 1,
+        spawningCooldown = 0,
     }
     game.towerPlacement.currentPlacingTower = newTower
     return newTower
@@ -71,4 +72,15 @@ function isClickOnTower(x, y, tower)
                 y >= tower.y and y <= tower.y + imageHeight
     end
     return false
+end
+
+function game.towerPlacement.update(dt)
+    for i, v in ipairs(game.towerPlacement.towers) do
+        if v.spawningCooldown > 0 then
+            v.spawningCooldown = v.spawningCooldown - dt
+            if v.spawningCooldown < 0 then
+                v.spawningCooldown = 0
+            end
+        end
+    end
 end
