@@ -12,3 +12,11 @@
   - [x] stats
   - [ ] add more types
 - [ ] upgrades
+  - [x] power
+  - [ ] movement speed
+  - [ ] spawn rate
+- [ ] currency
+  - [x] gain on kill
+  - [ ] spend on upgrades
+  - [x] display
+  - [ ] spend on buildings

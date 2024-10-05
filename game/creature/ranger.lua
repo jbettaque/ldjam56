@@ -2,7 +2,7 @@ game.creature.ranger = {}
 
 game.creature.ranger.health = 50
 game.creature.ranger.meleeDamage = 0
-game.creature.ranger.rangedDamage = 2
+game.creature.ranger.rangedDamage = 10
 game.creature.ranger.speed = 0.7
 game.creature.ranger.cooldown = 0.6
 game.creature.ranger.range = 150
@@ -10,13 +10,11 @@ game.creature.ranger.backOffDistance = 75
 
 function game.creature.ranger.attack(dt, creature, creatureStore)
     if creature.currentCooldown == 0 then
-        print("Ranger attacking")
         local nearestEnemy = game.creature.default.findNearestEnemy(creature, creatureStore)
 
         if nearestEnemy then
             local distance = math.sqrt((creature.x - nearestEnemy.x)^2 + (creature.y - nearestEnemy.y)^2)
             if distance < game.creature.ranger.range and distance > 20 then
-                print("Ranger attacking and in range")
                 creature.currentCooldown = game.creature.ranger.cooldown
                 creature.attacking = nearestEnemy
                 nearestEnemy.health = nearestEnemy.health - creature.rangedDamage
@@ -24,14 +22,20 @@ function game.creature.ranger.attack(dt, creature, creatureStore)
                     for i, otherCreature in ipairs(creatureStore) do
                         if otherCreature == nearestEnemy then
                             table.remove(creatureStore, i)
+                            if nearestEnemy.player == 1 then
+                                game.manager.player2.money = game.manager.player2.money + 5
+                            else
+                                game.manager.player1.money = game.manager.player1.money + 5
+                            end
+                            creature.attacking = nil
                             break
                         end
                     end
 
                     for i, tower in ipairs(game.towerPlacement.towers) do
                         if tower == nearestEnemy then
-                            print("Tower destroyed")
                             table.remove(game.towerPlacement.towers, i)
+                            creature.attacking = nil
                             break
                         end
                     end
@@ -91,10 +95,10 @@ function game.creature.ranger.draw(creature)
     love.graphics.circle("fill", creature.x, creature.y, 10)
 
     if creature.attacking then
-        love.graphics.setColor(1, 0, 0)
-        love.graphics.line(creature.x, creature.y, creature.attacking.x, creature.attacking.y)
+        if creature.attacking.health > 0 then
+            love.graphics.setColor(1, 0, 0)
+            love.graphics.line(creature.x, creature.y, creature.attacking.x, creature.attacking.y)
+        end
     end
-
-
 
 end

@@ -66,80 +66,78 @@ function game.towerPlacement.placeTower(x, y, towerType)
         x = x,
         y = y,
         type = towerType,
-        spawnType = config.spawnType,
         player = 1,
+        health = 1000,
+        powerLv = 1,
+        spawningCooldown = 0,
         health = config.health,
         powerLv = config.powerLv
     }
     game.towerPlacement.currentPlacingTower = newTower
     return newTower
 end
-
 function game.towerPlacement.addTower(tower)
-    if tower then
-        table.insert(game.towerPlacement.towers, tower)
-    end
+    towerX, towerY = x, y
+    table.insert(game.towerPlacement.towers, tower)
 end
 
+
 function game.towerPlacement.drawTowers()
+
     for i, tower in ipairs(game.towerPlacement.towers) do
         drawTower(tower, "fill")
+        love.graphics.setColor(1, 0, 0) -- Weiß für den Text
+        love.graphics.print("Lv: " .. tower.powerLv, tower.x + 25, tower.y - 10)
     end
     if game.towerPlacement.currentPlacingTower then
         drawTower(game.towerPlacement.currentPlacingTower, "line")
     end
-end
 
+end
 function drawTower(tower, mode)
     if tower.player == 1 then
         love.graphics.setColor(0, 2, 9)
     else
-        love.graphics.setColor(1, 0, 0)
+        love.graphics.setColor(1,0,0)
+    end
+    if tower.type == "circle" then
+        love.graphics.circle(mode, tower.x, tower.y, 20)
+
+    elseif tower.type == "rectangle" then
+        love.graphics.rectangle(mode, tower.x - 10, tower.y - 10, 40, 30)
+    elseif tower.type == "image" then
+        if tower.image then
+            love.graphics.draw(tower.image, tower.x, tower.y)
+
+        end
     end
 
-    local config = towerConfig[tower.type]
-    if config and config.draw then
-        config.draw(tower, mode)
-    end
 end
 
+-- Helper function to check if a click is on a tower
 function isClickOnTower(x, y, tower)
-    local config = towerConfig[tower.type]
-    if config and config.checkClick then
-        return config.checkClick(x, y, tower)
+    if tower.type == "circle" then
+        local distance = math.sqrt((x - tower.x)^2 + (y - tower.y)^2)
+        return distance <= 20  -- Assuming radius is 20
+    elseif tower.type == "rectangle" then
+        return x >= tower.x - 10 and x <= tower.x + 30 and
+                y >= tower.y - 10 and y <= tower.y + 20
+    elseif tower.type == "image" then
+        -- Assuming image dimensions, adjust as needed
+        local imageWidth, imageHeight = 40, 40
+        return x >= tower.x and x <= tower.x + imageWidth and
+                y >= tower.y and y <= tower.y + imageHeight
     end
     return false
 end
 
--- Helper function to add new tower types
-function game.towerPlacement.addTowerType(typeName, config)
-    if not towerConfig[typeName] then
-        towerConfig[typeName] = config
-        table.insert(game.towerPlacement.towerTypes, typeName)
+function game.towerPlacement.update(dt)
+    for i, v in ipairs(game.towerPlacement.towers) do
+        if v.spawningCooldown > 0 then
+            v.spawningCooldown = v.spawningCooldown - dt
+            if v.spawningCooldown < 0 then
+                v.spawningCooldown = 0
+            end
+        end
     end
 end
-
--- Example of how to add a new tower type:
---[[
-game.towerPlacement.addTowerType("hexagon", {
-    health = 900,
-    powerLv = 11,
-    radius = 25,
-    draw = function(tower, mode)
-        -- Draw hexagon logic here
-        local sides = 6
-        local radius = 25
-        local angle = 2 * math.pi / sides
-        local points = {}
-        for i = 1, sides do
-            table.insert(points, tower.x + radius * math.cos(i * angle))
-            table.insert(points, tower.y + radius * math.sin(i * angle))
-        end
-        love.graphics.polygon(mode, points)
-    end,
-    checkClick = function(x, y, tower)
-        local distance = math.sqrt((x - tower.x)^2 + (y - tower.y)^2)
-        return distance <= 25
-    end
-})
---]]
