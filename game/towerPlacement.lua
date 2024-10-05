@@ -12,6 +12,7 @@ function game.towerPlacement.placeTower(x, y, towerType)
         type = towerType,
         player = 1,
         health = 10,
+        strenghtLv = 1,
     }
     game.towerPlacement.currentPlacingTower = newTower
     return newTower
@@ -38,9 +39,12 @@ function game.towerPlacement.drawTowers()
 
 end
 function drawTower(tower, mode)
+    if tower.player == 1 then
+        love.graphics.setColor(0, 2, 9)
+    else
+        love.graphics.setColor(1,0,0)
+    end
     if tower.type == "circle" then
-
-        love.graphics.setColor(0, 1, 0)
         love.graphics.circle(mode, tower.x, tower.y, 20)
 
     elseif tower.type == "rectangle" then
