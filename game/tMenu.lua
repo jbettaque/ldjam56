@@ -14,8 +14,15 @@ local menuTypes = {
             game.towerPlacement.changeType(game.towerPlacement.towerTypes[itemIndex])
         end,
         onSelect = function(x, y, itemIndex)
-            game.towerPlacement.addTower(game.towerPlacement.currentPlacingTower)
-            game.towerPlacement.currentPlacingTower = nil
+            local towerType = game.towerPlacement.towerTypes[itemIndex]
+            if game.manager.isEnoughMoney(towerConfig[towerType].cost) then
+                game.towerPlacement.addTower(game.towerPlacement.currentPlacingTower)
+                game.towerPlacement.currentPlacingTower = nil
+                game.manager.subtractMoney(towerConfig[towerType].cost)
+            else
+                game.towerPlacement.currentPlacingTower = nil
+            end
+
         end,
         beforeOpen = function(x, y)
             game.towerPlacement.placeTower(x, y, game.towerPlacement.towerTypes[1])
@@ -44,6 +51,11 @@ local menuTypes = {
             -- Handle upgrade selection
             if itemIndex == 1 then
                 selectedTower.powerLv = selectedTower.powerLv+1
+            elseif itemIndex == 3 then
+                selectedTower.spawningCooldown = selectedTower.spawningCooldown - 0.2
+                if selectedTower.spawningCooldown < 0.2 then
+                    selectedTower.spawningCooldown = 0.1
+                end
             elseif itemIndex == 4 then
                 table.remove(game.towerPlacement.towers, selectedTower.id)
             end
@@ -104,7 +116,6 @@ end
 function game.tMenu.draw()
     for _, menu in ipairs(activeMenus) do
         local config = menuTypes[menu.type]
-        print(menu.type)
         if not config then return end
 
         -- Draw background

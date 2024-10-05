@@ -26,24 +26,24 @@ function game.creatures.update(dt)
     end
 
 
-    -- Spawn tower creatures
-    if love.timer.getTime() % 1 < 0.03 then
-        for i, v in ipairs(game.towerPlacement.towers) do
+    for i, v in ipairs(game.towerPlacement.towers) do
+        if v.currentSpawnCooldown == 0 then
             if v.player == 1 then
                 game.creatures.spawnCreature(v.spawnType, v.x, v.y, 1, v.powerLv)
 
             else
                 game.creatures.spawnCreature("attacker", 800, v.y, 2, v.powerLv)
             end
-        end
-
-        --spawn test wave enemies
-        for i = 1, 5 do
-            game.creatures.spawnCreature("attacker", 800, 300, 2, 1)
+            v.currentSpawnCooldown = v.spawningCooldown
         end
     end
 
-
+    if love.timer.getTime() % 1 < 0.03 then
+        --spawn test wave enemies
+        for i = 1, 1 do
+            game.creatures.spawnCreature("attacker", 800, 300, 2, 1)
+        end
+    end
 end
 
 function game.creatures.draw()

@@ -33,11 +33,13 @@ function game.creature.default.draw(creature)
         end
         love.graphics.circle("fill", creature.x, creature.y, 10, 5)
 
-        if (creature.health < game.creature[creature.type].health) then
-            local healthbarColor = creature.health / game.creature[creature.type].health
-            love.graphics.setColor(0.5, healthbarColor, 0)
-            love.graphics.rectangle("fill", creature.x - 10, creature.y - 15, creature.health / game.creature[creature.type].health * 20, 5)
-        end
+
+    end
+
+    if (creature.health < game.creature[creature.type].health) then
+        local healthbarColor = creature.health / game.creature[creature.type].health
+        love.graphics.setColor(0.5, healthbarColor, 0)
+        love.graphics.rectangle("fill", creature.x - 10, creature.y - 15, creature.health / game.creature[creature.type].health * 20, 5)
     end
 
     if creature.currentCooldown > 0 then

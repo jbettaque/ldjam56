@@ -14,9 +14,20 @@
 - [ ] upgrades
   - [x] power
   - [ ] movement speed
-  - [ ] spawn rate
+  - [x] spawn rate
 - [ ] currency
   - [x] gain on kill
   - [ ] spend on upgrades
   - [x] display
   - [ ] spend on buildings
+- [ ] window size / scaling
+- [ ] main menu
+- [ ] "nexus" building
+- [ ] game over screen
+- [ ] enemy ai (or maybe waves?)
+- [ ] map with obstacles (maybe lanes?)
+- [ ] towers that attack enemies
+- [ ] buildings that produce currency
+- [ ] sound effects and music
+- [ ] settings menu
+- 

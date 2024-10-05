@@ -95,7 +95,9 @@ function game.creature.ranger.draw(creature)
     love.graphics.circle("fill", creature.x, creature.y, 10)
 
     if creature.attacking then
+        print("Drawing line")
         if creature.attacking.health > 0 then
+
             love.graphics.setColor(1, 0, 0)
             love.graphics.line(creature.x, creature.y, creature.attacking.x, creature.attacking.y)
         end
