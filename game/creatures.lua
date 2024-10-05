@@ -2,6 +2,7 @@ game.creatures = {}
 game.creature = {}
 require("game/creature/default")
 require("game/creature/attacker")
+require("game/creature/ranger")
 
 
 
@@ -24,10 +25,11 @@ function game.creatures.update(dt)
     end
 
     -- Spawn tower creatures
-    if love.timer.getTime() % 1 < 0.1 then
+    if love.timer.getTime() % 1 < 0.03 then
         for i, v in ipairs(game.towerPlacement.towers) do
             if v.player == 1 then
                 game.creatures.spawnCreature("attacker", v.x, v.y, 1)
+                game.creatures.spawnCreature("ranger", v.x, v.y, 1)
             else
                 game.creatures.spawnCreature("attacker", 800, v.y, 2)
             end
@@ -49,7 +51,12 @@ function game.creatures.draw()
         else
             love.graphics.setColor(1, 0, 0)
         end
-        love.graphics.circle("fill", creature.x, creature.y, 10, 5)
+        if creature.type == "attacker" then
+            love.graphics.circle("fill", creature.x, creature.y, 10, 5)
+        end
+        if creature.type == "ranger" then
+            love.graphics.circle("fill", creature.x, creature.y, 10, 10)
+        end
 
         if (creature.health < game.creature[creature.type].health) then
             local healthbarColor = creature.health / game.creature[creature.type].health

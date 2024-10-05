@@ -40,7 +40,7 @@ function game.creature.default.findNearestEnemy(creature, creatureStore)
         end
     end
 
-    if nearestTowerDistance < nearestDistance then
+    if nearestTowerDistance <= nearestDistance then
         return nearestTower
     else
         return nearestCreature
@@ -87,7 +87,7 @@ function game.creature.default.attack(dt, creature, creatureStore)
         if nearestEnemy then
             local distance = math.sqrt((creature.x - nearestEnemy.x)^2 + (creature.y - nearestEnemy.y)^2)
             if distance < 20 then
-                nearestEnemy.health = nearestEnemy.health - 10 * dt
+                nearestEnemy.health = nearestEnemy.health - creature.meleeDamage * dt
                 if nearestEnemy.health <= 0 then
                     for i, otherCreature in ipairs(creatureStore) do
                         if otherCreature == nearestEnemy then
@@ -98,6 +98,7 @@ function game.creature.default.attack(dt, creature, creatureStore)
 
                     for i, tower in ipairs(game.towerPlacement.towers) do
                         if tower == nearestEnemy then
+                            print("Tower destroyed")
                             table.remove(game.towerPlacement.towers, i)
                             break
                         end
