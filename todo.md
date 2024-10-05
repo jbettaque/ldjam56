@@ -1,13 +1,14 @@
 # TODO
 
 - [ ] building system
-  - [ ] build
-  - [ ] destroy
-  - [ ] upgrade
+  - [x] build
+  - [x] destroy
 - [ ] creatures
-  - [ ] spawn
-  - [ ] move
-  - [ ] attack
-  - [ ] die
-  - [ ] types
-  - [ ] stats (upgrade?)
+  - [x] spawn
+  - [x] move
+  - [x] attack
+  - [x] die
+  - [x] types
+  - [x] stats
+  - [ ] add more types
+- [ ] upgrades
