@@ -7,7 +7,8 @@ local function newButton(text, fn)
         text = text,
         fn = fn,
         now = false,
-        last = false
+        last = false,
+        soundPlayed = false
     }
 end
 
@@ -52,8 +53,16 @@ function mainMenu.draw()
         local hover = mx > buttonx and mx < buttonx + button_width and
                 my > buttony and my < buttony + button_height
 
+        local racket = love.audio.newSource("game/SFX/Racket.mp3", "static")
+
         if hover then
             color = {0, 1, 0}
+            if not button.soundPlayed then
+                racket:play()
+                button.soundPlayed = true
+            end
+        else
+            button.soundPlayed = false
         end
 
         button.now = love.mouse.isDown(1)
