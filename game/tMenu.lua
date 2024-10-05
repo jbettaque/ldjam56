@@ -2,134 +2,195 @@ game.tMenu = {}
 local menuTileX = 40
 local menuTileY = 40
 local gap = 5
-rectangles = {}
-local color = {0, 0, 1}
+local activeMenus = {}
 local hoveredTile = nil
-local towerTypes = game.towerPlacement.towerTypes
+
+-- Menu configurations
+local menuTypes = {
+    tower = {
+        items = game.towerPlacement.towerTypes,
+        color = {0, 0, 1},
+        onHover = function(itemIndex)
+            game.towerPlacement.currentPlacingTower.type = game.towerPlacement.towerTypes[itemIndex]
+        end,
+        onSelect = function(x, y, itemIndex)
+            game.towerPlacement.addTower(game.towerPlacement.currentPlacingTower)
+            game.towerPlacement.currentPlacingTower = nil
+        end,
+        beforeOpen = function(x, y)
+            game.towerPlacement.placeTower(x, y, game.towerPlacement.towerTypes[1])
+        end,
+        drawItem = function(item, x, y, width, height)
+            -- Draw tile name
+            love.graphics.setColor(0, 0, 0)
+            love.graphics.printf(
+                    item,
+                    x,
+                    y + height / 2,
+                    width,
+                    "center"
+            )
+        end
+    },
+    -- Add more menu types here, for example:
+
+    upgrade = {
+        items = {"Damage", "Range", "Speed"},
+        color = {0, 1, 0},
+        onHover = function(itemIndex)
+
+        end,
+        onSelect = function(x, y, itemIndex)
+            -- Handle upgrade selection
+        end,
+        drawItem = function(item, x, y, width, height)
+            -- Custom drawing for upgrade menu items
+            love.graphics.setColor(0, 0, 0)
+            love.graphics.printf(
+                    item,
+                    x,
+                    y + height / 2,
+                    width,
+                    "center"
+            )
+        end
+    }
+
+}
+
+local function createMenu(menuType, x, y)
+    local config = menuTypes[menuType]
+    if not config then return end
+
+    local menuWidth = (menuTileX * #config.items) + (gap * (#config.items + 1))
+    local screenWidth = love.graphics.getWidth()
+
+    -- Adjust x position if too close to right edge
+    if x + menuWidth > screenWidth then
+        x = x - menuWidth
+    end
+
+    return {
+        type = menuType,
+        x = x,
+        y = y,
+        width = menuWidth,
+        height = menuTileY + gap * 2
+    }
+end
+
+function game.tMenu.openMenu(menuType, x, y)
+    -- Clear existing menus
+    activeMenus = {}
+
+    local config = menuTypes[menuType]
+    if config and config.beforeOpen then
+        config.beforeOpen(x, y)
+    end
+
+    local newMenu = createMenu(menuType, x, y)
+    if newMenu then
+        table.insert(activeMenus, newMenu)
+    end
+end
+
 function game.tMenu.draw()
-    for _, rect in ipairs(rectangles) do
-        drawMenu(rect.x, rect.y, color)
+    for _, menu in ipairs(activeMenus) do
+        local config = menuTypes[menu.type]
+        print(menu.type)
+        if not config then return end
+
+        -- Draw background
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.rectangle("fill", menu.x, menu.y, menu.width, menu.height)
+
+        -- Draw items
+        for i, item in ipairs(config.items) do
+            local itemX = menu.x + ((i - 1) * menuTileX) + gap * i
+            local itemY = menu.y + gap
+
+            -- Draw tile background
+            if hoveredTile == i then
+                love.graphics.setColor(config.color[1] + 0.3, config.color[2] + 0.3, config.color[3] + 0.3)
+            else
+                love.graphics.setColor(config.color)
+            end
+            love.graphics.rectangle("fill", itemX, itemY, menuTileX, menuTileY)
+
+            -- Draw item content
+            if config.drawItem then
+                config.drawItem(item, itemX, itemY, menuTileX, menuTileY)
+            end
+        end
     end
 end
 
 function game.tMenu.mousepressed(x, y, button, isTouch)
-    -- Check if click is inside any existing menu
-    local clickedInside = false
-    for i, rect in ipairs(rectangles) do
-        local menuWidth = (menuTileX * #towerTypes) + (gap * 8)
-        local menuHeight = menuTileY + gap * 2
+    local clickedMenu = false
+    for i, tower in ipairs(game.towerPlacement.towers) do
+        if isClickOnTower(x, y, tower) then
+            print("Clicked on tower " .. tower.id)
+            game.tMenu.openMenu("upgrade", x, y)
 
-        if x >= rect.x and x <= rect.x + menuWidth and
-                y >= rect.y and y <= rect.y + menuHeight then
-            clickedInside = true
-
-            -- Check if clicked inside a specific tile
-            for tileIndex = 1, #towerTypes do
-                local tileX = rect.x + ((tileIndex - 1) * menuTileX) + gap * tileIndex
-                local tileY = rect.y + gap
-
-                if x >= tileX and x <= tileX + menuTileX and
-                        y >= tileY and y <= tileY + menuTileY then
-                    -- Clicked inside this tile
-                    print("Clicked on tile " .. tileIndex)
-
-                    game.towerPlacement.addTower(game.towerPlacement.currentPlacingTower)
-                    game.towerPlacement.currentPlacingTower = nil
-                    rectangles = {}
-                    -- You can add more actions here, like:
-                    -- game.towerPlacement.placeTower(x, y, towerTypes[tileIndex])
-                    return  -- Exit the function after handling the tile click
-                end
-            end
-
-
-            break
+            return
         end
     end
+    for _, menu in ipairs(activeMenus) do
+        local config = menuTypes[menu.type]
+        if not config then goto continue end
 
-    -- If clicked outside all menus, clear them
-    if not clickedInside then
-        -- Create new menu only if no menus exist
-        game.towerPlacement.placeTower(x, y, towerTypes[1])
-        rectangles = {}
-        local screenWidth = love.graphics.getWidth()
-        local menuWidth = (menuTileX * #towerTypes) + (gap * 8)
+        if x >= menu.x and x <= menu.x + menu.width and
+                y >= menu.y and y <= menu.y + menu.height then
+            clickedMenu = true
 
-        -- Adjust x position if too close to right edge
-        local newX = x
-        if x + menuWidth > screenWidth then
-            newX = x - menuWidth
+            -- Check if clicked on specific item
+            for i = 1, #config.items do
+                local itemX = menu.x + ((i - 1) * menuTileX) + gap * i
+                local itemY = menu.y + gap
+
+                if x >= itemX and x <= itemX + menuTileX and
+                        y >= itemY and y <= itemY + menuTileY then
+                    if config.onSelect then
+                        config.onSelect(x, y, i)
+                    end
+                    activeMenus = {}
+                    return
+                end
+            end
         end
+        ::continue::
+    end
 
-        local newRect = {
-            x = newX,
-            y = y
-        }
-        table.insert(rectangles, newRect)
-
+    if not clickedMenu then
+        game.tMenu.openMenu("tower", x, y)
     end
 end
 
 function game.tMenu.update(dt)
-    -- Update hovered tile
     local mx, my = love.mouse.getPosition()
     hoveredTile = nil
-    for _, rect in ipairs(rectangles) do
-        local menuWidth = (menuTileX * #towerTypes) + (gap * 8)
-        local menuHeight = menuTileY + gap * 2
 
-        -- Check if mouse is inside menu
-        if mx >= rect.x and mx <= rect.x + menuWidth and
-                my >= rect.y and my <= rect.y + menuHeight then
-            -- Calculate which tile is being hovered
-            for i = 1, #towerTypes do
-                local tileX = rect.x + ((i - 1) * menuTileX) + gap * i
-                local tileY = rect.y + gap
+    for _, menu in ipairs(activeMenus) do
+        local config = menuTypes[menu.type]
+        if not config then goto continue end
 
-                if mx >= tileX and mx <= tileX + menuTileX and
-                        my >= tileY and my <= tileY + menuTileY then
-                    game.towerPlacement.currentPlacingTower.type = towerTypes[i]
+        if mx >= menu.x and mx <= menu.x + menu.width and
+                my >= menu.y and my <= menu.y + menu.height then
+
+            for i = 1, #config.items do
+                local itemX = menu.x + ((i - 1) * menuTileX) + gap * i
+                local itemY = menu.y + gap
+
+                if mx >= itemX and mx <= itemX + menuTileX and
+                        my >= itemY and my <= itemY + menuTileY then
                     hoveredTile = i
+                    if config.onHover then
+                        config.onHover(i)
+                    end
                     break
                 end
             end
         end
-    end
-end
-
-function drawMenu(mouseX, mouseY, color)
-    local tiles = #towerTypes
-    local width = (menuTileX * tiles) + (gap * tiles + 5)
-    local height = menuTileY + gap * 2
-
-    -- Draw background
-    love.graphics.setColor(1, 1, 1)
-    love.graphics.rectangle("fill", mouseX, mouseY, width, height)
-
-    -- Draw tiles
-    for i = 1, tiles do
-        if hoveredTile == i then
-            -- Highlight hovered tile
-            love.graphics.setColor(color[1] + 0.3, color[2] + 0.3, color[3] + 0.3)
-        else
-            love.graphics.setColor(color)
-        end
-        love.graphics.rectangle(
-                "fill",
-                mouseX + ((i - 1) * menuTileX) + gap * i,
-                mouseY + gap,
-                menuTileX,
-                menuTileY
-        )
-
-        -- Draw tile name
-        love.graphics.setColor(0, 0, 0) -- Set text color to black
-        love.graphics.printf(
-                towerTypes[i],
-                mouseX + ((i - 1) * menuTileX) + gap * i,
-                mouseY + gap + menuTileY / 2,
-                menuTileX,
-                "center"
-        )
+        ::continue::
     end
 end

@@ -32,6 +32,5 @@ end
 
 function love.mousepressed(x, y, button, istouch, presses)
     game.tMenu.mousepressed(x, y, button, istouch, presses)
-    game.towerPlacement.mousepressed(x, y, button, istouch, presses, "rectangle")
 
 end
