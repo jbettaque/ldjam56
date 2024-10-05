@@ -34,18 +34,16 @@ function game.creatures.update(dt)
             else
                 game.creatures.spawnCreature("attacker", 800, v.y, 2, v.powerLv)
             end
-            v.currentSpawnCooldown = towerConfig[v.type].spawningCooldown
+            v.currentSpawnCooldown = v.spawningCooldown
         end
     end
 
     if love.timer.getTime() % 1 < 0.03 then
         --spawn test wave enemies
-        for i = 1, 5 do
+        for i = 1, 1 do
             game.creatures.spawnCreature("attacker", 800, 300, 2, 1)
         end
     end
-
-
 end
 
 function game.creatures.draw()

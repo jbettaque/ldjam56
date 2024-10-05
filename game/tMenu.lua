@@ -44,6 +44,11 @@ local menuTypes = {
             -- Handle upgrade selection
             if itemIndex == 1 then
                 selectedTower.powerLv = selectedTower.powerLv+1
+            elseif itemIndex == 3 then
+                selectedTower.spawningCooldown = selectedTower.spawningCooldown - 0.2
+                if selectedTower.spawningCooldown < 0.2 then
+                    selectedTower.spawningCooldown = 0.1
+                end
             elseif itemIndex == 4 then
                 table.remove(game.towerPlacement.towers, selectedTower.id)
             end
@@ -104,7 +109,6 @@ end
 function game.tMenu.draw()
     for _, menu in ipairs(activeMenus) do
         local config = menuTypes[menu.type]
-        print(menu.type)
         if not config then return end
 
         -- Draw background

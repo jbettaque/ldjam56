@@ -2,9 +2,9 @@ game.creature.bomber = {}
 
 game.creature.bomber.health = 20
 game.creature.bomber.meleeDamage = 0
-game.creature.bomber.rangedDamage = 2
+game.creature.bomber.rangedDamage = 30
 game.creature.bomber.speed = 0.3
-game.creature.bomber.cooldown = 0.9
+game.creature.bomber.cooldown = 2.5
 game.creature.bomber.range = 150
 game.creature.bomber.bombRange = 100
 game.creature.bomber.backOffDistance = 100
@@ -12,35 +12,29 @@ game.creature.bomber.backOffDistance = 100
 
 function game.creature.bomber.attack(dt, creature, creatureStore)
     if creature.currentCooldown == 0 then
-        print("Bomber attacking")
         local nearestEnemy = game.creature.default.findNearestEnemy(creature, creatureStore)
-        checkHealth(nearestEnemy, creatureStore)
+
         if nearestEnemy then
             local distance = math.sqrt((creature.x - nearestEnemy.x)^2 + (creature.y - nearestEnemy.y)^2)
             if distance < game.creature.bomber.range and distance > 20 then
-                print("Bomber attacking and in range")
                 creature.currentCooldown = game.creature.bomber.cooldown
                 creature.attacking = nearestEnemy
                 nearestEnemy.health = nearestEnemy.health - creature.rangedDamage
+                checkHealth(nearestEnemy, creatureStore, creature)
                 for i, otherCreature in ipairs(creatureStore) do
                     local distance = math.sqrt((otherCreature.x - nearestEnemy.x)^2 + (otherCreature.y - nearestEnemy.y)^2)
 
                     if distance < game.creature.bomber.bombRange and creature.player ~= otherCreature.player then
                         local damage = creature.rangedDamage * (1 - distance / game.creature.bomber.bombRange)
                         otherCreature.health = otherCreature.health - damage
-                        checkHealth(otherCreature, creatureStore)
+                        checkHealth(otherCreature, creatureStore, creature)
                     end
-
                 end
-
-
             end
         end
-
     end
-
 end
-function checkHealth(creature, creatureStore)
+function checkHealth(creature, creatureStore, parentCreature)
     if not creature then
         return
     end
