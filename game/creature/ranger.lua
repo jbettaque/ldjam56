@@ -6,6 +6,7 @@ game.creature.ranger.rangedDamage = 2
 game.creature.ranger.speed = 0.7
 game.creature.ranger.cooldown = 0.6
 game.creature.ranger.range = 150
+game.creature.ranger.backOffDistance = 75
 
 function game.creature.ranger.attack(dt, creature, creatureStore)
     if creature.currentCooldown == 0 then
@@ -51,7 +52,7 @@ function game.creature.ranger.move(dt, creature, creatureStore)
     -- if too close to enemy, flee
     if nearestEnemy then
         local distance = math.sqrt((creature.x - nearestEnemy.x)^2 + (creature.y - nearestEnemy.y)^2)
-        if distance < 75 then
+        if distance < game.creature[creature.type].backOffDistance then
             local angle = math.atan2(nearestEnemy.y - creature.y, nearestEnemy.x - creature.x)
             creature.x = creature.x - math.cos(angle) * 100 * dt * creature.speed
             creature.y = creature.y - math.sin(angle) * 100 * dt * creature.speed

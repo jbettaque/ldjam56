@@ -3,6 +3,7 @@ game.creature = {}
 require("game/creature/default")
 require("game/creature/attacker")
 require("game/creature/ranger")
+require("game/creature/bomber")
 
 
 
@@ -29,11 +30,7 @@ function game.creatures.update(dt)
     if love.timer.getTime() % 1 < 0.03 then
         for i, v in ipairs(game.towerPlacement.towers) do
             if v.player == 1 then
-                if v.type == "rectangle" then
-                    game.creatures.spawnCreature("attacker", v.x, v.y, 1, v.powerLv)
-                elseif v.type =="circle" then
-                    game.creatures.spawnCreature("ranger", v.x, v.y, 1, v.powerLv)
-                end
+                game.creatures.spawnCreature(v.spawnType, v.x, v.y, 1, v.powerLv)
 
             else
                 game.creatures.spawnCreature("attacker", 800, v.y, 2, v.powerLv)

@@ -11,7 +11,7 @@ local menuTypes = {
         items = game.towerPlacement.towerTypes,
         color = {0, 0, 1},
         onHover = function(itemIndex)
-            game.towerPlacement.currentPlacingTower.type = game.towerPlacement.towerTypes[itemIndex]
+            game.towerPlacement.changeType(game.towerPlacement.towerTypes[itemIndex])
         end,
         onSelect = function(x, y, itemIndex)
             game.towerPlacement.addTower(game.towerPlacement.currentPlacingTower)
@@ -32,7 +32,7 @@ local menuTypes = {
             )
         end
     },
-    -- Add more menu types here, for example:
+
 
     upgrade = {
         items = {"Damage", "Range", "Speed"},
@@ -55,6 +55,8 @@ local menuTypes = {
             )
         end
     }
+    -- Add more menu types here, for example:
+
 
 }
 
