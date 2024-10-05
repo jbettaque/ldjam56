@@ -14,7 +14,6 @@ function game.creature.bomber.attack(dt, creature, creatureStore)
     if creature.currentCooldown == 0 then
         print("Bomber attacking")
         local nearestEnemy = game.creature.default.findNearestEnemy(creature, creatureStore)
-        checkHealth(nearestEnemy, creatureStore)
         if nearestEnemy then
             local distance = math.sqrt((creature.x - nearestEnemy.x)^2 + (creature.y - nearestEnemy.y)^2)
             if distance < game.creature.bomber.range and distance > 20 then
@@ -22,6 +21,7 @@ function game.creature.bomber.attack(dt, creature, creatureStore)
                 creature.currentCooldown = game.creature.bomber.cooldown
                 creature.attacking = nearestEnemy
                 nearestEnemy.health = nearestEnemy.health - creature.rangedDamage
+                checkHealth(nearestEnemy, creatureStore)
                 for i, otherCreature in ipairs(creatureStore) do
                     local distance = math.sqrt((otherCreature.x - nearestEnemy.x)^2 + (otherCreature.y - nearestEnemy.y)^2)
 

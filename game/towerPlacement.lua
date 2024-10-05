@@ -69,6 +69,7 @@ function game.towerPlacement.placeTower(x, y, towerType)
         x = x,
         y = y,
         type = towerType,
+        spawnType = config.spawnType,
         player = 1,
         currentSpawnCooldown = 0,
         spawningCooldown = config.spawningCooldown,
