@@ -19,8 +19,9 @@ end
 function love.draw()
     game.map.draw()
     game.creatures.draw()
-    game.tMenu.draw()
+
     game.towerPlacement.drawTowers()
+    game.tMenu.draw()
 end
 
 function love.mousepressed(x, y, button, isTouch)
