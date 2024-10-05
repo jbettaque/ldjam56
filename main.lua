@@ -17,6 +17,7 @@ end
 
 function love.load()
     print("running on " .. love.system.getOS())
+    love.window.setMode(1600, 1200)
 
 
     game.manager.load()

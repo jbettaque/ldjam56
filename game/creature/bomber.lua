@@ -42,6 +42,11 @@ function checkHealth(creature, creatureStore, parentCreature)
         for i, otherCreature in ipairs(creatureStore) do
             if otherCreature == creature then
                 table.remove(creatureStore, i)
+                if creature.player == 1 then
+                    game.manager.player2.money = game.manager.player2.money + 5
+                else
+                    game.manager.player1.money = game.manager.player1.money + 5
+                end
                 break
             end
         end

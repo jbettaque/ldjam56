@@ -15,10 +15,10 @@ local menuTypes = {
         end,
         onSelect = function(x, y, itemIndex)
             local towerType = game.towerPlacement.towerTypes[itemIndex]
-            if game.manager.isEnoughMoney(towerConfig[towerType].cost) then
+            if game.manager.isEnoughMoney(towerConfig[towerType].cost, 1) then
                 game.towerPlacement.addTower(game.towerPlacement.currentPlacingTower)
                 game.towerPlacement.currentPlacingTower = nil
-                game.manager.subtractMoney(towerConfig[towerType].cost)
+                game.manager.subtractMoney(towerConfig[towerType].cost, 1)
             else
                 game.towerPlacement.currentPlacingTower = nil
             end
@@ -42,19 +42,28 @@ local menuTypes = {
 
 
     upgrade = {
-        items = {"Damage", "Range", "Speed", "Destroy"},
+        items = {"Damage", "Speed", "Health", "Destroy"},
         color = {0, 1, 0},
         onHover = function(itemIndex)
 
         end,
         onSelect = function(x, y, itemIndex)
-            -- Handle upgrade selection
+            local totalLevel = selectedTower.powerLv +  selectedTower.speedLv + selectedTower.healthLv
+            local cost = 10 * totalLevel + 10
             if itemIndex == 1 then
-                selectedTower.powerLv = selectedTower.powerLv+1
+                if game.manager.isEnoughMoney(cost, 1) then
+                    selectedTower.powerLv = selectedTower.powerLv+1
+                    game.manager.subtractMoney(cost, 1)
+                end
+            elseif itemIndex == 2 then
+                if game.manager.isEnoughMoney(cost, 1) then
+                    selectedTower.speedLv = selectedTower.speedLv+1
+                    game.manager.subtractMoney(cost, 1)
+                end
             elseif itemIndex == 3 then
-                selectedTower.spawningCooldown = selectedTower.spawningCooldown - 0.2
-                if selectedTower.spawningCooldown < 0.2 then
-                    selectedTower.spawningCooldown = 0.1
+                if game.manager.isEnoughMoney(cost, 1) then
+                    selectedTower.healthLv = selectedTower.healthLv + 1
+                    game.manager.subtractMoney(cost, 1)
                 end
             elseif itemIndex == 4 then
                 table.remove(game.towerPlacement.towers, selectedTower.id)
@@ -67,6 +76,14 @@ local menuTypes = {
                     item,
                     x,
                     y + height / 2,
+                    width,
+                    "center"
+            )
+            love.graphics.setColor(1, 1, 1)
+            love.graphics.printf(
+                    "Cost: " .. 10 * (selectedTower.powerLv + selectedTower.speedLv + selectedTower.healthLv) + 10,
+                    x,
+                    y + height / 2 + 20,
                     width,
                     "center"
             )

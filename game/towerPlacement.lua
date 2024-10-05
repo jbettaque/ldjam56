@@ -3,13 +3,15 @@ game.towerPlacement = {}
 game.towerPlacement.towers = {
     {
         id = 1,
-        x = 700,
+        x = 1500,
         y = 100,
         spawnType = "attacker",
         player = 2,
         health = 10000,
         maxHealth = 10000,
         powerLv = 1,
+        speedLv = 1,
+        healthLv = 1,
         spawningCooldown = 6,
         currentSpawnCooldown = 0,
         laserTurret = true
@@ -23,6 +25,8 @@ game.towerPlacement.towers = {
         health = 10000,
         maxHealth = 10000,
         powerLv = 1,
+        speedLv = 1,
+        healthLv = 1,
         spawningCooldown = 6,
         currentSpawnCooldown = 0,
         laserTurret = true
@@ -39,8 +43,10 @@ towerConfig = {
         health = 1000,
         maxHealth = 1000,
         powerLv = 1,
+        speedLv = 1,
+        healthLv = 1,
         radius = 20,
-        cost = 20,
+        cost = 100,
         spawnType = "ranger",
         spawningCooldown = 5,
         draw = function(tower, mode)
@@ -55,9 +61,11 @@ towerConfig = {
         health = 1200,
         maxHealth = 1200,
         powerLv = 1,
+        speedLv = 1,
+        healthLv = 1,
         width = 40,
         height = 30,
-        cost = 30,
+        cost = 50,
         spawnType = "attacker",
         spawningCooldown = 3,
         draw = function(tower, mode)
@@ -72,9 +80,11 @@ towerConfig = {
         health = 800,
         maxHealth = 800,
         powerLv = 1,
+        speedLv = 1,
+        healthLv = 1,
         width = 40,
         height = 40,
-        cost = 40,
+        cost = 300,
         spawnType = "bomber",
         spawningCooldown = 9,
         draw = function(tower, mode)
@@ -115,6 +125,8 @@ function game.towerPlacement.placeTower(x, y, towerType, player)
         health = config.health,
         maxHealth = config.maxHealth,
         powerLv = config.powerLv,
+        speedLv = config.speedLv,
+        healthLv = 1,
     }
     game.towerPlacement.currentPlacingTower = newTower
     return newTower
@@ -136,7 +148,7 @@ function game.towerPlacement.drawTowers()
     for i, tower in ipairs(game.towerPlacement.towers) do
         drawTower(tower, "fill")
         love.graphics.setColor(1, 0, 0) -- Weiß für den Text
-        love.graphics.print("Lv: " .. tower.powerLv, tower.x + 25, tower.y - 10)
+        love.graphics.print("Lv: " .. tower.powerLv + tower.speedLv, tower.x + 25, tower.y - 10)
 
         if tower.currentSpawnCooldown > 0 then
             love.graphics.setColor(1, 1, 1)
@@ -202,7 +214,7 @@ function game.towerPlacement.update(dt)
     for i, v in ipairs(game.towerPlacement.towers) do
         game.towerPlacement.handleLaserTurret(v, dt)
         if v.currentSpawnCooldown > 0 then
-            v.currentSpawnCooldown = v.currentSpawnCooldown - dt
+            v.currentSpawnCooldown = v.currentSpawnCooldown - (dt * v.speedLv)
             if v.currentSpawnCooldown < 0 then
                 v.currentSpawnCooldown = 0
             end
@@ -226,7 +238,9 @@ function game.towerPlacement.placeTowerForAi(x, y, towerType, player)
         spawningCooldown = config.spawningCooldown,
         currentSpawnCooldown = 0,
         health = config.health,
-        powerLv = config.powerLv
+        powerLv = config.powerLv,
+        speedLv = config.speedLv,
+        healthLv = 1,
     }
     game.towerPlacement.currentPlacingTower = newTower
     game.towerPlacement.changeType(towerType)
@@ -246,6 +260,11 @@ function game.towerPlacement.handleLaserTurret(tower, dt)
                     creature.health = creature.health - 1
                     if creature.health <= 0 then
                         table.remove(getCreatureStore(), j)
+                        if creature.player == 1 then
+                            game.manager.player2.money = game.manager.player2.money + 5
+                        else
+                            game.manager.player1.money = game.manager.player1.money + 5
+                        end
                     end
                 end
             end

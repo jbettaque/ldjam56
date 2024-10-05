@@ -1,21 +1,32 @@
 game.manager = {}
 game.manager.player1 = {
-    money = 50
+    money = 200
 }
 game.manager.player2 = {
-    money = 50
+    money = 200
 }
 
-function game.manager.addMoney(money)
-    game.manager.player1.money = game.manager.player1.money + money
+function game.manager.addMoney(money, player)
+    if player == 1 then
+        game.manager.player1.money = game.manager.player1.money + money
+        return
+    end
+    game.manager.player2.money = game.manager.player2.money + money
 end
 
-function game.manager.subtractMoney(money)
-    game.manager.player1.money = game.manager.player1.money - money
+function game.manager.subtractMoney(money, player)
+    if player == 1 then
+        game.manager.player1.money = game.manager.player1.money - money
+        return
+    end
+    game.manager.player2.money = game.manager.player2.money - money
 end
 
-function game.manager.isEnoughMoney(money)
-    return game.manager.player1.money >= money
+function game.manager.isEnoughMoney(money, player)
+    if player == 1 then
+        return game.manager.player1.money >= money
+    end
+    return game.manager.player2.money >= money
 end
 
 function game.manager.load()

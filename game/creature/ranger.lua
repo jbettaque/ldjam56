@@ -4,7 +4,7 @@ game.creature.ranger.health = 50
 game.creature.ranger.meleeDamage = 0
 game.creature.ranger.rangedDamage = 10
 game.creature.ranger.speed = 0.7
-game.creature.ranger.cooldown = 0.6
+game.creature.ranger.cooldown = 1.2
 game.creature.ranger.range = 150
 game.creature.ranger.backOffDistance = 75
 

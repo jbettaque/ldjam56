@@ -8,7 +8,7 @@ function game.enemyAi.load()
 end
 
 function game.enemyAi.update(dt)
-    if game.manager.player2.money >= 50 then
+    if game.manager.isEnoughMoney(100, 2) then
 
         game.manager.player2.money = game.manager.player2.money - 50
         -- randomx and randomy only on right side of screen (1/6th)

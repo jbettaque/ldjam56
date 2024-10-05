@@ -32,7 +32,7 @@ function game.creatures.update(dt)
 
     for i, v in ipairs(game.towerPlacement.towers) do
         if v.currentSpawnCooldown == 0 then
-            game.creatures.spawnCreature(v.spawnType, v.x, v.y, v.player, v.powerLv)
+            game.creatures.spawnCreature(v.spawnType, v.x, v.y, v.player, v.powerLv, v.healthLv)
             v.currentSpawnCooldown = v.spawningCooldown
         end
     end
@@ -44,16 +44,17 @@ function game.creatures.draw()
     end
 end
 
-function game.creatures.spawnCreature(type, x, y, player, powerLv)
+function game.creatures.spawnCreature(type, x, y, player, powerLv, healthLv)
 
     local meleeDamage = game.creature[type].meleeDamage * powerLv
     local rangedDamage = game.creature[type].rangedDamage * powerLv
+    local health = game.creature[type].health * healthLv
     local newCreature = {
         x = x,
         y = y,
         type = type,
         player = player,
-        health = game.creature[type].health,
+        health = health,
         meleeDamage = meleeDamage,
         rangedDamage = rangedDamage,
         speed = game.creature[type].speed,
