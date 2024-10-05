@@ -2,6 +2,14 @@ game.creature.default = {}
 
 function game.creature.default.update(dt, creature, creatureStore)
 
+    if creature.currentCooldown > 0 then
+        creature.currentCooldown = creature.currentCooldown - dt
+        if creature.currentCooldown < 0 then
+            creature.currentCooldown = 0
+        end
+        print(creature.currentCooldown)
+    end
+
     if game.creature[creature.type].move then
         game.creature[creature.type].move(dt, creature, creatureStore)
     else
@@ -12,6 +20,32 @@ function game.creature.default.update(dt, creature, creatureStore)
         game.creature[creature.type].attack(dt, creature, creatureStore)
     else
         game.creature.default.attack(dt, creature, creatureStore)
+    end
+end
+
+function game.creature.default.draw(creature)
+    if game.creature[creature.type].draw then
+        game.creature[creature.type].draw(creature)
+    else
+        if creature.player == 1 then
+            love.graphics.setColor(0, 0, 1)
+        else
+            love.graphics.setColor(1, 0, 0)
+        end
+        love.graphics.circle("fill", creature.x, creature.y, 10, 5)
+
+        if (creature.health < game.creature[creature.type].health) then
+            local healthbarColor = creature.health / game.creature[creature.type].health
+            love.graphics.setColor(0.5, healthbarColor, 0)
+            love.graphics.rectangle("fill", creature.x - 10, creature.y - 15, creature.health / game.creature[creature.type].health * 20, 5)
+        end
+    end
+
+    if creature.currentCooldown > 0 then
+        love.graphics.setColor(0, 0, 0, 100)
+        love.graphics.rectangle("fill", creature.x - 10, creature.y + 15, 20 * (creature.currentCooldown / game.creature[creature.type].cooldown), 5)
+
+
     end
 end
 
@@ -82,12 +116,13 @@ function game.creature.default.move(dt, creature, creatureStore)
 end
 
 function game.creature.default.attack(dt, creature, creatureStore)
-    if love.timer.getTime() % 0.3 < 0.1 then
+    if creature.currentCooldown == 0 then
         local nearestEnemy = game.creature.default.findNearestEnemy(creature, creatureStore)
         if nearestEnemy then
             local distance = math.sqrt((creature.x - nearestEnemy.x)^2 + (creature.y - nearestEnemy.y)^2)
             if distance < 20 then
-                nearestEnemy.health = nearestEnemy.health - creature.meleeDamage * dt
+                nearestEnemy.health = nearestEnemy.health - creature.meleeDamage
+                creature.currentCooldown = game.creature[creature.type].cooldown
                 if nearestEnemy.health <= 0 then
                     for i, otherCreature in ipairs(creatureStore) do
                         if otherCreature == nearestEnemy then

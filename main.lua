@@ -17,6 +17,7 @@ function love.update(dt)
 end
 
 function love.draw()
+
     game.map.draw()
     game.creatures.draw()
 

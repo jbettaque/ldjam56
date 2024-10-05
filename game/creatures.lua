@@ -24,6 +24,7 @@ function game.creatures.update(dt)
         game.creature.default.update(dt, creature, creatureStore)
     end
 
+
     -- Spawn tower creatures
     if love.timer.getTime() % 1 < 0.03 then
         for i, v in ipairs(game.towerPlacement.towers) do
@@ -50,23 +51,7 @@ end
 
 function game.creatures.draw()
     for i, creature in ipairs(creatureStore) do
-        if creature.player == 1 then
-            love.graphics.setColor(0, 0, 1)
-        else
-            love.graphics.setColor(1, 0, 0)
-        end
-        if creature.type == "attacker" then
-            love.graphics.circle("fill", creature.x, creature.y, 10, 5)
-        end
-        if creature.type == "ranger" then
-            love.graphics.circle("fill", creature.x, creature.y, 10, 10)
-        end
-
-        if (creature.health < game.creature[creature.type].health) then
-            local healthbarColor = creature.health / game.creature[creature.type].health
-            love.graphics.setColor(0.5, healthbarColor, 0)
-            love.graphics.rectangle("fill", creature.x - 10, creature.y - 15, creature.health / game.creature[creature.type].health * 20, 5)
-        end
+        game.creature.default.draw(creature)
     end
 end
 
@@ -79,7 +64,9 @@ function game.creatures.spawnCreature(type, x, y, player)
         health = game.creature[type].health,
         meleeDamage = game.creature[type].meleeDamage,
         rangedDamage = game.creature[type].rangedDamage,
-        speed = game.creature[type].speed
+        speed = game.creature[type].speed,
+        currentCooldown = 0,
+
     }
     table.insert(creatureStore, newCreature)
 end

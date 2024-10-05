@@ -11,7 +11,7 @@ function game.towerPlacement.placeTower(x, y, towerType)
         y = y,
         type = towerType,
         player = 1,
-        health = 10,
+        health = 1000,
         strenghtLv = 1,
     }
     game.towerPlacement.currentPlacingTower = newTower
