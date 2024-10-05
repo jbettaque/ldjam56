@@ -2,7 +2,7 @@ game.creature.ranger = {}
 
 game.creature.ranger.health = 50
 game.creature.ranger.meleeDamage = 0
-game.creature.ranger.rangedDamage = 2
+game.creature.ranger.rangedDamage = 10
 game.creature.ranger.speed = 0.7
 game.creature.ranger.cooldown = 0.6
 game.creature.ranger.range = 150
@@ -21,6 +21,11 @@ function game.creature.ranger.attack(dt, creature, creatureStore)
                     for i, otherCreature in ipairs(creatureStore) do
                         if otherCreature == nearestEnemy then
                             table.remove(creatureStore, i)
+                            if nearestEnemy.player == 1 then
+                                game.manager.player2.money = game.manager.player2.money + 5
+                            else
+                                game.manager.player1.money = game.manager.player1.money + 5
+                            end
                             creature.attacking = nil
                             break
                         end

@@ -126,6 +126,12 @@ function game.creature.default.attack(dt, creature, creatureStore)
                     for i, otherCreature in ipairs(creatureStore) do
                         if otherCreature == nearestEnemy then
                             table.remove(creatureStore, i)
+                            if nearestEnemy.player == 1 then
+                                game.manager.player2.money = game.manager.player2.money + 5
+                            else
+                                game.manager.player1.money = game.manager.player1.money + 5
+                            end
+
                             break
                         end
                     end
