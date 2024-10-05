@@ -8,8 +8,9 @@ game.towerPlacement.towers = {
         spawnType = "attacker",
         player = 2,
         health = 10000,
+        maxHealth = 10000,
         powerLv = 1,
-        spawningCooldown = 1,
+        spawningCooldown = 6,
         currentSpawnCooldown = 0,
         laserTurret = true
     },
@@ -20,8 +21,9 @@ game.towerPlacement.towers = {
         spawnType = "attacker",
         player = 1,
         health = 10000,
+        maxHealth = 10000,
         powerLv = 1,
-        spawningCooldown = 1,
+        spawningCooldown = 6,
         currentSpawnCooldown = 0,
         laserTurret = true
     }
@@ -35,11 +37,12 @@ game.towerPlacement.currentPlacingTower = nil
 towerConfig = {
     circle = {
         health = 1000,
+        maxHealth = 1000,
         powerLv = 1,
         radius = 20,
         cost = 20,
         spawnType = "ranger",
-        spawningCooldown = 1,
+        spawningCooldown = 5,
         draw = function(tower, mode)
             love.graphics.circle(mode, tower.x, tower.y, 20)
         end,
@@ -50,12 +53,13 @@ towerConfig = {
     },
     rectangle = {
         health = 1200,
+        maxHealth = 1200,
         powerLv = 1,
         width = 40,
         height = 30,
         cost = 30,
         spawnType = "attacker",
-        spawningCooldown = 1,
+        spawningCooldown = 3,
         draw = function(tower, mode)
             love.graphics.rectangle(mode, tower.x - 10, tower.y - 10, 40, 30)
         end,
@@ -66,12 +70,13 @@ towerConfig = {
     },
     image = {
         health = 800,
+        maxHealth = 800,
         powerLv = 1,
         width = 40,
         height = 40,
         cost = 40,
         spawnType = "bomber",
-        spawningCooldown = 4,
+        spawningCooldown = 9,
         draw = function(tower, mode)
             if tower.image then
                 love.graphics.draw(tower.image, tower.x, tower.y)
@@ -90,6 +95,8 @@ function game.towerPlacement.changeType(type)
     game.towerPlacement.currentPlacingTower.type = type
     game.towerPlacement.currentPlacingTower.spawnType = spawnType
     game.towerPlacement.currentPlacingTower.spawningCooldown = config.spawningCooldown
+    game.towerPlacement.currentPlacingTower.health = config.health
+    game.towerPlacement.currentPlacingTower.maxHealth = config.maxHealth
 end
 
 function game.towerPlacement.placeTower(x, y, towerType, player)
@@ -106,6 +113,7 @@ function game.towerPlacement.placeTower(x, y, towerType, player)
         spawningCooldown = config.spawningCooldown,
         currentSpawnCooldown = 0,
         health = config.health,
+        maxHealth = config.maxHealth,
         powerLv = config.powerLv,
     }
     game.towerPlacement.currentPlacingTower = newTower
@@ -129,10 +137,24 @@ function game.towerPlacement.drawTowers()
         drawTower(tower, "fill")
         love.graphics.setColor(1, 0, 0) -- Weiß für den Text
         love.graphics.print("Lv: " .. tower.powerLv, tower.x + 25, tower.y - 10)
+
+        if tower.currentSpawnCooldown > 0 then
+            love.graphics.setColor(1, 1, 1)
+            love.graphics.rectangle("fill", tower.x - 10, tower.y + 20, tower.currentSpawnCooldown / tower.spawningCooldown * 40, 5)
+        end
+
+        if tower.health < tower.maxHealth then
+            local healthbarColor = tower.health / tower.maxHealth
+            love.graphics.setColor(0.5, healthbarColor, 0)
+            love.graphics.rectangle("fill", tower.x - 10, tower.y + 25, tower.health / tower.maxHealth * 40, 5)
+        end
+
     end
     if game.towerPlacement.currentPlacingTower then
         drawTower(game.towerPlacement.currentPlacingTower, "line")
     end
+
+
 
 end
 function drawTower(tower, mode)
@@ -217,7 +239,10 @@ function game.towerPlacement.handleLaserTurret(tower, dt)
             if creature.player ~= tower.player then
                 local distance = math.sqrt((creature.x - tower.x)^2 + (creature.y - tower.y)^2)
                 if distance <= 100 then
-                    creature.health = creature.health - 10
+                    creature.health = creature.health - 1
+                    if creature.health <= 0 then
+                        table.remove(getCreatureStore(), j)
+                    end
                 end
             end
         end
