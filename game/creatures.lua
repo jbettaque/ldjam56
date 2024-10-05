@@ -24,7 +24,7 @@ function game.creatures.update(dt)
     end
 
     -- Spawn tower creatures
-    if love.timer.getTime() % 1 < 0.1 then
+    if love.timer.getTime() % 1 < 0.03 then
         for i, v in ipairs(game.towerPlacement.towers) do
             if v.player == 1 then
                 game.creatures.spawnCreature("attacker", v.x, v.y, 1)
