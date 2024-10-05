@@ -91,7 +91,11 @@ end
 
 function game.creature.ranger.draw(creature)
 
-    love.graphics.setColor(0, 1, 0)
+    if creature.player == 1 then
+        love.graphics.setColor(0, 0, 1)
+    else
+        love.graphics.setColor(1, 0, 0)
+    end
     love.graphics.circle("fill", creature.x, creature.y, 10)
 
     if creature.attacking then

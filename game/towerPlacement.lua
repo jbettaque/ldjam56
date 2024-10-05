@@ -141,12 +141,16 @@ function game.towerPlacement.drawTowers()
         if tower.currentSpawnCooldown > 0 then
             love.graphics.setColor(1, 1, 1)
             love.graphics.rectangle("fill", tower.x - 10, tower.y + 20, tower.currentSpawnCooldown / tower.spawningCooldown * 40, 5)
+            love.graphics.setColor(1, 1, 1)
+            love.graphics.rectangle("line", tower.x - 10, tower.y + 20, 40, 5)
         end
 
         if tower.health < tower.maxHealth then
             local healthbarColor = tower.health / tower.maxHealth
             love.graphics.setColor(0.5, healthbarColor, 0)
             love.graphics.rectangle("fill", tower.x - 10, tower.y + 25, tower.health / tower.maxHealth * 40, 5)
+            love.graphics.setColor(1, 1, 1)
+            love.graphics.rectangle("line", tower.x - 10, tower.y + 25, 40, 5)
         end
 
     end

@@ -40,12 +40,16 @@ function game.creature.default.draw(creature)
         local healthbarColor = creature.health / game.creature[creature.type].health
         love.graphics.setColor(0.5, healthbarColor, 0)
         love.graphics.rectangle("fill", creature.x - 10, creature.y - 15, creature.health / game.creature[creature.type].health * 20, 5)
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.rectangle("line", creature.x - 10, creature.y - 15, 20, 5)
+
     end
 
     if creature.currentCooldown > 0 then
         love.graphics.setColor(1, 1, 1, 100)
         love.graphics.rectangle("fill", creature.x - 10, creature.y + 15, 20 * (creature.currentCooldown / game.creature[creature.type].cooldown), 5)
-
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.rectangle("line", creature.x - 10, creature.y + 15, 20, 5)
 
     end
 end
