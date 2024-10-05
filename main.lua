@@ -1,6 +1,7 @@
 game = {}
 
 require("game.map")
+require("game.towerPlacement")
 require("game.creatures")
 require("game.tMenu")
 
@@ -19,9 +20,17 @@ function love.draw()
     game.map.draw()
     game.creatures.draw()
     game.tMenu.draw()
+    game.towerPlacement.drawTowers()
 end
 
 function love.mousepressed(x, y, button, isTouch)
     game.tMenu.mousepressed(x, y, button, isTouch)
+
+end
+
+
+function love.mousepressed(x, y, button, istouch, presses)
+    game.tMenu.mousepressed(x, y, button, istouch, presses)
+    game.towerPlacement.mousepressed(x, y, button, istouch, presses, "rectangle")
 
 end
