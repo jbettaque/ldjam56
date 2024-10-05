@@ -5,7 +5,7 @@ local gap = 5
 rectangles = {}
 local color = {0, 0, 1}
 local hoveredTile = nil
-local towerTypes = {"circle", "rectangle", "image"}
+local towerTypes = game.towerPlacement.towerTypes
 function game.tMenu.draw()
     for _, rect in ipairs(rectangles) do
         drawMenu(rect.x, rect.y, color)
