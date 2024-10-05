@@ -6,12 +6,13 @@ game.powerType = {1, 2, 3}
 game.towerPlacement.currentPlacingTower = nil
 
 -- Tower type definitions
-local towerConfig = {
+towerConfig = {
     circle = {
         health = 1000,
-        powerLv = 10,
+        powerLv = 1,
         radius = 20,
         spawnType = "ranger",
+        spawningCooldown = 1,
         draw = function(tower, mode)
             love.graphics.circle(mode, tower.x, tower.y, 20)
         end,
@@ -22,10 +23,11 @@ local towerConfig = {
     },
     rectangle = {
         health = 1200,
-        powerLv = 8,
+        powerLv = 1,
         width = 40,
         height = 30,
         spawnType = "attacker",
+        spawningCooldown = 1,
         draw = function(tower, mode)
             love.graphics.rectangle(mode, tower.x - 10, tower.y - 10, 40, 30)
         end,
@@ -36,10 +38,11 @@ local towerConfig = {
     },
     image = {
         health = 800,
-        powerLv = 12,
+        powerLv = 1,
         width = 40,
         height = 40,
         spawnType = "bomber",
+        spawningCooldown = 1,
         draw = function(tower, mode)
             if tower.image then
                 love.graphics.draw(tower.image, tower.x, tower.y)
@@ -67,9 +70,8 @@ function game.towerPlacement.placeTower(x, y, towerType)
         y = y,
         type = towerType,
         player = 1,
-        health = 1000,
-        powerLv = 1,
-        spawningCooldown = 0,
+        currentSpawnCooldown = 0,
+        spawningCooldown = config.spawningCooldown,
         health = config.health,
         powerLv = config.powerLv
     }
@@ -133,10 +135,10 @@ end
 
 function game.towerPlacement.update(dt)
     for i, v in ipairs(game.towerPlacement.towers) do
-        if v.spawningCooldown > 0 then
-            v.spawningCooldown = v.spawningCooldown - dt
-            if v.spawningCooldown < 0 then
-                v.spawningCooldown = 0
+        if v.currentSpawnCooldown > 0 then
+            v.currentSpawnCooldown = v.currentSpawnCooldown - dt
+            if v.currentSpawnCooldown < 0 then
+                v.currentSpawnCooldown = 0
             end
         end
     end
