@@ -14,8 +14,15 @@ local menuTypes = {
             game.towerPlacement.changeType(game.towerPlacement.towerTypes[itemIndex])
         end,
         onSelect = function(x, y, itemIndex)
-            game.towerPlacement.addTower(game.towerPlacement.currentPlacingTower)
-            game.towerPlacement.currentPlacingTower = nil
+            local towerType = game.towerPlacement.towerTypes[itemIndex]
+            if game.manager.isEnoughMoney(towerConfig[towerType].cost) then
+                game.towerPlacement.addTower(game.towerPlacement.currentPlacingTower)
+                game.towerPlacement.currentPlacingTower = nil
+                game.manager.subtractMoney(towerConfig[towerType].cost)
+            else
+                game.towerPlacement.currentPlacingTower = nil
+            end
+
         end,
         beforeOpen = function(x, y)
             game.towerPlacement.placeTower(x, y, game.towerPlacement.towerTypes[1])
