@@ -25,8 +25,6 @@ function love.draw()
     game.manager.draw()
     game.map.draw()
     game.creatures.draw()
-
-
     game.towerPlacement.drawTowers()
     game.tMenu.draw()
 end

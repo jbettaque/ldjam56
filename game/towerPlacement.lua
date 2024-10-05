@@ -29,7 +29,9 @@ end
 function game.towerPlacement.drawTowers()
 
     for i, tower in ipairs(game.towerPlacement.towers) do
-       drawTower(tower, "fill")
+        drawTower(tower, "fill")
+        love.graphics.setColor(1, 0, 0) -- Weiß für den Text
+        love.graphics.print("Lv: " .. tower.powerLv, tower.x + 25, tower.y - 10)
     end
     if game.towerPlacement.currentPlacingTower then
         drawTower(game.towerPlacement.currentPlacingTower, "line")
@@ -53,8 +55,7 @@ function drawTower(tower, mode)
 
         end
     end
-    love.graphics.setColor(1, 0, 0) -- Weiß für den Text
-    love.graphics.print("Lv: " .. tower.powerLv, tower.x + 25, tower.y - 10)
+
 end
 
 -- Helper function to check if a click is on a tower
