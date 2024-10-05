@@ -52,6 +52,8 @@ function drawTower(tower, mode)
 
         end
     end
+    love.graphics.setColor(1, 0, 0) -- Weiß für den Text
+    love.graphics.print("Lv: " .. tower.powerLv, tower.x + 25, tower.y - 10)
 end
 
 -- Helper function to check if a click is on a tower

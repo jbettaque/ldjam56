@@ -4,7 +4,7 @@ local menuTileY = 40
 local gap = 5
 local activeMenus = {}
 local hoveredTile = nil
-
+local selectedTower = nil
 -- Menu configurations
 local menuTypes = {
     tower = {
@@ -42,6 +42,9 @@ local menuTypes = {
         end,
         onSelect = function(x, y, itemIndex)
             -- Handle upgrade selection
+            if itemIndex == 1 then
+                selectedTower.powerLv = selectedTower.powerLv+1
+            end
         end,
         drawItem = function(item, x, y, width, height)
             -- Custom drawing for upgrade menu items
@@ -131,7 +134,7 @@ function game.tMenu.mousepressed(x, y, button, isTouch)
         if isClickOnTower(x, y, tower) then
             print("Clicked on tower " .. tower.id)
             game.tMenu.openMenu("upgrade", x, y)
-
+            selectedTower = tower
             return
         end
     end
