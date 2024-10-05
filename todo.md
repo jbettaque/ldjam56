@@ -20,3 +20,4 @@
   - [ ] spend on upgrades
   - [x] display
   - [ ] spend on buildings
+  - test commit
