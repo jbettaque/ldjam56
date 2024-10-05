@@ -2,6 +2,7 @@ game.towerPlacement = {}
 
 game.towerPlacement.towers = {}
 game.towerPlacement.towerTypes = {"circle", "rectangle", "image"}
+game.powerType = {1, 2, 3}
 game.towerPlacement.currentPlacingTower = nil
 local towerX, towerY = nil, nil
 function game.towerPlacement.placeTower(x, y, towerType)
@@ -12,7 +13,7 @@ function game.towerPlacement.placeTower(x, y, towerType)
         type = towerType,
         player = 1,
         health = 1000,
-        strenghtLv = 1,
+        powerLv = 10,
     }
     game.towerPlacement.currentPlacingTower = newTower
     return newTower

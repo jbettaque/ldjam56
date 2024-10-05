@@ -30,19 +30,19 @@ function game.creatures.update(dt)
         for i, v in ipairs(game.towerPlacement.towers) do
             if v.player == 1 then
                 if v.type == "rectangle" then
-                    game.creatures.spawnCreature("attacker", v.x, v.y, 1)
+                    game.creatures.spawnCreature("attacker", v.x, v.y, 1, v.powerLv)
                 elseif v.type =="circle" then
-                    game.creatures.spawnCreature("ranger", v.x, v.y, 1)
+                    game.creatures.spawnCreature("ranger", v.x, v.y, 1, v.powerLv)
                 end
 
             else
-                game.creatures.spawnCreature("attacker", 800, v.y, 2)
+                game.creatures.spawnCreature("attacker", 800, v.y, 2, v.powerLv)
             end
         end
 
         --spawn test wave enemies
         for i = 1, 5 do
-            game.creatures.spawnCreature("attacker", 800, 300, 2)
+            game.creatures.spawnCreature("attacker", 800, 300, 2, 1)
         end
     end
 
@@ -55,15 +55,17 @@ function game.creatures.draw()
     end
 end
 
-function game.creatures.spawnCreature(type, x, y, player)
+function game.creatures.spawnCreature(type, x, y, player, powerLv)
+    local meleeDamage = game.creature[type].meleeDamage * powerLv
+    local rangedDamage = game.creature[type].rangedDamage * powerLv
     local newCreature = {
         x = x,
         y = y,
         type = type,
         player = player,
         health = game.creature[type].health,
-        meleeDamage = game.creature[type].meleeDamage,
-        rangedDamage = game.creature[type].rangedDamage,
+        meleeDamage = meleeDamage,
+        rangedDamage = rangedDamage,
         speed = game.creature[type].speed,
         currentCooldown = 0,
 
