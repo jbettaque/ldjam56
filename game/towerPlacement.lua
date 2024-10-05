@@ -3,7 +3,7 @@ game.towerPlacement = {}
 game.towerPlacement.towers = {
     {
         id = 1,
-        x = 1500,
+        x = 1800,
         y = 100,
         spawnType = "attacker",
         player = 2,
