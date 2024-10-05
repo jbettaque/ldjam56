@@ -16,21 +16,41 @@ function game.creature.default.update(dt, creature, creatureStore)
 end
 
 function game.creature.default.findNearestEnemy(creature, creatureStore)
-    local nearestEnemy = nil
+    local nearestCreature = nil
     local nearestDistance = 1000000
     for i, otherCreature in ipairs(creatureStore) do
         if otherCreature ~= creature and otherCreature.player ~= creature.player then
             local distance = math.sqrt((creature.x - otherCreature.x)^2 + (creature.y - otherCreature.y)^2)
             if distance < nearestDistance then
                 nearestDistance = distance
-                nearestEnemy = otherCreature
+                nearestCreature = otherCreature
             end
         end
     end
-    return nearestEnemy
+
+    local nearestTower = nil
+    local nearestTowerDistance = 1000000
+    for i, tower in ipairs(game.towerPlacement.towers) do
+        if tower.player ~= creature.player then
+            local distance = math.sqrt((creature.x - tower.x)^2 + (creature.y - tower.y)^2)
+            if distance < nearestTowerDistance then
+                nearestTowerDistance = distance
+                nearestTower = tower
+            end
+        end
+    end
+
+    if nearestTowerDistance < nearestDistance then
+        return nearestTower
+    else
+        return nearestCreature
+    end
+
 end
 
 function game.creature.default.move(dt, creature, creatureStore)
+
+
     local nearestEnemy = game.creature.default.findNearestEnemy(creature, creatureStore)
     if nearestEnemy then
         local distance = math.sqrt((creature.x - nearestEnemy.x)^2 + (creature.y - nearestEnemy.y)^2)
@@ -62,7 +82,7 @@ function game.creature.default.move(dt, creature, creatureStore)
 end
 
 function game.creature.default.attack(dt, creature, creatureStore)
-    if love.timer.getTime() % 1 < 0.1 then
+    if love.timer.getTime() % 0.3 < 0.1 then
         local nearestEnemy = game.creature.default.findNearestEnemy(creature, creatureStore)
         if nearestEnemy then
             local distance = math.sqrt((creature.x - nearestEnemy.x)^2 + (creature.y - nearestEnemy.y)^2)
@@ -72,6 +92,13 @@ function game.creature.default.attack(dt, creature, creatureStore)
                     for i, otherCreature in ipairs(creatureStore) do
                         if otherCreature == nearestEnemy then
                             table.remove(creatureStore, i)
+                            break
+                        end
+                    end
+
+                    for i, tower in ipairs(game.towerPlacement.towers) do
+                        if tower == nearestEnemy then
+                            table.remove(game.towerPlacement.towers, i)
                             break
                         end
                     end

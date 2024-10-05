@@ -1,6 +1,6 @@
 game.towerPlacement = {}
 
-local towers = {}
+game.towerPlacement.towers = {}
 local towerX, towerY = nil, nil
 
 
@@ -8,12 +8,12 @@ function game.towerPlacement.mousepressed(x, y, button, istouch, presses, towerT
     local towerType = towerType
     if button == 1 then
         towerX, towerY = x, y
-        table.insert(towers, {x = x, y = y, type = towerType})
+        table.insert(game.towerPlacement.towers, {x = x, y = y, type = towerType, player = 1, health = 10})
     end
 end
 
 function game.towerPlacement.drawTowers()
-    for i, tower in ipairs(towers) do
+    for i, tower in ipairs(game.towerPlacement.towers) do
         if tower.type == "circle" then
 
             love.graphics.setColor(0, 1, 0)

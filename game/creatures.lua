@@ -10,12 +10,12 @@ local creatureStore = {}
 
 
 function game.creatures.load()
-    for i = 1, 1000 do
-        local randomx = math.random(0, 800)
-        local randomy = math.random(0, 600)
-        local randomPlayer = math.random(1, 2)
-        game.creatures.spawnCreature("attacker", randomx, randomy, randomPlayer)
-    end
+    --for i = 1, 1000 do
+    --    local randomx = math.random(0, 800)
+    --    local randomy = math.random(0, 600)
+    --    local randomPlayer = math.random(1, 2)
+    --    game.creatures.spawnCreature("attacker", randomx, randomy, randomPlayer)
+    --end
 end
 
 function game.creatures.update(dt)
@@ -23,11 +23,20 @@ function game.creatures.update(dt)
         game.creature.default.update(dt, creature, creatureStore)
     end
 
-    -- spawn new creatures on left and right side of the screen every 10 seconds
+    -- Spawn tower creatures
     if love.timer.getTime() % 1 < 0.1 then
-        local randomy = math.random(0, 600)
-        game.creatures.spawnCreature("attacker", 0, randomy, 1)
-        game.creatures.spawnCreature("attacker", 800, randomy, 2)
+        for i, v in ipairs(game.towerPlacement.towers) do
+            if v.player == 1 then
+                game.creatures.spawnCreature("attacker", v.x, v.y, 1)
+            else
+                game.creatures.spawnCreature("attacker", 800, v.y, 2)
+            end
+        end
+
+        --spawn test wave enemies
+        for i = 1, 5 do
+            game.creatures.spawnCreature("attacker", 800, 300, 2)
+        end
     end
 
 
