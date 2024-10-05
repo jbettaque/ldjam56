@@ -49,7 +49,7 @@ local menuTypes = {
         end,
         onSelect = function(x, y, itemIndex)
             local totalLevel = selectedTower.powerLv +  selectedTower.speedLv + selectedTower.healthLv
-            local cost = 10 * totalLevel + 10
+            local cost = 20 * totalLevel + 10
             if itemIndex == 1 then
                 if game.manager.isEnoughMoney(cost, 1) then
                     selectedTower.powerLv = selectedTower.powerLv+1
@@ -81,7 +81,7 @@ local menuTypes = {
             )
             love.graphics.setColor(1, 1, 1)
             love.graphics.printf(
-                    "Cost: " .. 10 * (selectedTower.powerLv + selectedTower.speedLv + selectedTower.healthLv) + 10,
+                    "Cost: " .. 20 * (selectedTower.powerLv + selectedTower.speedLv + selectedTower.healthLv) + 10,
                     x,
                     y + height / 2 + 20,
                     width,
