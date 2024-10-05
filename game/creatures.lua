@@ -28,8 +28,13 @@ function game.creatures.update(dt)
     if love.timer.getTime() % 1 < 0.03 then
         for i, v in ipairs(game.towerPlacement.towers) do
             if v.player == 1 then
-                game.creatures.spawnCreature("attacker", v.x, v.y, 1)
-                game.creatures.spawnCreature("ranger", v.x, v.y, 1)
+                if v.type == "circle" then
+                    game.creatures.spawnCreature("attacker", v.x, v.y, 1)
+                end
+                if v.type == "rectangle" then
+                    game.creatures.spawnCreature("ranger", v.x, v.y, 1)
+                end
+
             else
                 game.creatures.spawnCreature("attacker", 800, v.y, 2)
             end
