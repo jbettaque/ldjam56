@@ -8,6 +8,7 @@ game.creature.acid.cooldown = 2.5
 game.creature.acid.range = 30
 game.creature.acid.bombRange = 100
 game.creature.acid.backOffDistance = 1
+game.creatures.acid.aoeTimer = 30
 
 
 function game.creature.acid.attack(dt, creature, creatureStore)
@@ -17,7 +18,7 @@ function game.creature.acid.attack(dt, creature, creatureStore)
         if nearestEnemy then
             local distance = math.sqrt((creature.x - nearestEnemy.x)^2 + (creature.y - nearestEnemy.y)^2)
             if distance < game.creature.acid.range and distance > 20 then
-                game.map.addAreaEffect(creature.x, creature.y, 70, game.creature.acid.areaEffect, 30, {0.2, 1, 0.2, 0.5}, creature.player)
+                game.map.addAreaEffect(creature.x, creature.y, 70, game.creature.acid.areaEffect, game.creatures.acid.aoeTimer, {0.2, 1, 0.2, 0.5}, creature.player)
                 -- remove creature from creatureStore
                 for i, otherCreature in ipairs(creatureStore) do
                     if otherCreature == creature then

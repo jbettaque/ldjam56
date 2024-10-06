@@ -8,6 +8,7 @@ game.creature.electro.cooldown = 0.5
 game.creature.electro.range = 150
 game.creature.electro.bombRange = 100
 game.creature.electro.backOffDistance = 100
+game.creatures.electro.aoeTimer = 0.5
 
 
 function game.creature.electro.attack(dt, creature, creatureStore)
@@ -19,7 +20,7 @@ function game.creature.electro.attack(dt, creature, creatureStore)
             if distance < game.creature.electro.range then
                 creature.currentCooldown = game.creature.electro.cooldown
                 -- yellow aoe electricity effect
-                game.map.addAreaEffect(creature.x, creature.y, 70, game.creature.electro.areaEffect, 0.5, {1, 1, 0, 0.5}, creature.player)
+                game.map.addAreaEffect(creature.x, creature.y, 70, game.creature.electro.areaEffect, ame.creatures.electro.aoeTimer, {1, 1, 0, 0.5}, creature.player)
             end
         end
     end
