@@ -14,14 +14,15 @@ game.map.areaEffects = {
 
 }
 
-function game.map.addAreaEffect(x, y, radius, effect, ttl, color)
+function game.map.addAreaEffect(x, y, radius, effect, ttl, color, owner)
     local newAreaEffect = {
         x = x,
         y = y,
         radius = radius,
         effect = effect,
         ttl = ttl,
-        color = color
+        color = color,
+        owner = owner,
     }
     table.insert(game.map.areaEffects, newAreaEffect)
 end
@@ -34,8 +35,8 @@ function game.map.handleAreaEffects(dt)
         end
 
         for j, creature in ipairs(getCreatureStore()) do
-            if math.sqrt((creature.x - effect.x)^2 + (creature.y - effect.y)^2) < effect.radius then
-                effect.effect(creature)
+            if math.sqrt((creature.x - effect.x)^2 + (creature.y - effect.y)^2) < effect.radius + 20 then
+                effect.effect(creature, effect.owner)
             end
         end
     end
