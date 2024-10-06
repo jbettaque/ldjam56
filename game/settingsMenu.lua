@@ -6,7 +6,7 @@ settingsMenu.buttons = {}
 
 local racket = love.audio.newSource("game/SFX/Racket.mp3", "static")
 
-mapsize = 1
+mapsize = 2
 
 local function newButton(text, fn)
     return {
@@ -113,6 +113,7 @@ function setResolution(res)
 
     love.window.setMode(width, height)
     print("changed Resolution to: " .. width .. "x" .. height)
+
 
 
     game.map.load()

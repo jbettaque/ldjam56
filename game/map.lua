@@ -134,11 +134,11 @@ function game.map.draw()
 
 
     if mapsize  == 1 then
-    love.graphics.draw(bgImage, 0, 0, 0, 1, 1)
+    love.graphics.draw(bgImage, 0, 0, 0, 0.57, 0.7)
     elseif mapsize  == 2 then
-        love.graphics.draw(bgImage, 0, 0, 0, 1.5, 1.5)
+        love.graphics.draw(bgImage, 0, 0, 0, 1, 1)
     elseif mapsize  == 3 then
-        love.graphics.draw(bgImage, 0, 0, 0, 0.5, 0.5)
+        love.graphics.draw(bgImage, 0, 0, 0, 1.35, 1.35)
     end
 
 
