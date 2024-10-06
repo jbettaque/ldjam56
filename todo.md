@@ -3,6 +3,7 @@
 - [ ] building system
   - [x] build
   - [x] destroy
+  - [ ] Show DMG and LVL on each Upgrade
 - [ ] creatures
   - [x] spawn
   - [x] move
@@ -10,12 +11,13 @@
   - [x] die
   - [x] types
   - [x] stats
-  - [ ] add more types
+  - [ ] implement sascha's types
 - [ ] upgrades
   - [x] power
   - [x] movement speed
   - [x] health
   - [x] spawn rate
+  - [ ] Power Ups spawn random on field (like 10 second dmg boost or speed)
 - [x] currency
   - [x] gain on kill
   - [x] spend on upgrades
@@ -27,19 +29,21 @@
   - [ ] settings
   - [x] exit
 - [x] "nexus" building
-- [ ] game over screen
+- [ ] better game over screen
 - [x] enemy ai (or maybe waves?)
+- [ ] better enemy ai
+  - [ ] random strategy
+  - [ ] smarter strategy
 - [ ] map with obstacles that split map into lanes
   - [ ] render obstacles on map
   - [ ] pathfinding
 - [x] towers that attack enemies
-- [ ] buildings that produce currency
+- [x] buildings that produce currency
 - [ ] sound effects and music
-- [ ] pause menu
+- [x] pause menu
 - [ ] balancing
   - [ ] better system for balancing cost of buildings/upgrades
-- [ ] rework turret system (low priority)
-- [ ] fix bug where sometimes buildings are not placed
+- [x] fix bug where sometimes buildings are not placed
 - [ ] implement nexus in a better way
 - [ ] rock-paper-scissors system for creatures
 - [ ] tutorial

@@ -5,6 +5,8 @@ local gap = 5
 local activeMenus = {}
 local hoveredTile = nil
 local selectedTower = nil
+
+require("game/utils")
 -- Menu configurations
 local menuTypes = {
     tower = {
@@ -167,19 +169,18 @@ function game.tMenu.draw()
                 config.drawItem(item, itemX, itemY, menuTileX, menuTileY)
             end
         end
+
+        -- Draw white border around selectedTower
+        if selectedTower then
+            love.graphics.setColor(1, 1, 1)
+            love.graphics.rectangle("line", selectedTower.x - 30, selectedTower.y - 30, 60, 60)
+        end
     end
 end
 
 function game.tMenu.mousepressed(x, y, button, isTouch)
     local clickedMenu = false
-    for i, tower in ipairs(game.towerPlacement.towers) do
-        if isClickOnTower(x, y, tower) then
-            print("Clicked on tower " .. tower.id)
-            game.tMenu.openMenu("upgrade", x, y)
-            selectedTower = tower
-            return
-        end
-    end
+
     for _, menu in ipairs(activeMenus) do
         local config = menuTypes[menu.type]
         if not config then goto continue end
@@ -202,6 +203,10 @@ function game.tMenu.mousepressed(x, y, button, isTouch)
                     return
                 end
             end
+        else
+            activeMenus = {}
+            selectedTower = nil
+            game.towerPlacement.currentPlacingTower = nil
         end
         ::continue::
     end
@@ -209,6 +214,17 @@ function game.tMenu.mousepressed(x, y, button, isTouch)
     if not clickedMenu then
         if x >= 0 and x <= love.graphics.getWidth()/6 and
                 y >= 0 and y <= love.graphics.getHeight() then
+            for i, v in ipairs(game.towerPlacement.towers) do
+                local distance = game.utils.distance(x, y, v.x, v.y)
+                if distance < 60 then
+                    if v.spawnType ~= "none" then
+                        selectedTower = v
+                        game.tMenu.openMenu("upgrade", x, y)
+                    end
+                    return
+                end
+
+            end
             game.tMenu.openMenu("tower", x, y)
         end
     end

@@ -18,6 +18,11 @@ end
 function switchToPause()
     currentState = "pause"
 end
+
+function endGame()
+    currentState = "menu"
+end
+
 screenWidth = 1920
 screenHeight = 1080
 function love.load()
