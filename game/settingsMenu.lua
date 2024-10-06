@@ -114,9 +114,9 @@ function setResolution(res)
     love.window.setMode(width, height)
     print("changed Resolution to: " .. width .. "x" .. height)
 
+    resetGame()
 
-
-    game.map.load()
+  --  game.map.load()
 end
 
 

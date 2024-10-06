@@ -126,6 +126,8 @@ end
  end
 
 function resetGame()
+
+    print("reset game")
     local font
     font = love.graphics.newFont(12)
     love.graphics.setFont(font)
