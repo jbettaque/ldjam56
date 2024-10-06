@@ -209,7 +209,7 @@ function game.towerPlacement.drawTowers()
     for i, tower in ipairs(game.towerPlacement.towers) do
         drawTower(tower, "fill")
         love.graphics.setColor(1, 0, 0) -- Weiß für den Text
-        love.graphics.print("Lv: " .. tower.powerLv + tower.speedLv, tower.x + 25, tower.y - 10)
+        love.graphics.print("Lv: " .. tower.powerLv + tower.speedLv + tower.healthLv, tower.x + 25, tower.y - 10)
 
         if tower.currentSpawnCooldown > 0 then
             love.graphics.setColor(1, 1, 1)
