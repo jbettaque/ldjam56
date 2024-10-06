@@ -2,7 +2,7 @@ local powerUps = {}
 local activePowerUps = {}
 
 local powerUpSpawnTimer = 0
-local powerUpSpawnInterval = 10
+local powerUpSpawnInterval = 1
 local powerUpLifetime = 3
 
 local powerUpTypes = {
@@ -29,6 +29,14 @@ local powerUpTypes = {
             game.creatures.applySpeedBoostToPlayer(1, 10, 5)
         end,
         lifetime = powerUpLifetime
+    },
+    doubleDMG = {
+        image = love.graphics.newImage("game/Sprites/doubleDMG.png"),
+        effect = function()
+            print("Double DMG collected!")
+            game.creatures.applyDoubleDamageToPlayer(1, 2, 10)
+        end,
+        lifetime = powerUpLifetime
     }
 }
 
@@ -36,7 +44,7 @@ function powerUps.load()
 end
 
 function powerUps.spawnPowerUp()
-    local powerUpKeys = {"coin", "noDMG", "speedBoost"}
+    local powerUpKeys = {"coin", "noDMG", "speedBoost","doubleDMG"}
     local chosenType = powerUpKeys[love.math.random(#powerUpKeys)]
 
     local add_x = love.math.random(1, love.graphics.getWidth())

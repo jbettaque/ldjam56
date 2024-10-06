@@ -63,6 +63,17 @@ for i, creature in ipairs(creatureStore) do
             print("Health Boost ended for creature of player " .. creature.player)
         end
     end
+
+    if creature.isDamageBoosted then
+        creature.damageBoostDuration = creature.damageBoostDuration - dt
+        if creature.damageBoostDuration <= 0 then
+            -- Setze den ursprünglichen Schaden zurück
+            creature.meleeDamage = creature.originalMeleeDamage
+            creature.rangedDamage = creature.originalRangedDamage
+            creature.isDamageBoosted = false
+            print("Double Damage ended for creature of player " .. creature.player)
+        end
+    end
 end
 
 
@@ -112,6 +123,27 @@ function game.creatures.applyHealthBoostToPlayer(playerId, healthMultiplier, dur
         end
     end
 end
+
+function game.creatures.applyDoubleDamageToPlayer(playerId, damageMultiplier, duration)
+    for i, creature in ipairs(creatureStore) do
+        if creature.player == playerId then
+            if not creature.isDamageBoosted then
+
+                creature.originalMeleeDamage = creature.meleeDamage
+                creature.originalRangedDamage = creature.rangedDamage
+
+
+                creature.meleeDamage = creature.meleeDamage * damageMultiplier
+                creature.rangedDamage = creature.rangedDamage * damageMultiplier
+
+                creature.damageBoostDuration = duration
+                creature.isDamageBoosted = true
+                print("Double Damage applied to creature of player " .. playerId)
+            end
+        end
+    end
+end
+
 
 function game.creatures.spawnCreature(type, x, y, player, powerLv, healthLv)
 
