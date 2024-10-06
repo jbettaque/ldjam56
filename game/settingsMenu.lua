@@ -6,9 +6,7 @@ settingsMenu.buttons = {}
 
 local racket = love.audio.newSource("game/SFX/Racket.mp3", "static")
 
-local baseWidth = 1920
-local baseHeight = 1080
-local baseFontSize = 32
+
 
 local function newButton(text, fn)
     return {
@@ -21,14 +19,10 @@ local function newButton(text, fn)
 end
 
 
-local function calculateFontSize()
-    local widthScale = love.graphics.getWidth() / baseWidth
-    local heightScale = love.graphics.getHeight() / baseHeight
-    return baseFontSize * math.min(widthScale, heightScale)
-end
+
 
 function settingsMenu.load()
-    font = love.graphics.newFont(calculateFontSize())
+    font = love.graphics.newFont(32)
 
     table.insert(settingsMenu.buttons, newButton("Res:      1080x720", function()
         setResolution("1080x720")
@@ -91,7 +85,6 @@ function settingsMenu.draw()
         love.graphics.rectangle("fill", buttonx, buttony, button_width, button_height)
 
         love.graphics.setColor(0, 0, 0)
-        love.graphics.setFont(font)
         love.graphics.print(button.text, font, (ww * 0.5) - (font:getWidth(button.text) * 0.5), buttony + (button_height / 2) - (font:getHeight(button.text) / 2))
 
         cursor_y = cursor_y + (button_height + buttonspace)
@@ -113,7 +106,6 @@ function setResolution(res)
 
     love.window.setMode(width, height)
     print("changed Resolution to: " .. width .. "x" .. height)
-    font = love.graphics.newFont(calculateFontSize())
 end
 
 return settingsMenu
