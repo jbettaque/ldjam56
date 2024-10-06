@@ -1,31 +1,31 @@
-game.creature.bomber = {}
+game.creature.kamikaze = {}
 
-game.creature.bomber.health = 20
-game.creature.bomber.meleeDamage = 0
-game.creature.bomber.rangedDamage = 30
-game.creature.bomber.speed = 0.3
-game.creature.bomber.cooldown = 2.5
-game.creature.bomber.range = 150
-game.creature.bomber.bombRange = 100
-game.creature.bomber.backOffDistance = 100
+game.creature.kamikaze.health = 150
+game.creature.kamikaze.meleeDamage = 0
+game.creature.kamikaze.rangedDamage = 80
+game.creature.kamikaze.speed = 0.3
+game.creature.kamikaze.cooldown = 2.5
+game.creature.kamikaze.range = 150
+game.creature.kamikaze.bombRange = 100
+game.creature.kamikaze.backOffDistance = 100
 
 
-function game.creature.bomber.attack(dt, creature, creatureStore)
+function game.creature.kamikaze.attack(dt, creature, creatureStore)
     if creature.currentCooldown == 0 then
         local nearestEnemy = game.creature.default.findNearestEnemy(creature, creatureStore)
 
         if nearestEnemy then
             local distance = math.sqrt((creature.x - nearestEnemy.x)^2 + (creature.y - nearestEnemy.y)^2)
-            if distance < game.creature.bomber.range and distance > 20 then
-                creature.currentCooldown = game.creature.bomber.cooldown
+            if distance < game.creature.kamikaze.range and distance > 20 then
+                creature.currentCooldown = game.creature.kamikaze.cooldown
                 creature.attacking = nearestEnemy
                 nearestEnemy.health = nearestEnemy.health - creature.rangedDamage
                 checkHealth(nearestEnemy, creatureStore, creature)
                 for i, otherCreature in ipairs(creatureStore) do
                     local distance = math.sqrt((otherCreature.x - nearestEnemy.x)^2 + (otherCreature.y - nearestEnemy.y)^2)
 
-                    if distance < game.creature.bomber.bombRange and creature.player ~= otherCreature.player then
-                        local damage = creature.rangedDamage * (1 - distance / game.creature.bomber.bombRange)
+                    if distance < game.creature.kamikaze.bombRange and creature.player ~= otherCreature.player then
+                        local damage = creature.rangedDamage * (1 - distance / game.creature.kamikaze.bombRange)
                         otherCreature.health = otherCreature.health - damage
                         checkHealth(otherCreature, creatureStore, creature)
                     end
@@ -60,11 +60,11 @@ function checkHealth(creature, creatureStore, parentCreature)
         end
     end
 end
-function game.creature.bomber.move(dt, creature, creatureStore)
-    game.creature.ranger.move(dt, creature, creatureStore)
+function game.creature.kamikaze.move(dt, creature, creatureStore)
+    game.creature.egg.move(dt, creature, creatureStore)
 end
 
-function game.creature.bomber.draw(creature)
+function game.creature.kamikaze.draw(creature)
 
     if creature.player == 1 then
         love.graphics.setColor(0, 0, 1)
@@ -76,7 +76,7 @@ function game.creature.bomber.draw(creature)
     if creature.attacking then
         love.graphics.setColor(1, 0, 0)
         love.graphics.line(creature.x, creature.y, creature.attacking.x, creature.attacking.y)
-        love.graphics.circle("line", creature.attacking.x, creature.attacking.y, game.creature.bomber.bombRange)
+        love.graphics.circle("line", creature.attacking.x, creature.attacking.y, game.creature.kamikaze.bombRange)
     end
 
 

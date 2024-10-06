@@ -1,21 +1,21 @@
-game.creature.ranger = {}
+game.creature.flea = {}
 
-game.creature.ranger.health = 150
-game.creature.ranger.meleeDamage = 0
-game.creature.ranger.rangedDamage = 10
-game.creature.ranger.speed = 0.7
-game.creature.ranger.cooldown = 1.2
-game.creature.ranger.range = 150
-game.creature.ranger.backOffDistance = 75
+game.creature.flea.health = 150
+game.creature.flea.meleeDamage = 0
+game.creature.flea.rangedDamage = 10
+game.creature.flea.speed = 0.7
+game.creature.flea.cooldown = 1.2
+game.creature.flea.range = 150
+game.creature.flea.backOffDistance = 75
 
-function game.creature.ranger.attack(dt, creature, creatureStore)
+function game.creature.flea.attack(dt, creature, creatureStore)
     if creature.currentCooldown == 0 then
         local nearestEnemy = game.creature.default.findNearestEnemy(creature, creatureStore)
 
         if nearestEnemy then
             local distance = math.sqrt((creature.x - nearestEnemy.x)^2 + (creature.y - nearestEnemy.y)^2)
-            if distance < game.creature.ranger.range and distance > 20 then
-                creature.currentCooldown = game.creature.ranger.cooldown
+            if distance < game.creature.flea.range and distance > 20 then
+                creature.currentCooldown = game.creature.flea.cooldown
                 creature.attacking = nearestEnemy
                 nearestEnemy.health = nearestEnemy.health - creature.rangedDamage
                 if nearestEnemy.health <= 0 then
@@ -48,7 +48,7 @@ function game.creature.ranger.attack(dt, creature, creatureStore)
 end
 
 
-function game.creature.ranger.move(dt, creature, creatureStore)
+function game.creature.flea.move(dt, creature, creatureStore)
 
 
     local nearestEnemy = game.creature.default.findNearestEnemy(creature, creatureStore)
@@ -89,7 +89,7 @@ function game.creature.ranger.move(dt, creature, creatureStore)
     end
 end
 
-function game.creature.ranger.draw(creature)
+function game.creature.flea.draw(creature)
 
     if creature.player == 1 then
         love.graphics.setColor(0, 0, 1)

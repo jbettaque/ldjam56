@@ -8,7 +8,7 @@ function love.conf(t)
     t.version = "11.5"
     t.identity = "LDJAM56"
     t.window.resizable = true
-    t.window.fullscreen = true
+    t.window.fullscreen = false
     t.modules.joystick = false
     t.modules.touch = false
     t.console = true

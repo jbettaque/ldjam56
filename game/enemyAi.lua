@@ -14,7 +14,7 @@ function game.enemyAi.update(dt)
         -- randomx and randomy only on right side of screen (1/6th)
         local randomx = math.random(love.graphics.getWidth() - love.graphics.getWidth() / 6, love.graphics.getWidth())
         local randomy = math.random(0, love.graphics.getHeight())
-        game.towerPlacement.placeTowerForAi(randomx, randomy, "circle", 2)
+        game.towerPlacement.placeTowerForAi(randomx, randomy, "infantry", 2)
         print("enemyAi bought a tower at " .. randomx .. " " .. randomy)
     end
 

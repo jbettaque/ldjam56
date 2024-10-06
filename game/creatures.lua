@@ -1,9 +1,23 @@
 game.creatures = {}
 game.creature = {}
 require("game/creature/default")
-require("game/creature/attacker")
-require("game/creature/ranger")
-require("game/creature/bomber")
+
+--AREA OF EFFECT
+require("game/creature/kamikaze")
+require("game/creature/electro")
+require("game/creature/acid")
+
+--RANGED
+require("game/creature/egg")
+require("game/creature/tooth")
+require("game/creature/flea")
+
+--MELEE
+require("game/creature/carl")
+require("game/creature/dog")
+require("game/creature/horde")
+require("game/creature/skelleton")
+
 
 
 

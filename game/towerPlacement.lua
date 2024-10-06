@@ -13,7 +13,7 @@ function initiateLaserTurrets()
         id = 1,
         x = screenWidth - 100,
         y = screenHeight/2,
-        spawnType = "attacker",
+        spawnType = "carl",
         player = 2,
         health = 3000,
         maxHealth = 3000,
@@ -29,7 +29,7 @@ function initiateLaserTurrets()
         id = 2,
         x = 100,
         y = 300,
-        spawnType = "attacker",
+        spawnType = "carl",
         player = 1,
         health = 1,
         maxHealth = 3000,
@@ -41,13 +41,13 @@ function initiateLaserTurrets()
         laserTurret = true
     })
 end
-game.towerPlacement.towerTypes = {"circle", "rectangle", "mine", "image"}
+game.towerPlacement.towerTypes = {"aoe", "range", "mage", "infantry", "mine"}
 game.powerType = {1, 2, 3}
 game.towerPlacement.currentPlacingTower = nil
 
 -- Tower type definitions
 towerConfig = {
-    circle = {
+    aoe = {
         health = 1000,
         maxHealth = 1000,
         powerLv = 1,
@@ -55,7 +55,8 @@ towerConfig = {
         healthLv = 1,
         radius = 20,
         cost = 100,
-        spawnType = "ranger",
+        spawnType = "kamikaze",
+        possibleSpawnTypes = {"kamikaze", "electro", "acid"},
         spawningCooldown = 5,
         draw = function(tower, mode)
             love.graphics.circle(mode, tower.x, tower.y, 20)
@@ -65,7 +66,26 @@ towerConfig = {
             return distance <= 20
         end
     },
-    rectangle = {
+    mage = {
+        health = 1000,
+        maxHealth = 1000,
+        powerLv = 1,
+        speedLv = 1,
+        healthLv = 1,
+        radius = 20,
+        cost = 100,
+        spawnType = "kamikaze",
+        possibleSpawnTypes = {"kamikaze", "electro", "acid"},
+        spawningCooldown = 5,
+        draw = function(tower, mode)
+            love.graphics.circle(mode, tower.x, tower.y, 20)
+        end,
+        checkClick = function(x, y, tower)
+            local distance = math.sqrt((x - tower.x)^2 + (y - tower.y)^2)
+            return distance <= 20
+        end
+    },
+    range = {
         health = 1200,
         maxHealth = 1200,
         powerLv = 1,
@@ -74,7 +94,8 @@ towerConfig = {
         width = 40,
         height = 30,
         cost = 50,
-        spawnType = "attacker",
+        spawnType = "egg",
+        possibleSpawnTypes = {"egg", "tooth", "flea"},
         spawningCooldown = 3,
         draw = function(tower, mode)
             love.graphics.rectangle(mode, tower.x - 10, tower.y - 10, 40, 30)
@@ -104,7 +125,7 @@ towerConfig = {
                     y >= tower.y - 10 and y <= tower.y + 20
         end
     },
-    image = {
+    infantry = {
         health = 800,
         maxHealth = 800,
         powerLv = 1,
@@ -112,37 +133,16 @@ towerConfig = {
         healthLv = 1,
         width = 40,
         height = 40,
-        cost = 300,
-        spawnType = "bomber",
+        cost = 100,
+        spawnType = "carl",
+        possibleSpawnTypes = {"carl", "dog", "horde", "skelleton"},
         spawningCooldown = 9,
         draw = function(tower, mode)
-
-                --love.graphics.draw(tower.image, tower.x, tower.y)
-                local x, y = tower.x, tower.y  -- center of the octagon
-                local radius = 10  -- distance from center to vertex
-                local numSides = 8  -- number of sides for the octagon
-
-                -- calculate the angle between each vertex
-                local angle = math.pi / numSides
-
-                -- create a table to store the vertices
-                local vertices = {}
-
-                -- calculate the vertices
-                for i = 0, numSides - 1 do
-                    local vx = x + radius * math.cos(i * angle)
-                    local vy = y + radius * math.sin(i * angle)
-                    table.insert(vertices, vx)
-                    table.insert(vertices, vy)
-                end
-
-                -- draw the octagon
-                love.graphics.polygon("fill", vertices)
+            love.graphics.rectangle(mode, tower.x - 10, tower.y - 10, 40, 30)
         end,
         checkClick = function(x, y, tower)
-            local imageWidth, imageHeight = 40, 40
-            return x >= tower.x and x <= tower.x + imageWidth and
-                    y >= tower.y and y <= tower.y + imageHeight
+            return x >= tower.x - 10 and x <= tower.x + 30 and
+                    y >= tower.y - 10 and y <= tower.y + 20
         end
     }
 }
@@ -249,20 +249,8 @@ end
 
 -- Helper function to check if a click is on a tower
 function isClickOnTower(x, y, tower)
-    local config = towerConfig[tower.type]
-    if tower.type == "circle" then
-        local distance = math.sqrt((x - tower.x)^2 + (y - tower.y)^2)
-        return distance <= 20  -- Assuming radius is 20
-    elseif tower.type == "rectangle" then
-        return x >= tower.x - 10 and x <= tower.x + 30 and
-                y >= tower.y - 10 and y <= tower.y + 20
-    elseif tower.type == "image" then
-        -- Assuming image dimensions, adjust as needed
-        local imageWidth, imageHeight = 40, 40
-        return x >= tower.x and x <= tower.x + imageWidth and
-                y >= tower.y and y <= tower.y + imageHeight
-    end
-    return false
+    local distance = math.sqrt((x - tower.x)^2 + (y - tower.y)^2)
+    return distance <= 20  -- Assuming radius is 20
 end
 
 function game.towerPlacement.update(dt)
