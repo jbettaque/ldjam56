@@ -25,12 +25,12 @@ function endGame()
     currentState = "menu"
 end
 
-screenWidth = 2048
+screenWidth = 1920
 screenHeight = 1080
 function love.load()
     print("running on " .. love.system.getOS())
 
-    --love.window.setMode(screenWidth, screenHeight)
+    love.window.setMode(screenWidth, screenHeight)
     game.map.load()
     game.towerPlacement.load()
     game.manager.load()

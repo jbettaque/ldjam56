@@ -85,13 +85,16 @@ function game.map.load()
 end
 
 function game.map.draw()
-    love.graphics.setBackgroundColor(0.5, 0.5, 0.5)
+
+    local bgImage = love.graphics.newImage("game/Sprites/Map.png")
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.draw(bgImage, 0, 0, 0, 1, 1)
     --display if in editorMode
     if game.map.editorMode then
         love.graphics.setColor(1, 1, 1, 0.2)
         love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
     end
-    drawPlayAreas()
+    --drawPlayAreas()
     drawObstacles()
 end
 

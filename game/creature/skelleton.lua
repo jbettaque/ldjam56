@@ -11,7 +11,7 @@ local skelletonImage = love.graphics.newImage("game/Sprites/Skeleton.png")
 
 function game.creature.skelleton.draw(creature)
     love.graphics.setColor(255, 255, 255)
-    local transform = love.math.newTransform(creature.x, creature.y, 0, 0.1, 0.1, 32, 32)
+    local transform = love.math.newTransform(creature.x, creature.y, 0, 0.2, 0.2, 32, 32)
     if (creature.player == 2) then
         transform:scale(-1, 1)
     end
