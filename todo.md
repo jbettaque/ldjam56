@@ -18,7 +18,7 @@
         - [ ] sprite
       - [x] skeleton
         - [x] functionality
-        - [ ] sprite
+        - [x] sprite
       - [ ] carl
         - [x] functionality
         - [ ] sprite
@@ -43,6 +43,16 @@
         - [ ] functionality
         - [ ] sprite
       - [ ] electro
+        - [ ] functionality
+        - [ ] sprite
+    - [ ] magic
+      - [ ] ghost
+        - [ ] functionality
+        - [x] sprite
+      - [ ] fairy
+        - [ ] functionality
+        - [ ] sprite
+      - [ ] zombie
         - [ ] functionality
         - [ ] sprite
 - [ ] upgrades
