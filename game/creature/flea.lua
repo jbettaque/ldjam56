@@ -90,20 +90,19 @@ function game.creature.flea.move(dt, creature, creatureStore)
     end
 end
 
-function game.creature.flea.draw(creature)
+local fleaImage = love.graphics.newImage("game/Sprites/Flea_Granade_Shooter.png")
 
-    if creature.player == 1 then
-        love.graphics.setColor(0, 0, 1)
-    else
+
+function game.creature.flea.draw(creature)
+    love.graphics.setColor(1, 1, 1)
+    if creature.damaged and creature.damaged > 0 then
         love.graphics.setColor(1, 0, 0)
     end
-    love.graphics.circle("fill", creature.x, creature.y, 10)
-
-    if creature.attacking then
-        if creature.attacking.health > 0 then
-            love.graphics.setColor(1, 0, 0)
-            love.graphics.line(creature.x, creature.y, creature.attacking.x, creature.attacking.y)
-        end
+    local transform = love.math.newTransform(creature.x, creature.y, 0, 0.2, 0.2, 32, 32)
+    if (creature.player == 2) then
+        transform:scale(-1, 1)
     end
+
+    love.graphics.draw(fleaImage, transform)
 
 end

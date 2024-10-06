@@ -40,10 +40,10 @@
         - [x] functionality
         - [ ] sprite
       - [ ] acid
-        - [ ] functionality
+        - [x] functionality
         - [ ] sprite
       - [ ] electro
-        - [ ] functionality
+        - [x] functionality
         - [ ] sprite
     - [ ] magic
       - [ ] ghost

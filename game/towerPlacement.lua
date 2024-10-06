@@ -45,6 +45,8 @@ game.towerPlacement.towerTypes = {"aoe", "range", "mage", "infantry", "mine"}
 game.powerType = {1, 2, 3}
 game.towerPlacement.currentPlacingTower = nil
 
+local aoeImage = love.graphics.newImage("game/Sprites/AOE_Building.png")
+
 -- Tower type definitions
 towerConfig = {
     aoe = {
@@ -59,7 +61,9 @@ towerConfig = {
         possibleSpawnTypes = {"kamikaze", "electro", "acid"},
         spawningCooldown = 5,
         draw = function(tower, mode)
-            love.graphics.circle(mode, tower.x, tower.y, 20)
+            love.graphics.setColor(1, 1, 1)
+            -- draw tower in the middle of the tile
+            love.graphics.draw(aoeImage, tower.x, tower.y, 0, 0.4, 0.4, 300, 400)
         end,
         checkClick = function(x, y, tower)
             local distance = math.sqrt((x - tower.x)^2 + (y - tower.y)^2)
@@ -75,7 +79,7 @@ towerConfig = {
         radius = 20,
         cost = 100,
         spawnType = "ghost",
-        possibleSpawnTypes = {"ghost", "zombie", "ghost"},
+        possibleSpawnTypes = {"ghost", "zombie", "toothFairy"},
         spawningCooldown = 5,
         draw = function(tower, mode)
             love.graphics.circle(mode, tower.x, tower.y, 20)

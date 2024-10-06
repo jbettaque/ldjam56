@@ -21,6 +21,7 @@ require("game/creature/skelleton")
 --MAGIC
 require("game/creature/ghost")
 require("game/creature/zombie")
+require("game/creature/toothFairy")
 
 
 
