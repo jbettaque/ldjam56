@@ -89,7 +89,7 @@ function game.map.draw()
 
 
     love.graphics.setColor(1, 1, 1)
-    love.graphics.draw(bgImage, 0, 0, 0, 0.7, 0.7)
+    love.graphics.draw(bgImage, 0, 0, 0, 1, 1)
     --display if in editorMode
     if game.map.editorMode then
         love.graphics.setColor(1, 1, 1, 0.2)
