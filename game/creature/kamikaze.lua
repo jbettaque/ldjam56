@@ -2,12 +2,11 @@ game.creature.kamikaze = {}
 
 game.creature.kamikaze.health = 150
 game.creature.kamikaze.meleeDamage = 0
-game.creature.kamikaze.rangedDamage = 80
-game.creature.kamikaze.speed = 0.3
+game.creature.kamikaze.rangedDamage = 300
+game.creature.kamikaze.speed = 1
 game.creature.kamikaze.cooldown = 2.5
-game.creature.kamikaze.range = 150
-game.creature.kamikaze.bombRange = 100
-game.creature.kamikaze.backOffDistance = 100
+game.creature.kamikaze.range = 30
+game.creature.kamikaze.bombRange = 200
 
 
 function game.creature.kamikaze.attack(dt, creature, creatureStore)
@@ -17,10 +16,12 @@ function game.creature.kamikaze.attack(dt, creature, creatureStore)
         if nearestEnemy then
             local distance = math.sqrt((creature.x - nearestEnemy.x)^2 + (creature.y - nearestEnemy.y)^2)
             if distance < game.creature.kamikaze.range and distance > 20 then
+
                 creature.currentCooldown = game.creature.kamikaze.cooldown
                 creature.attacking = nearestEnemy
                 nearestEnemy.health = nearestEnemy.health - creature.rangedDamage
                 checkHealth(nearestEnemy, creatureStore, creature)
+                local kamikazeIndex = 0
                 for i, otherCreature in ipairs(creatureStore) do
                     local distance = math.sqrt((otherCreature.x - nearestEnemy.x)^2 + (otherCreature.y - nearestEnemy.y)^2)
 
@@ -30,6 +31,13 @@ function game.creature.kamikaze.attack(dt, creature, creatureStore)
                         checkHealth(otherCreature, creatureStore, creature)
                     end
                 end
+                for i, otherCreature in ipairs(creatureStore) do
+                    if otherCreature == creature then
+                        table.remove(creatureStore, i)
+                        break
+                    end
+                end
+
             end
         end
     end
@@ -59,9 +67,6 @@ function checkHealth(creature, creatureStore, parentCreature)
             end
         end
     end
-end
-function game.creature.kamikaze.move(dt, creature, creatureStore)
-    game.creature.egg.move(dt, creature, creatureStore)
 end
 
 function game.creature.kamikaze.draw(creature)
