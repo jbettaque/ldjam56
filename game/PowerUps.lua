@@ -1,59 +1,90 @@
-
 local powerUps = {}
-local coins = {}
+local activePowerUps = {}
 
-local coinSpawnTimer = 0
-local coinSpawnInterval = 5
-local coinLifetime = 3
+local powerUpSpawnTimer = 0
+local powerUpSpawnInterval = 10
+local powerUpLifetime = 3
+
+local powerUpTypes = {
+    coin = {
+        image = love.graphics.newImage("game/Sprites/Coin.png"),
+        effect = function()
+            game.manager.addMoney(100, 1)
+            print("Coin collected!")
+        end,
+        lifetime = powerUpLifetime
+    },
+    noDMG = {
+      image = love.graphics.newImage("game/Sprites/noDMG.png"),
+       effect = function()
+
+         print("No DMG Power-Up collected!")
+       end,
+       lifetime = powerUpLifetime
+   },
+    speedBoost = {
+        image = love.graphics.newImage("game/Sprites/SpeedBoost.png"),
+        effect = function()
+            print("Speed Boost collected!")
+        end,
+        lifetime = powerUpLifetime
+    }
+}
 
 function powerUps.load()
-    coinImage = love.graphics.newImage("game/Sprites/Coin.png")
 end
 
-function powerUps.spawnCoin()
-    local add_coin_x = love.math.random(1, love.graphics.getWidth())
-    local add_coin_y = love.math.random(1, love.graphics.getHeight())
-    print("Coin spawned at X:" .. add_coin_x .. "  Y:" .. add_coin_y)
-    local coin = {
-        x = add_coin_x,
-        y = add_coin_y,
-        lifetime = coinLifetime
+
+function powerUps.spawnPowerUp()
+    local powerUpKeys = {"coin", "noDMG", "speedBoost"}
+    local chosenType = powerUpKeys[love.math.random(#powerUpKeys)]
+
+    local add_x = love.math.random(1, love.graphics.getWidth())
+    local add_y = love.math.random(1, love.graphics.getHeight())
+
+    print("PowerUp:" .. chosenType .. "  Spawned at: X:" .. add_x.. "  Y:" .. add_y)
+
+    local powerUp = {
+        type = chosenType,
+        x = add_x,
+        y = add_y,
+        lifetime = powerUpTypes[chosenType].lifetime
     }
-    table.insert(coins, coin)
+    table.insert(activePowerUps, powerUp)
 end
 
 function powerUps.update(dt)
-    -- Timer für Münzen-Spawns
-    coinSpawnTimer = coinSpawnTimer + dt
-    if coinSpawnTimer >= coinSpawnInterval then
-        powerUps.spawnCoin()
-        coinSpawnTimer = 0
+    powerUpSpawnTimer = powerUpSpawnTimer + dt
+    if powerUpSpawnTimer >= powerUpSpawnInterval then
+        powerUps.spawnPowerUp()
+        powerUpSpawnTimer = 0
     end
 
 
-    for i = #coins, 1, -1 do
-        coins[i].lifetime = coins[i].lifetime - dt
-        if coins[i].lifetime <= 0 then
-            table.remove(coins, i)
+    for i = #activePowerUps, 1, -1 do
+        activePowerUps[i].lifetime = activePowerUps[i].lifetime - dt
+        if activePowerUps[i].lifetime <= 0 then
+            table.remove(activePowerUps, i)
         end
     end
 end
 
 function powerUps.draw()
-love.graphics.setColor(1,1,1)
-    for i = 1, #coins do
-        love.graphics.draw(coinImage, coins[i].x, coins[i].y)
+    love.graphics.setColor(1, 1, 1)
+    for i = 1, #activePowerUps do
+        local powerUp = activePowerUps[i]
+        love.graphics.draw(powerUpTypes[powerUp.type].image, powerUp.x, powerUp.y)
     end
 end
 
 function powerUps.mousepressed(x, y, button)
     if button == 1 then
-        for i = #coins, 1, -1 do
-            local coin = coins[i]
-            if x > coin.x and x < coin.x + coinImage:getWidth() and y > coin.y and y < coin.y + coinImage:getHeight() then
-                table.remove(coins, i)
-                print("Coin collected!")
-                game.manager.addMoney(100, 1)
+        for i = #activePowerUps, 1, -1 do
+            local powerUp = activePowerUps[i]
+            if x > powerUp.x and x < powerUp.x + powerUpTypes[powerUp.type].image:getWidth() and
+                    y > powerUp.y and y < powerUp.y + powerUpTypes[powerUp.type].image:getHeight() then
+                powerUpTypes[powerUp.type].effect()
+                table.remove(activePowerUps, i)
             end
         end
     end
