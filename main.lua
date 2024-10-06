@@ -12,6 +12,7 @@ local mainMenu = require("game.mainMenu")
 
 local currentState = "menu"
 
+
 function switchToGame()
     currentState = "game"
 end

@@ -1,5 +1,9 @@
+
 local powerUps = {}
 local coins = {}
+
+local coinSpawnTimer = 0
+local coinSpawnInterval = 5
 
 function powerUps.load()
     coinImage = love.graphics.newImage("game/Sprites/Coin.png")
@@ -12,6 +16,12 @@ function powerUps.spawnCoin()
 end
 
 function powerUps.update(dt)
+    -- Timer für Münzen-Spawns
+    coinSpawnTimer = coinSpawnTimer + dt
+    if coinSpawnTimer >= coinSpawnInterval then
+        powerUps.spawnCoin()
+        coinSpawnTimer = 0
+    end
 end
 
 function powerUps.draw()
@@ -21,7 +31,6 @@ function powerUps.draw()
 end
 
 function powerUps.mousepressed(x, y, button)
-
     if button == 1 then
         for i = #coins, 1, -1 do
             local coin = coins[i]
