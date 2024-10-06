@@ -10,7 +10,7 @@
   - [x] die
   - [x] types
   - [x] stats
-  - [ ] add more types
+  - [ ] implement sascha's types
 - [ ] upgrades
   - [x] power
   - [x] movement speed
@@ -30,17 +30,19 @@
 - [x] "nexus" building
 - [ ] better game over screen
 - [x] enemy ai (or maybe waves?)
+- [ ] better enemy ai
+  - [ ] random strategy
+  - [ ] smarter strategy
 - [ ] map with obstacles that split map into lanes
   - [ ] render obstacles on map
   - [ ] pathfinding
 - [x] towers that attack enemies
-- [ ] buildings that produce currency
+- [x] buildings that produce currency
 - [ ] sound effects and music
 - [x] pause menu
 - [ ] balancing
   - [ ] better system for balancing cost of buildings/upgrades
-- [ ] rework turret system (low priority)
-- [ ] fix bug where sometimes buildings are not placed
+- [x] fix bug where sometimes buildings are not placed
 - [ ] implement nexus in a better way
 - [ ] rock-paper-scissors system for creatures
 - [ ] tutorial
