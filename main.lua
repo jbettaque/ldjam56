@@ -15,10 +15,18 @@ function switchToGame()
     currentState = "game"
 end
 
+function switchToPause()
+    currentState = "pause"
+end
+
+function endGame()
+    currentState = "menu"
+end
+
 function love.load()
     print("running on " .. love.system.getOS())
-
-
+    love.window.setMode(1080, 880)
+    game.towerPlacement.load()
     game.manager.load()
     game.creatures.load()
 
@@ -29,7 +37,8 @@ end
 function love.update(dt)
     if currentState == "menu" then
         mainMenu.update(dt)
-
+    elseif currentState =="pause" then
+        mainMenu.update(dt)
     elseif currentState == "game" then
         game.manager.update(dt)
         game.creatures.update(dt)
@@ -43,6 +52,9 @@ end
 function love.draw()
     if currentState == "menu" then
 
+        mainMenu.draw()
+    elseif currentState == "pause" then
+        mainMenu.changePlayButtonText("Resume Game")
         mainMenu.draw()
     elseif currentState == "game" then
 
@@ -59,8 +71,17 @@ function love.mousepressed(x, y, button, istouch, presses)
     if currentState == "menu" then
 
         mainMenu.mousepressed(x, y, button)
+    elseif currentState == "pause" then
+
+        mainMenu.mousepressed(x, y, button, presses)
     elseif currentState == "game" then
 
         game.tMenu.mousepressed(x, y, button, istouch, presses)
     end
 end
+
+ function love.keypressed(key)
+     if key == "escape" then
+         currentState = "pause"
+     end
+ end

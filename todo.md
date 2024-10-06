@@ -13,21 +13,39 @@
   - [ ] add more types
 - [ ] upgrades
   - [x] power
-  - [ ] movement speed
+  - [x] movement speed
+  - [x] health
   - [x] spawn rate
-- [ ] currency
+- [x] currency
   - [x] gain on kill
-  - [ ] spend on upgrades
+  - [x] spend on upgrades
   - [x] display
-  - [ ] spend on buildings
+  - [x] spend on buildings
 - [ ] window size / scaling
 - [ ] main menu
-- [ ] "nexus" building
-- [ ] game over screen
-- [ ] enemy ai (or maybe waves?)
-- [ ] map with obstacles (maybe lanes?)
-- [ ] towers that attack enemies
+  - [x] start game
+  - [ ] settings
+  - [x] exit
+- [x] "nexus" building
+- [ ] better game over screen
+- [x] enemy ai (or maybe waves?)
+- [ ] map with obstacles that split map into lanes
+  - [ ] render obstacles on map
+  - [ ] pathfinding
+- [x] towers that attack enemies
 - [ ] buildings that produce currency
 - [ ] sound effects and music
-- [ ] settings menu
-- 
+- [x] pause menu
+- [ ] balancing
+  - [ ] better system for balancing cost of buildings/upgrades
+- [ ] rework turret system (low priority)
+- [ ] fix bug where sometimes buildings are not placed
+- [ ] implement nexus in a better way
+- [ ] rock-paper-scissors system for creatures
+- [ ] tutorial
+- [ ] better graphics
+  - [ ] sprites for creatures and buildings
+  - [ ] animations
+    - [ ] on-hit
+    - [ ] death
+    - [ ] ranged attack (maybe projectile?)

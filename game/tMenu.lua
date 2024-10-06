@@ -11,14 +11,16 @@ local menuTypes = {
         items = game.towerPlacement.towerTypes,
         color = {0, 0, 1},
         onHover = function(itemIndex)
+
             game.towerPlacement.changeType(game.towerPlacement.towerTypes[itemIndex])
         end,
         onSelect = function(x, y, itemIndex)
             local towerType = game.towerPlacement.towerTypes[itemIndex]
-            if game.manager.isEnoughMoney(towerConfig[towerType].cost) then
-                game.towerPlacement.addTower(game.towerPlacement.currentPlacingTower)
+            print(towerType)
+            if game.manager.isEnoughMoney(towerConfig[towerType].cost, 1) then
+                game.towerPlacement.addTower(game.towerPlacement.createTower(game.towerPlacement.currentPlacingTower.x, game.towerPlacement.currentPlacingTower.y, towerType, 1))
                 game.towerPlacement.currentPlacingTower = nil
-                game.manager.subtractMoney(towerConfig[towerType].cost)
+                game.manager.subtractMoney(towerConfig[towerType].cost, 1)
             else
                 game.towerPlacement.currentPlacingTower = nil
             end
@@ -30,6 +32,7 @@ local menuTypes = {
         drawItem = function(item, x, y, width, height)
             -- Draw tile name
             love.graphics.setColor(0, 0, 0)
+
             love.graphics.printf(
                     item,
                     x,
@@ -42,19 +45,26 @@ local menuTypes = {
 
 
     upgrade = {
-        items = {"Damage", "Range", "Speed", "Destroy"},
+        items = {"Damage", "Speed", "Health", "Destroy"},
         color = {0, 1, 0},
         onHover = function(itemIndex)
-
         end,
         onSelect = function(x, y, itemIndex)
-            -- Handle upgrade selection
+            local cost = calculateUpgradeCost()
             if itemIndex == 1 then
-                selectedTower.powerLv = selectedTower.powerLv+1
+                if game.manager.isEnoughMoney(cost, 1) then
+                    selectedTower.powerLv = selectedTower.powerLv+1
+                    game.manager.subtractMoney(cost, 1)
+                end
+            elseif itemIndex == 2 then
+                if game.manager.isEnoughMoney(cost, 1) then
+                    selectedTower.speedLv = selectedTower.speedLv+1
+                    game.manager.subtractMoney(cost, 1)
+                end
             elseif itemIndex == 3 then
-                selectedTower.spawningCooldown = selectedTower.spawningCooldown - 0.2
-                if selectedTower.spawningCooldown < 0.2 then
-                    selectedTower.spawningCooldown = 0.1
+                if game.manager.isEnoughMoney(cost, 1) then
+                    selectedTower.healthLv = selectedTower.healthLv + 1
+                    game.manager.subtractMoney(cost, 1)
                 end
             elseif itemIndex == 4 then
                 table.remove(game.towerPlacement.towers, selectedTower.id)
@@ -70,13 +80,24 @@ local menuTypes = {
                     width,
                     "center"
             )
+            love.graphics.setColor(1, 1, 1)
+            love.graphics.printf(
+                    "Cost: " .. 20 * (selectedTower.powerLv + selectedTower.speedLv + selectedTower.healthLv) + 10,
+                    x,
+                    y + height / 2 + 20,
+                    width,
+                    "center"
+            )
         end
     }
     -- Add more menu types here, for example:
 
 
 }
-
+function calculateUpgradeCost()
+    local totalLevel = selectedTower.powerLv +  selectedTower.speedLv + selectedTower.healthLv
+    return 20 * totalLevel + 10
+end
 local function createMenu(menuType, x, y)
     local config = menuTypes[menuType]
     if not config then return end
@@ -128,7 +149,13 @@ function game.tMenu.draw()
             local itemY = menu.y + gap
 
             -- Draw tile background
-            if hoveredTile == i then
+            --print(item)
+            if menu.type == "tower" and not game.manager.isEnoughMoney(towerConfig[item].cost, 1) then
+                love.graphics.setColor(config.color[1] + 0.3, config.color[2] + 0.3, config.color[3] + 0.3)
+            elseif menu.type == "upgrade" and not game.manager.isEnoughMoney(calculateUpgradeCost(), 1) then
+                love.graphics.setColor(config.color[1] + 0.3, config.color[2] + 0.3, config.color[3] + 0.3)
+
+            elseif hoveredTile == i then
                 love.graphics.setColor(config.color[1] + 0.3, config.color[2] + 0.3, config.color[3] + 0.3)
             else
                 love.graphics.setColor(config.color)
