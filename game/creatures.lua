@@ -161,6 +161,8 @@ function game.creatures.spawnCreature(type, x, y, player, powerLv, healthLv)
         rangedDamage = rangedDamage,
         speed = game.creature[type].speed,
         currentCooldown = 0,
+        stuckTime = 0,
+        lastPosition = { x = x, y = y }
 
     }
     table.insert(creatureStore, newCreature)

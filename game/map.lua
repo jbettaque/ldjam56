@@ -77,6 +77,8 @@ end
 function game.map.update(dt)
 end
 function game.map.load()
+
+
     local screenWidth = love.graphics.getWidth()
     local screenHeight = love.graphics.getHeight()
     local playAreaWidth = screenWidth/4
