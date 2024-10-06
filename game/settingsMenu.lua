@@ -6,7 +6,7 @@ settingsMenu.buttons = {}
 
 local racket = love.audio.newSource("game/SFX/Racket.mp3", "static")
 
-
+mapsize = 1
 
 local function newButton(text, fn)
     return {
@@ -18,6 +18,11 @@ local function newButton(text, fn)
     }
 end
 
+local resolutionToSize = {
+    ["1080x720"] = 1,
+    ["1920x1080"] = 2,
+    ["2560x1440"] = 3
+}
 
 
 
@@ -26,14 +31,17 @@ function settingsMenu.load()
 
     table.insert(settingsMenu.buttons, newButton("Res:      1080x720", function()
         setResolution("1080x720")
+        mapsize = 1
     end))
 
     table.insert(settingsMenu.buttons, newButton("Res:    1920x1080", function()
         setResolution("1920x1080")
+        mapsize = 2
     end))
 
     table.insert(settingsMenu.buttons, newButton("Res:    2560x1440", function()
         setResolution("2560x1440")
+        mapsize = 3
     end))
 
     table.insert(settingsMenu.buttons, newButton("Back to Main Menu", function()
@@ -95,7 +103,6 @@ end
 function setResolution(res)
     local width, height
 
-
     if res == "1080x720" then
         width, height = 1080, 720
     elseif res == "1920x1080" then
@@ -106,6 +113,10 @@ function setResolution(res)
 
     love.window.setMode(width, height)
     print("changed Resolution to: " .. width .. "x" .. height)
+
+
+    game.map.load()
 end
+
 
 return settingsMenu

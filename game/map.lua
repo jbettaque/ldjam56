@@ -5,8 +5,11 @@ game.map.playAreas = {}
 game.map.laneCount = 3
 game.map.editorMode = false
 
+
+
 local LINE_THICKNESS = 5
 local bgImage = love.graphics.newImage("game/Sprites/Map.png")
+mapsize  = 1
 
 function game.map.createObstacle(x, y, width, height)
     local newObstacle = {
@@ -87,17 +90,27 @@ end
 
 function game.map.draw()
 
-
     love.graphics.setColor(1, 1, 1)
+
+
+    if mapsize  == 1 then
     love.graphics.draw(bgImage, 0, 0, 0, 1, 1)
+    elseif mapsize  == 2 then
+        love.graphics.draw(bgImage, 0, 0, 0, 1.5, 1.5)
+    elseif mapsize  == 3 then
+        love.graphics.draw(bgImage, 0, 0, 0, 0.5, 0.5)
+    end
+
+
+
     --display if in editorMode
     if game.map.editorMode then
-        love.graphics.setColor(1, 1, 1, 0.2)
-        love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
+    love.graphics.setColor(1, 1, 1, 0.2)
+    love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
     end
     --drawPlayAreas()
     drawObstacles()
-end
+    end
 
 function drawPlayAreas()
     for i, area in ipairs(game.map.playAreas) do
