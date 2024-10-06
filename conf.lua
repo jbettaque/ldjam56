@@ -7,7 +7,8 @@ function love.conf(t)
     -- configure love
     t.version = "11.5"
     t.identity = "LDJAM56"
-    t.window.resizable = false
+    t.window.resizable = true
+    t.window.fullscreen = true
     t.modules.joystick = false
     t.modules.touch = false
     t.console = true

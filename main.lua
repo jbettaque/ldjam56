@@ -18,10 +18,13 @@ end
 function switchToPause()
     currentState = "pause"
 end
-
+screenWidth = 1920
+screenHeight = 1080
 function love.load()
     print("running on " .. love.system.getOS())
-    love.window.setMode(1080, 880)
+
+    --love.window.setMode(screenWidth, screenHeight)
+    game.map.load()
     game.towerPlacement.load()
     game.manager.load()
     game.creatures.load()
@@ -36,6 +39,7 @@ function love.update(dt)
     elseif currentState =="pause" then
         mainMenu.update(dt)
     elseif currentState == "game" then
+        game.map.update(dt)
         game.manager.update(dt)
         game.creatures.update(dt)
         game.towerPlacement.update(dt)
@@ -46,6 +50,9 @@ function love.update(dt)
 end
 
 function love.draw()
+    love.graphics.scale(love.graphics.getWidth()/screenWidth + 0.2, love.graphics.getHeight()/screenHeight + 0.2)
+    --love.graphics.scale(screenWidth/love.graphics.getWidth(), screenHeight/love.graphics.getHeight())
+
     if currentState == "menu" then
 
         mainMenu.draw()
@@ -71,13 +78,21 @@ function love.mousepressed(x, y, button, istouch, presses)
 
         mainMenu.mousepressed(x, y, button, presses)
     elseif currentState == "game" then
+        if game.map.editorMode then
+            game.map.mousepressed(x, y, button)
+        else
+            game.tMenu.mousepressed(x, y, button, istouch, presses)
+        end
 
-        game.tMenu.mousepressed(x, y, button, istouch, presses)
+
     end
 end
 
  function love.keypressed(key)
      if key == "escape" then
          currentState = "pause"
+     end
+     if key == "c" then
+         game.map.editorMode = not game.map.editorMode
      end
  end
