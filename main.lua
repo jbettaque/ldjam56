@@ -6,6 +6,7 @@ require("game.towerPlacement")
 require("game.tMenu")
 require("game.manager")
 require("game.enemyAi")
+game.powerUps = require("game.powerUps")
 
 local mainMenu = require("game.mainMenu")
 
@@ -23,7 +24,7 @@ function endGame()
     currentState = "menu"
 end
 
-screenWidth = 1920
+screenWidth = 2048
 screenHeight = 1080
 function love.load()
     print("running on " .. love.system.getOS())
@@ -36,6 +37,8 @@ function love.load()
 
     mainMenu.load(switchToGame)
     game.enemyAi.load()
+
+    game.powerUps.load()
 end
 
 function love.update(dt)
@@ -50,6 +53,7 @@ function love.update(dt)
         game.towerPlacement.update(dt)
         game.tMenu.update(dt)
         game.enemyAi.update(dt)
+        game.powerUps.update(dt)
     end
 
 end
@@ -72,6 +76,7 @@ function love.draw()
         game.towerPlacement.draw()
         game.tMenu.draw()
         game.enemyAi.draw()
+        game.powerUps.draw()
     end
 end
 
@@ -88,6 +93,7 @@ function love.mousepressed(x, y, button, istouch, presses)
         else
             game.tMenu.mousepressed(x, y, button, istouch, presses)
         end
+        game.powerUps.mousepressed(x, y, button)
 
 
     end
