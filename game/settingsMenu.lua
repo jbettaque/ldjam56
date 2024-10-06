@@ -21,6 +21,7 @@ function settingsMenu.load()
 
     table.insert(settingsMenu.buttons, newButton("Res:        640x480", function()
         print("Res:    640x480")
+        main.switchRes(640,480)
     end))
 
     table.insert(settingsMenu.buttons, newButton("Res:      1080x720", function()
@@ -82,5 +83,12 @@ function settingsMenu.draw()
         cursor_y = cursor_y + (button_height + buttonspace)
     end
 end
+
+function setResolution(res)
+main.switchRes(640,480)
+
+end
+
+
 
 return settingsMenu
