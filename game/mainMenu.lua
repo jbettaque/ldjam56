@@ -1,7 +1,7 @@
 local mainMenu = {}
 
 button_height = 64
-
+mainMenu.playButton = "Start Game"
 local racket = love.audio.newSource("game/SFX/Racket.mp3", "static")
 local blob = love.audio.newSource("game/SFX/blop.mp3", "static")
 local function newButton(text, fn)
@@ -20,8 +20,8 @@ local font = 0
 
 function mainMenu.load(switchToGame)
     font = love.graphics.newFont(32)
-    table.insert(buttons, newButton("Start Game", function()
-        print("Starting game")
+    table.insert(buttons, newButton(mainMenu.playButton, function()
+        print("Starting/Resume Game")
         switchToGame()
     end))
     table.insert(buttons, newButton("Settings", function()
@@ -95,6 +95,14 @@ function mainMenu.mousepressed(x, y, button)
                 y > buttony and y < buttony + button_height then
             blob:play()
             btn.fn()
+        end
+    end
+end
+
+function mainMenu.changePlayButtonText(newText)
+    for _, button in ipairs(buttons) do
+        if button.text == "Start Game" or button.text == "Resume Game" then
+            button.text = newText  -- Ändere nur den Text des Buttons
         end
     end
 end
