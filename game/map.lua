@@ -5,11 +5,49 @@ game.map.playAreas = {}
 game.map.laneCount = 3
 game.map.editorMode = false
 
-
-
 local LINE_THICKNESS = 5
 local bgImage = love.graphics.newImage("game/Sprites/Map.png")
 mapsize  = 1
+
+
+game.map.areaEffects = {
+
+}
+
+function game.map.addAreaEffect(x, y, radius, effect, ttl, color)
+    local newAreaEffect = {
+        x = x,
+        y = y,
+        radius = radius,
+        effect = effect,
+        ttl = ttl,
+        color = color
+    }
+    table.insert(game.map.areaEffects, newAreaEffect)
+end
+
+function game.map.handleAreaEffects(dt)
+    for i, effect in ipairs(game.map.areaEffects) do
+        effect.ttl = effect.ttl - dt
+        if effect.ttl <= 0 then
+            table.remove(game.map.areaEffects, i)
+        end
+
+        for j, creature in ipairs(getCreatureStore()) do
+            if math.sqrt((creature.x - effect.x)^2 + (creature.y - effect.y)^2) < effect.radius then
+                effect.effect(creature)
+            end
+        end
+    end
+end
+
+
+function game.map.drawAreaEffects()
+    for i, effect in ipairs(game.map.areaEffects) do
+        love.graphics.setColor(effect.color)
+        love.graphics.circle("fill", effect.x, effect.y, effect.radius)
+    end
+end
 
 function game.map.createObstacle(x, y, width, height)
     local newObstacle = {
@@ -78,6 +116,7 @@ function game.map.mousepressed(x, y, button)
     end
 end
 function game.map.update(dt)
+    game.map.handleAreaEffects(dt)
 end
 function game.map.load()
     local screenWidth = love.graphics.getWidth()
@@ -89,6 +128,7 @@ function game.map.load()
 end
 
 function game.map.draw()
+
 
     love.graphics.setColor(1, 1, 1)
 
@@ -110,7 +150,8 @@ function game.map.draw()
     end
     --drawPlayAreas()
     drawObstacles()
-    end
+    game.map.drawAreaEffects()
+end
 
 function drawPlayAreas()
     for i, area in ipairs(game.map.playAreas) do

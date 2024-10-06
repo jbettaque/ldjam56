@@ -17,23 +17,25 @@ function game.creature.acid.attack(dt, creature, creatureStore)
         if nearestEnemy then
             local distance = math.sqrt((creature.x - nearestEnemy.x)^2 + (creature.y - nearestEnemy.y)^2)
             if distance < game.creature.acid.range and distance > 20 then
-                creature.currentCooldown = game.creature.acid.cooldown
-                creature.attacking = nearestEnemy
-                nearestEnemy.health = nearestEnemy.health - creature.rangedDamage
-                game.creature.default.damage(nearestEnemy, creature.meleeDamage)
-                checkHealth(nearestEnemy, creatureStore, creature)
+                game.map.addAreaEffect(creature.x, creature.y, 70, game.creature.acid.areaEffect, 30, {0.2, 1, 0.2, 0.5})
+                -- remove creature from creatureStore
                 for i, otherCreature in ipairs(creatureStore) do
-                    local distance = math.sqrt((otherCreature.x - nearestEnemy.x)^2 + (otherCreature.y - nearestEnemy.y)^2)
-
-                    if distance < game.creature.acid.bombRange and creature.player ~= otherCreature.player then
-                        local damage = creature.rangedDamage * (1 - distance / game.creature.acid.bombRange)
-                        otherCreature.health = otherCreature.health - damage
-                        checkHealth(otherCreature, creatureStore, creature)
+                    if otherCreature == creature then
+                        table.remove(creatureStore, i)
+                        break
                     end
                 end
             end
         end
+
+
     end
+end
+
+function game.creature.acid.areaEffect(creature)
+    game.creature.default.damage(creature, game.creature.acid.rangedDamage)
+
+    print("Acid attack")
 end
 function checkHealth(creature, creatureStore, parentCreature)
     if not creature then

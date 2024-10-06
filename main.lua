@@ -35,9 +35,10 @@ function love.load()
     print("running on " .. love.system.getOS())
 
     love.window.setMode(screenWidth, screenHeight)
-    game.map.load()
+
     game.towerPlacement.load()
     game.manager.load()
+    game.map.load()
     game.creatures.load()
     game.gameOverScreen.load()
     mainMenu.load(switchToGame)
