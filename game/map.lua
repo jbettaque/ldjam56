@@ -6,6 +6,7 @@ game.map.laneCount = 3
 game.map.editorMode = false
 
 local LINE_THICKNESS = 5
+local bgImage = love.graphics.newImage("game/Sprites/Map.png")
 
 function game.map.createObstacle(x, y, width, height)
     local newObstacle = {
@@ -86,7 +87,7 @@ end
 
 function game.map.draw()
 
-    local bgImage = love.graphics.newImage("game/Sprites/Map.png")
+
     love.graphics.setColor(1, 1, 1)
     love.graphics.draw(bgImage, 0, 0, 0, 1, 1)
     --display if in editorMode
