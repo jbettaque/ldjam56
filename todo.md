@@ -52,27 +52,27 @@
       - [ ] fairy
         - [ ] functionality
         - [ ] sprite
-      - [ ] zombie
-        - [ ] functionality
-        - [ ] sprite
+      - [x] zombie
+        - [x] functionality
+        - [x] sprite
 - [ ] upgrades
   - [x] power
   - [x] movement speed
   - [x] health
   - [x] spawn rate
-  - [ ] Power Ups spawn random on field (like 10 second dmg boost or speed)
+  - [x] Power Ups spawn random on field (like 10 second dmg boost or speed)
 - [x] currency
   - [x] gain on kill
   - [x] spend on upgrades
   - [x] display
   - [x] spend on buildings
 - [ ] window size / scaling
-- [ ] main menu
+- [x] main menu
   - [x] start game
-  - [ ] settings
+  - [x] settings
   - [x] exit
 - [x] "nexus" building
-- [ ] better game over screen
+- [x] better game over screen
 - [x] enemy ai (or maybe waves?)
 - [ ] better enemy ai
   - [ ] random strategy
