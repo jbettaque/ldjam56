@@ -20,25 +20,20 @@ function settingsMenu.load()
     font = love.graphics.newFont(32)
 
     table.insert(settingsMenu.buttons, newButton("Res:        640x480", function()
-        print("Res:    640x480")
         setResolution("640x480")
     end))
 
     table.insert(settingsMenu.buttons, newButton("Res:      1080x720", function()
-        print("Res:    1080x720")
         setResolution("1080x720")
     end))
     table.insert(settingsMenu.buttons, newButton("Res:    1920x1080", function()
-        print("Res:    1920x1080")
         setResolution("1920x1080")
     end))
     table.insert(settingsMenu.buttons, newButton("Res:    2560x1440", function()
-        print("Res:    2560x1440")
         setResolution("2560x1440")
     end))
 
     table.insert(settingsMenu.buttons, newButton("Back to Main Menu", function()
-        print("Returning to Main Menu")
         switchToMainMenu()
     end))
 end
@@ -98,13 +93,10 @@ function setResolution(res)
         width, height = 1920, 1080
     elseif res == "2560x1440" then
         width, height = 2560, 1440
-    else
-        print("Unbekannte Auflösung: " .. res)
-        return
     end
 
     love.window.setMode(width, height)
-    print("Auflösung geändert zu: " .. width .. "x" .. height)
+    print("Resolution changed to: " .. width .. "x" .. height)
 end
 
 
