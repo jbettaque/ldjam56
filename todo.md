@@ -12,6 +12,39 @@
   - [x] types
   - [x] stats
   - [ ] implement sascha's types
+    - [ ] melee
+      - [ ] dog
+        - [x] functionality
+        - [ ] sprite
+      - [x] skeleton
+        - [x] functionality
+        - [ ] sprite
+      - [ ] carl
+        - [x] functionality
+        - [ ] sprite
+      - [ ] horde
+        - [ ] functionality
+        - [ ] sprite
+    - [ ] ranged
+      - [ ] egg
+        - [x] functionality
+        - [ ] sprite
+      - [ ] tooth
+        - [x] functionality
+        - [ ] sprite
+      - [ ] flea
+        - [ ] functionality
+        - [ ] sprite
+    - [ ] aoe
+      - [ ] kamikaze
+        - [x] functionality
+        - [ ] sprite
+      - [ ] acid
+        - [ ] functionality
+        - [ ] sprite
+      - [ ] electro
+        - [ ] functionality
+        - [ ] sprite
 - [ ] upgrades
   - [x] power
   - [x] movement speed
