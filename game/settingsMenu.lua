@@ -6,6 +6,10 @@ settingsMenu.buttons = {}
 
 local racket = love.audio.newSource("game/SFX/Racket.mp3", "static")
 
+local baseWidth = 1920
+local baseHeight = 1080
+local baseFontSize = 32
+
 local function newButton(text, fn)
     return {
         text = text,
@@ -16,24 +20,30 @@ local function newButton(text, fn)
     }
 end
 
-function settingsMenu.load()
-    font = love.graphics.newFont(32)
 
-    table.insert(settingsMenu.buttons, newButton("Res:        640x480", function()
-        setResolution("640x480")
-    end))
+local function calculateFontSize()
+    local widthScale = love.graphics.getWidth() / baseWidth
+    local heightScale = love.graphics.getHeight() / baseHeight
+    return baseFontSize * math.min(widthScale, heightScale)
+end
+
+function settingsMenu.load()
+    font = love.graphics.newFont(calculateFontSize())
 
     table.insert(settingsMenu.buttons, newButton("Res:      1080x720", function()
         setResolution("1080x720")
     end))
+
     table.insert(settingsMenu.buttons, newButton("Res:    1920x1080", function()
         setResolution("1920x1080")
     end))
+
     table.insert(settingsMenu.buttons, newButton("Res:    2560x1440", function()
         setResolution("2560x1440")
     end))
 
     table.insert(settingsMenu.buttons, newButton("Back to Main Menu", function()
+        print("Returning to Main Menu")
         switchToMainMenu()
     end))
 end
@@ -76,29 +86,33 @@ function settingsMenu.draw()
         love.graphics.rectangle("fill", buttonx, buttony, button_width, button_height)
 
         love.graphics.setColor(0, 0, 0)
+        love.graphics.setFont(font)
         love.graphics.print(button.text, font, (ww * 0.5) - (font:getWidth(button.text) * 0.5), buttony + (button_height / 2) - (font:getHeight(button.text) / 2))
 
         cursor_y = cursor_y + (button_height + buttonspace)
     end
 end
 
+
 function setResolution(res)
     local width, height
 
-    if res == "640x480" then
-        width, height = 640, 480
-    elseif res == "1080x720" then
+
+    if res == "1080x720" then
         width, height = 1080, 720
     elseif res == "1920x1080" then
         width, height = 1920, 1080
     elseif res == "2560x1440" then
         width, height = 2560, 1440
+    else
+        print("Unbekannte Auflösung: " .. res)
+        return
     end
 
     love.window.setMode(width, height)
-    print("Resolution changed to: " .. width .. "x" .. height)
+    print("Auflösung geändert zu: " .. width .. "x" .. height)
+
+    font = love.graphics.newFont(calculateFontSize())
 end
-
-
 
 return settingsMenu
