@@ -29,8 +29,23 @@
 - [x] "nexus" building
 - [ ] game over screen
 - [x] enemy ai (or maybe waves?)
-- [ ] map with obstacles (maybe lanes?)
+- [ ] map with obstacles that split map into lanes
+  - [ ] render obstacles on map
+  - [ ] pathfinding
 - [x] towers that attack enemies
 - [ ] buildings that produce currency
 - [ ] sound effects and music
 - [ ] pause menu
+- [ ] balancing
+  - [ ] better system for balancing cost of buildings/upgrades
+- [ ] rework turret system (low priority)
+- [ ] fix bug where sometimes buildings are not placed
+- [ ] implement nexus in a better way
+- [ ] rock-paper-scissors system for creatures
+- [ ] tutorial
+- [ ] better graphics
+  - [ ] sprites for creatures and buildings
+  - [ ] animations
+    - [ ] on-hit
+    - [ ] death
+    - [ ] ranged attack (maybe projectile?)
