@@ -78,6 +78,9 @@ function love.draw()
         game.tMenu.draw()
         game.enemyAi.draw()
         game.powerUps.draw()
+        local fps = love.timer.getFPS()
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.print("FPS: " .. fps, 10, 10)
     end
 end
 
