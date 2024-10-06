@@ -41,19 +41,31 @@ function game.creatures.load()
 end
 
 function game.creatures.update(dt)
-    for i, creature in ipairs(creatureStore) do
-        game.creature.default.update(dt, creature, creatureStore)
+for i, creature in ipairs(creatureStore) do
+    game.creature.default.update(dt, creature, creatureStore)
 
-        if creature.isBoosted then
-            creature.boostDuration = creature.boostDuration - dt
-            if creature.boostDuration <= 0 then
-
-                creature.speed = creature.originalSpeed
-                creature.isBoosted = false
-                print("Speed Boost ended for creature of player " .. creature.player)
-            end
+    if creature.isBoosted then
+        creature.boostDuration = creature.boostDuration - dt
+        if creature.boostDuration <= 0 then
+            creature.speed = creature.originalSpeed
+            creature.isBoosted = false
+            print("Speed Boost ended for creature of player " .. creature.player)
         end
     end
+
+
+    if creature.isHealthBoosted then
+        creature.healthBoostDuration = creature.healthBoostDuration - dt
+        if creature.healthBoostDuration <= 0 then
+
+            creature.health = creature.originalHealth
+            creature.isHealthBoosted = false
+            print("Health Boost ended for creature of player " .. creature.player)
+        end
+    end
+end
+
+
 
 
     for i, v in ipairs(game.towerPlacement.towers) do
@@ -87,6 +99,19 @@ function game.creatures.applySpeedBoostToPlayer(playerId, speedMultiplier, durat
     end
 end
 
+function game.creatures.applyHealthBoostToPlayer(playerId, healthMultiplier, duration)
+    for i, creature in ipairs(creatureStore) do
+        if creature.player == playerId then
+            if not creature.isHealthBoosted then
+                creature.originalHealth = creature.health
+                creature.health = creature.health * healthMultiplier
+                creature.healthBoostDuration = duration
+                creature.isHealthBoosted = true
+                print("Health Boost applied to creature of player " .. playerId)
+            end
+        end
+    end
+end
 
 function game.creatures.spawnCreature(type, x, y, player, powerLv, healthLv)
 

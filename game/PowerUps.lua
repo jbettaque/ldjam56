@@ -17,7 +17,7 @@ local powerUpTypes = {
     noDMG = {
       image = love.graphics.newImage("game/Sprites/noDMG.png"),
        effect = function()
-
+           game.creatures.applyHealthBoostToPlayer(1, 10, 10)
          print("No DMG Power-Up collected!")
        end,
        lifetime = powerUpLifetime
