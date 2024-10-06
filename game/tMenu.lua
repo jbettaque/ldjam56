@@ -219,8 +219,10 @@ function game.tMenu.mousepressed(x, y, button, isTouch)
                 print("Distance: " .. distance)
                 if distance < 60 then
                     print("Clicked on tower " .. v.id)
-                    selectedTower = v
-                    game.tMenu.openMenu("upgrade", x, y)
+                    if v.spawnType ~= "none" then
+                        selectedTower = v
+                        game.tMenu.openMenu("upgrade", x, y)
+                    end
                     return
                 end
 
