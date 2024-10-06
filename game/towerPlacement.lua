@@ -74,8 +74,8 @@ towerConfig = {
         healthLv = 1,
         radius = 20,
         cost = 100,
-        spawnType = "kamikaze",
-        possibleSpawnTypes = {"kamikaze", "electro", "acid"},
+        spawnType = "ghost",
+        possibleSpawnTypes = {"ghost", "ghost", "ghost"},
         spawningCooldown = 5,
         draw = function(tower, mode)
             love.graphics.circle(mode, tower.x, tower.y, 20)

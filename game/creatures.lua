@@ -18,6 +18,8 @@ require("game/creature/dog")
 require("game/creature/horde")
 require("game/creature/skelleton")
 
+--MAGIC
+require("game/creature/ghost")
 
 
 
