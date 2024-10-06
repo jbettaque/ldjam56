@@ -24,6 +24,9 @@ end
 function endGame()
     currentState = "gameover"
 end
+function switchToMainMenu()
+    mainMenu.currentMenu = "main"
+end
 screenWidth = 1920
 screenHeight = 1080
 function switchRes(W,H)
