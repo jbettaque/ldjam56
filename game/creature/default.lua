@@ -55,19 +55,7 @@ function game.creature.default.draw(creature)
 end
 
 -- Function to check if there is a clear line of sight between two points
-function hasLineOfSight(creature, target)
-    local creatureX, creatureY = creature.x, creature.y
-    local targetX, targetY = target.x, target.y
 
-    -- Iterate over all obstacles to check if any of them blocks the line of sight
-    for _, obstacle in ipairs(game.map.obstacles) do
-        if lineIntersectsRect(creatureX, creatureY, targetX, targetY, obstacle) then
-            return false  -- Line of sight is blocked by an obstacle
-        end
-    end
-
-    return true  -- No obstacles block the line of sight
-end
 
 -- Helper function to check if a line intersects a rectangle (obstacle)
 function lineIntersectsRect(x1, y1, x2, y2, rect)
@@ -130,14 +118,15 @@ function game.creature.default.findNearestEnemy(creature, creatureStore)
         return nearestCreature
     end
 end
-
-function game.creature.default.isCollidingWithObstacle(creature, obstacle)
-    local collisionRadius = creature.collisionRadius or 10  -- Default radius if not defined
-    return creature.x - collisionRadius < obstacle.x + obstacle.width and
-            creature.x + collisionRadius > obstacle.x and
-            creature.y - collisionRadius < obstacle.y + obstacle.height and
-            creature.y + collisionRadius > obstacle.y
+function hasLineOfSight(creature, target)
+    for _, obstacle in ipairs(game.map.obstacles) do
+        if lineIntersectsRect(creature.x, creature.y, target.x, target.y, obstacle) then
+            return false
+        end
+    end
+    return true
 end
+
 function game.creature.default.tryMoveCreature(creature, newX, newY, dt)
     local collisionRadius = creature.collisionRadius or 10  -- Default collision radius
 
@@ -172,108 +161,240 @@ function game.creature.default.isLookingAtObstacle(creature, angle, distance)
     end
     return false
 end
-local function getOppositeSidePoint(player)
-    if player == 1 then
-        return { x = screenWidth, y = screenHeight / 2 }  -- Opposite side for player 1
-    else
-        return { x = 0, y = screenHeight / 2 }  -- Opposite side for player 2
-    end
+function getDistance(x1, y1, x2, y2)
+    return math.sqrt((x1 - x2)^2 + (y1 - y2)^2)
 end
-function game.creature.default.move(dt, creature, creatureStore)
-    local nearestEnemy = game.creature.default.findNearestEnemy(creature, creatureStore)
 
-    -- If the creature has been stuck for too long, set a new goal
-    if creature.stuckTime > 3 then  -- Example: 3 seconds of being stuck
-        -- Set the creature's goal to the opposite side of the map
-        if creature.player == 1 then
-            -- For player 1, set the goal to the opposite side of the map
-            nearestEnemy = { x = screenWidth - creature.x, y = creature.y }
-        elseif creature.player == 2 then
-            -- For player 2, set the goal to a different position (e.g., (0, 0))
-            nearestEnemy = { x = 0, y = creature.y }
-        end
-    end
+-- Find the best direction to move around an obstacle
+local function findObstacleBypassDirection(creature, target, obstacle)
+    local creatureToTarget = math.atan2(target.y - creature.y, target.x - creature.x)
 
-    if nearestEnemy then
-        local distance = math.sqrt((creature.x - nearestEnemy.x)^2 + (creature.y - nearestEnemy.y)^2)
-        if distance < 20 then
-            return  -- Too close, stop moving
-        end
+    -- Calculate four corner points of the obstacle
+    local corners = {
+        {x = obstacle.x, y = obstacle.y},                           -- Top-left
+        {x = obstacle.x + obstacle.width, y = obstacle.y},          -- Top-right
+        {x = obstacle.x + obstacle.width, y = obstacle.y + obstacle.height}, -- Bottom-right
+        {x = obstacle.x, y = obstacle.y + obstacle.height}          -- Bottom-left
+    }
 
-        -- Calculate angle towards the enemy
-        local angle = math.atan2(nearestEnemy.y - creature.y, nearestEnemy.x - creature.x)
-        local speed = 100 * dt * creature.speed
+    -- Find the closest corner to create a waypoint
+    local bestCorner = nil
+    local bestScore = math.huge
+    for _, corner in ipairs(corners) do
+        local distToCorner = getDistance(creature.x, creature.y, corner.x, corner.y)
+        local cornerToTarget = getDistance(corner.x, corner.y, target.x, target.y)
+        local score = distToCorner + cornerToTarget
 
-        -- Distance to check for obstacles in front of the creature
-        local lookAheadDistance = 20
-
-        -- Check if there's an obstacle in the direction the creature is looking
-        if not game.creature.default.isLookingAtObstacle(creature, angle, lookAheadDistance) then
-            -- If no obstacle, move forward
-            local newX = creature.x + math.cos(angle) * speed
-            local newY = creature.y + math.sin(angle) * speed
-
-            -- Try moving the creature
-            if game.creature.default.tryMoveCreature(creature, newX, newY, dt) then
-                -- Creature moved, reset the stuck timer
-                creature.stuckTime = 0
-                creature.lastPosition = { x = creature.x, y = creature.y }
-                return
-            end
-        end
-
-        -- If blocked, attempt small angular adjustments
-        local angleOffset = math.pi / 4 -- Try smaller 11.25-degree shifts
-        local maxAttempts = 12  -- Total attempts for angle adjustments (6 left, 6 right)
-
-        local moved = false
-        for i = 1, maxAttempts do
-            local tx = (screenHeight/2 - creature.x ) / math.abs((screenHeight/2 - creature.x ))
-            local oppositePoint = getOppositeSidePoint(creature.player)  -- Get the opposite side point for the creature's player
-            local adjustedAngle = ((angle + (i * angleOffset) * (i % 2 == 0 and 1 or -1) ) + math.atan2(oppositePoint.y - creature.y, oppositePoint.x - creature.x)) / 2
-            local adjustedX = creature.x + math.cos(adjustedAngle) * speed
-            local adjustedY = creature.y + math.sin(adjustedAngle) * speed
-
-            -- Try moving in the adjusted direction
-            if game.creature.default.tryMoveCreature(creature, adjustedX, adjustedY, dt) then
-                moved = true
-                creature.stuckTime = 0  -- Reset stuck time if successful
+        -- Check if path to corner is clear
+        local blocked = false
+        for _, obs in ipairs(game.map.obstacles) do
+            if obs ~= obstacle and lineIntersectsRect(creature.x, creature.y, corner.x, corner.y, obs) then
+                blocked = true
                 break
             end
         end
 
-        -- If the creature didn't move, increase the stuck timer
-        if not moved then
-            creature.stuckTime = creature.stuckTime + dt
+        if not blocked and score < bestScore then
+            bestScore = score
+            bestCorner = corner
         end
     end
 
-    -- Repulsion logic (keep creatures from overlapping)
-    local collisionRadius = creature.collisionRadius or 10  -- Default collision radius
-    for _, otherCreature in pairs(creatureStore) do
-        if otherCreature ~= creature then
-            local dx = creature.x - otherCreature.x
-            local dy = creature.y - otherCreature.y
-            local dist = math.sqrt(dx * dx + dy * dy)
+    if bestCorner then
+        return math.atan2(bestCorner.y - creature.y, bestCorner.x - creature.x)
+    end
 
-            if dist < 2 * collisionRadius and dist > 0 then  -- If creatures are overlapping
-                -- Calculate repulsion force to push them apart
-                local overlap = 2 * collisionRadius - dist
-                local repulsionAngle = math.atan2(dy, dx)
+    -- Fallback to simple avoidance if no good corner found
+    return creatureToTarget + (math.random() > 0.5 and math.pi/2 or -math.pi/2)
+end
 
-                -- Calculate smoother repulsion movement
-                local newX = creature.x + math.cos(repulsionAngle) * overlap * 0.3
-                local newY = creature.y + math.sin(repulsionAngle) * overlap * 0.3
+function game.creature.default.isCollidingWithObstacle(x, y, radius, obstacle)
+    return x - radius < obstacle.x + obstacle.width and
+            x + radius > obstacle.x and
+            y - radius < obstacle.y + obstacle.height and
+            y + radius > obstacle.y
+end
 
-                -- Ensure creature isn't pushed into an obstacle
-                if game.creature.default.tryMoveCreature(creature, newX, newY, dt) then
-                    break
-                end
+function game.creature.default.findPath(creature, target)
+    local angleToTarget = math.atan2(target.y - creature.y, target.x - creature.x)
+    local radius = creature.collisionRadius or 10
+
+    -- Check if direct path is clear
+    local directBlocked = false
+    local blockingObstacle = nil
+    for _, obstacle in ipairs(game.map.obstacles) do
+        if lineIntersectsRect(creature.x, creature.y, target.x, target.y, obstacle) then
+            directBlocked = true
+            blockingObstacle = obstacle
+            break
+        end
+    end
+
+    -- If path is clear and not near any obstacle edges, go direct
+    if not directBlocked then
+        return angleToTarget
+    end
+
+    -- If near an obstacle, find bypass direction
+    if blockingObstacle then
+        return findObstacleBypassDirection(creature, target, blockingObstacle)
+    end
+
+    -- Fallback pathfinding with multiple angle checks
+    local alternatives = {
+        {angle = 0, weight = 1},
+        {angle = math.pi/6, weight = 0.9},
+        {angle = -math.pi/6, weight = 0.9},
+        {angle = math.pi/3, weight = 0.7},
+        {angle = -math.pi/3, weight = 0.7}
+    }
+
+    local bestAngle = angleToTarget
+    local bestScore = -1
+
+    for _, alt in ipairs(alternatives) do
+        local testAngle = angleToTarget + alt.angle
+        local testX = creature.x + math.cos(testAngle) * 30
+        local testY = creature.y + math.sin(testAngle) * 30
+
+        local blocked = false
+        for _, obstacle in ipairs(game.map.obstacles) do
+            if game.creature.default.isCollidingWithObstacle(testX, testY, radius, obstacle) then
+                blocked = true
+                break
+            end
+        end
+
+        if not blocked then
+            local distanceScore = 1 / (1 + getDistance(testX, testY, target.x, target.y))
+            local score = distanceScore * alt.weight
+
+            if score > bestScore then
+                bestScore = score
+                bestAngle = testAngle
             end
         end
     end
+
+    return bestAngle
 end
 
+function game.creature.default.move(dt, creature, creatureStore)
+    -- Find nearest enemy target
+    local target = game.creature.default.findNearestEnemy(creature, creatureStore)
+    if not target then return end
+
+    -- Check if we're already in attack range
+    local distance = getDistance(creature.x, creature.y, target.x, target.y)
+    if distance < 20 then return end
+
+    -- Calculate base movement values
+    local speed = 100 * dt * creature.speed
+    local angleToTarget = math.atan2(target.y - creature.y, target.x - creature.x)
+    local radius = creature.collisionRadius or 10
+
+    -- Initialize movement and repulsion vectors
+    local moveX = math.cos(angleToTarget) * speed
+    local moveY = math.sin(angleToTarget) * speed
+    local repulsionX, repulsionY = 0, 0
+
+    -- Repulsion parameters
+    local repulsionStrength = 300
+    local repulsionRange = radius * 3
+    local sideStepStrength = 200
+
+    -- Track if there's an obstacle directly ahead
+    local isBlockedAhead = false
+    local nearestObstacleDistance = math.huge
+
+    -- Calculate repulsion from all obstacles
+    for _, obstacle in ipairs(game.map.obstacles) do
+        -- Find closest point on obstacle to creature
+        local closestX = math.max(obstacle.x, math.min(creature.x, obstacle.x + obstacle.width))
+        local closestY = math.max(obstacle.y, math.min(creature.y, obstacle.y + obstacle.height))
+
+        -- Calculate distance and direction from creature to closest point
+        local dx = creature.x - closestX
+        local dy = creature.y - closestY
+        local distance = math.sqrt(dx * dx + dy * dy)
+
+        -- Check if this obstacle is directly ahead
+        local angleToObstacle = math.atan2(dy, dx)
+        local angleDiff = math.abs(angleToObstacle - angleToTarget)
+        while angleDiff > math.pi do
+            angleDiff = math.abs(angleDiff - 2 * math.pi)
+        end
+
+        if distance < nearestObstacleDistance and angleDiff < math.pi / 4 then
+            nearestObstacleDistance = distance
+            if distance < repulsionRange then
+                isBlockedAhead = true
+            end
+        end
+
+        -- Apply repulsion if within range
+        if distance < repulsionRange then
+            local repulsion = (repulsionRange - distance) / repulsionRange
+            repulsion = repulsion * repulsion -- Square for stronger close-range repulsion
+            local angle = math.atan2(dy, dx)
+            repulsionX = repulsionX + math.cos(angle) * repulsion * repulsionStrength * dt
+            repulsionY = repulsionY + math.sin(angle) * repulsion * repulsionStrength * dt
+        end
+    end
+
+    -- If blocked ahead, always try to go right first
+    if isBlockedAhead then
+        -- Add rightward movement (perpendicular to movement direction)
+        local sideAngle = angleToTarget + math.pi/2  -- Add 90 degrees to go right
+        repulsionX = repulsionX + math.cos(sideAngle) * sideStepStrength * dt
+        repulsionY = repulsionY + math.sin(sideAngle) * sideStepStrength * dt
+
+        -- Reduce forward movement when blocked
+        moveX = moveX * 0.3  -- Reduced more to emphasize sideways movement
+        moveY = moveY * 0.3
+    end
+
+    -- Combine movement and repulsion vectors
+    local finalX = creature.x + moveX + repulsionX
+    local finalY = creature.y + moveY + repulsionY
+
+    -- Final collision check
+    local canMove = true
+    for _, obstacle in ipairs(game.map.obstacles) do
+        if game.creature.default.isCollidingWithObstacle(finalX, finalY, radius, obstacle) then
+            canMove = false
+            break
+        end
+    end
+
+    -- Apply movement if safe, otherwise just apply repulsion
+    if canMove then
+        creature.x = finalX
+        creature.y = finalY
+    else
+        -- Apply just repulsion with a minimum movement to prevent complete sticking
+        local minMove = 5 * dt
+        local moveAmount = math.max(math.sqrt(repulsionX * repulsionX + repulsionY * repulsionY), minMove)
+        local moveAngle = math.atan2(repulsionY, repulsionX)
+
+        local safeX = creature.x + math.cos(moveAngle) * moveAmount
+        local safeY = creature.y + math.sin(moveAngle) * moveAmount
+
+        -- Check if this minimum movement is safe
+        local safeMovePosition = true
+        for _, obstacle in ipairs(game.map.obstacles) do
+            if game.creature.default.isCollidingWithObstacle(safeX, safeY, radius, obstacle) then
+                safeMovePosition = false
+                break
+            end
+        end
+
+        if safeMovePosition then
+            creature.x = safeX
+            creature.y = safeY
+        end
+    end
+end
 
 function game.creature.default.attack(dt, creature, creatureStore)
     if creature.currentCooldown == 0 then
