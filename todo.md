@@ -16,6 +16,7 @@
   - [x] movement speed
   - [x] health
   - [x] spawn rate
+  - [ ] Power Ups spawn random on field (like 10 second dmg boost or speed)
 - [x] currency
   - [x] gain on kill
   - [x] spend on upgrades
