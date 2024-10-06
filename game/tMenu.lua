@@ -242,7 +242,7 @@ function game.tMenu.mousepressed(x, y, button, isTouch)
             for i, v in ipairs(game.towerPlacement.towers) do
                 local distance = game.utils.distance(x, y, v.x, v.y)
                 if distance < 60 then
-                    if v.spawnType ~= "none" then
+                    if v.laserTurret ~= true then
                         selectedTower = v
                         if (button == 2) then
                             game.tMenu.openMenu("upgrade", x, y)
