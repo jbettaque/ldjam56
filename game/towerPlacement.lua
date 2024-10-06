@@ -134,7 +134,7 @@ towerConfig = {
         width = 40,
         height = 40,
         cost = 100,
-        spawnType = "carl",
+        spawnType = "skelleton",
         possibleSpawnTypes = {"carl", "dog", "horde", "skelleton"},
         spawningCooldown = 9,
         draw = function(tower, mode)
@@ -148,12 +148,7 @@ towerConfig = {
 }
 function game.towerPlacement.changeType(type)
     local config = towerConfig[type]
-    local spawnType = config.spawnType
     game.towerPlacement.currentPlacingTower.type = type
-    --game.towerPlacement.currentPlacingTower.spawnType = spawnType
-    --game.towerPlacement.currentPlacingTower.spawningCooldown = config.spawningCooldown
-    --game.towerPlacement.currentPlacingTower.health = config.health
-    --game.towerPlacement.currentPlacingTower.maxHealth = config.maxHealth
 end
 
 function game.towerPlacement.placeTower(x, y, towerType, player)
@@ -190,6 +185,7 @@ function game.towerPlacement.createTower(x, y, towerType, player)
         speedLv = config.speedLv,
         healthLv = 1,
         trickle = config.trickle,
+        possibleSpawnTypes = config.possibleSpawnTypes,
     }
     return newTower
 end

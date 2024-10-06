@@ -21,7 +21,6 @@ function game.creature.kamikaze.attack(dt, creature, creatureStore)
                 creature.attacking = nearestEnemy
                 nearestEnemy.health = nearestEnemy.health - creature.rangedDamage
                 checkHealth(nearestEnemy, creatureStore, creature)
-                local kamikazeIndex = 0
                 for i, otherCreature in ipairs(creatureStore) do
                     local distance = math.sqrt((otherCreature.x - nearestEnemy.x)^2 + (otherCreature.y - nearestEnemy.y)^2)
 

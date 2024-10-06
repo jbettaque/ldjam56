@@ -64,6 +64,7 @@ end
 
 function game.creatures.spawnCreature(type, x, y, player, powerLv, healthLv)
 
+    print("Spawning creature: " .. type .. " at " .. x .. ", " .. y .. " for player " .. player)
     local meleeDamage = game.creature[type].meleeDamage * powerLv
     local rangedDamage = game.creature[type].rangedDamage * powerLv
     local health = game.creature[type].health * healthLv

@@ -8,7 +8,7 @@ local selectedTower = nil
 
 require("game/utils")
 -- Menu configurations
-local menuTypes = {
+menuTypes = {
     tower = {
         items = game.towerPlacement.towerTypes,
         color = {0, 0, 1},
@@ -91,8 +91,33 @@ local menuTypes = {
                     "center"
             )
         end
+    },
+    unitSelect = {
+        items = {"Carl", "Dog", "Horde", "Skelleton"},
+        color = {1, 0, 0},
+        onHover = function(itemIndex)
+        end,
+        onSelect = function(x, y, itemIndex)
+            local unitType = menuTypes.unitSelect.items[itemIndex]
+            selectedTower.spawnType = unitType
+        end,
+        beforeOpen = function(x, y)
+            menuTypes.unitSelect.items = selectedTower.possibleSpawnTypes
+
+        end,
+        drawItem = function(item, x, y, width, height)
+            -- Draw tile name
+            love.graphics.setColor(0, 0, 0)
+
+            love.graphics.printf(
+                    item,
+                    x,
+                    y + height / 2,
+                    width,
+                    "center"
+            )
+        end
     }
-    -- Add more menu types here, for example:
 
 
 }
@@ -219,7 +244,12 @@ function game.tMenu.mousepressed(x, y, button, isTouch)
                 if distance < 60 then
                     if v.spawnType ~= "none" then
                         selectedTower = v
-                        game.tMenu.openMenu("upgrade", x, y)
+                        if (button == 2) then
+                            game.tMenu.openMenu("upgrade", x, y)
+                        else
+                            game.tMenu.openMenu("unitSelect", x, y)
+                        end
+
                     end
                     return
                 end
