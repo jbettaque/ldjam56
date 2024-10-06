@@ -21,17 +21,20 @@ function settingsMenu.load()
 
     table.insert(settingsMenu.buttons, newButton("Res:        640x480", function()
         print("Res:    640x480")
-        main.switchRes(640,480)
+        setResolution("640x480")
     end))
 
     table.insert(settingsMenu.buttons, newButton("Res:      1080x720", function()
         print("Res:    1080x720")
+        setResolution("1080x720")
     end))
     table.insert(settingsMenu.buttons, newButton("Res:    1920x1080", function()
         print("Res:    1920x1080")
+        setResolution("1920x1080")
     end))
     table.insert(settingsMenu.buttons, newButton("Res:    2560x1440", function()
         print("Res:    2560x1440")
+        setResolution("2560x1440")
     end))
 
     table.insert(settingsMenu.buttons, newButton("Back to Main Menu", function()
@@ -85,8 +88,23 @@ function settingsMenu.draw()
 end
 
 function setResolution(res)
-main.switchRes(640,480)
+    local width, height
 
+    if res == "640x480" then
+        width, height = 640, 480
+    elseif res == "1080x720" then
+        width, height = 1080, 720
+    elseif res == "1920x1080" then
+        width, height = 1920, 1080
+    elseif res == "2560x1440" then
+        width, height = 2560, 1440
+    else
+        print("Unbekannte Auflösung: " .. res)
+        return
+    end
+
+    love.window.setMode(width, height)
+    print("Auflösung geändert zu: " .. width .. "x" .. height)
 end
 
 
