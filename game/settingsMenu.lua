@@ -35,7 +35,6 @@ function settingsMenu.load()
 
     table.insert(settingsMenu.buttons, newButton("Back to Main Menu", function()
         print("Returning to Main Menu")
-        mainMenu.currentMenu = "main"
     end))
 end
 
