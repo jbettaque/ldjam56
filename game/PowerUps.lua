@@ -24,6 +24,7 @@ function powerUps.update(dt)
 end
 
 function powerUps.draw()
+
     for i = 1, #coins do
         love.graphics.draw(coinImage, coins[i].x, coins[i].y)
     end
