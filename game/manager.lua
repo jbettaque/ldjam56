@@ -2,6 +2,7 @@ game.manager = {}
 require("game.towerPlacement")
 
 local trickleCooldown = 0
+local fps = love.timer.getFPS()
 function game.manager.addMoney(money, player)
     if player == 1 then
         game.manager.player1.money = game.manager.player1.money + money
@@ -52,6 +53,7 @@ function game.manager.update(dt)
 end
 
 function game.manager.draw()
+    love.graphics.print("FPS: " .. fps, 10, 10)
     love.graphics.setColor(1, 1, 1)
     love.graphics.print("Money: " .. game.manager.player1.money, 10, 10)
 
