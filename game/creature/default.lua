@@ -167,20 +167,32 @@ function game.creature.default.damage(creature, damage)
     if not creature then
         return
     end
+ local creatureStore = game.creatures.getCreatureStore()
     creature.damaged = 0.1
-    --creature.health = creature.health - damage
-    --if creature.health <= 0 then
-    --    for i, otherCreature in ipairs(creatureStore) do
-    --        if otherCreature == creature then
-    --            table.remove(creatureStore, i)
-    --            if creature.player == 1 then
-    --                game.manager.player2.money = game.manager.player2.money + 5
-    --            else
-    --                game.manager.player1.money = game.manager.player1.money + 5
-    --            end
-    --
-    --            break
-    --        end
-    --    end
-    --end
+    creature.health = creature.health - damage
+
+    -- Überprüfen, ob die Kreatur tot ist
+    if creature.health <= 0 then
+        -- Entferne die Kreatur aus dem creatureStore
+        for i, otherCreature in ipairs(creatureStore) do
+            if otherCreature == creature then
+                table.remove(creatureStore, i)
+                -- Geld für den Spieler des Angreifers hinzufügen
+                if creature.player == 1 then
+                    game.manager.player2.money = game.manager.player2.money + 5
+                else
+                    game.manager.player1.money = game.manager.player1.money + 5
+                end
+                break
+            end
+        end
+
+        -- Entferne die Kreatur aus den Türmen, falls sie ein Turm war
+        for i, tower in ipairs(game.towerPlacement.towers) do
+            if tower == creature then
+                table.remove(game.towerPlacement.towers, i)
+                break
+            end
+        end
+    end
 end

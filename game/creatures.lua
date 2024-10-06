@@ -171,3 +171,6 @@ function game.creatures.resetCreatureStore()
     creatureStore = {}
 end
 
+function game.creatures.getCreatureStore()
+    return creatureStore
+end
