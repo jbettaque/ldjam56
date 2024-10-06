@@ -75,7 +75,7 @@ towerConfig = {
         radius = 20,
         cost = 100,
         spawnType = "ghost",
-        possibleSpawnTypes = {"ghost", "ghost", "ghost"},
+        possibleSpawnTypes = {"ghost", "zombie", "ghost"},
         spawningCooldown = 5,
         draw = function(tower, mode)
             love.graphics.circle(mode, tower.x, tower.y, 20)
@@ -277,6 +277,7 @@ function game.towerPlacement.handleLaserTurret(tower, dt)
                 local distance = math.sqrt((creature.x - tower.x)^2 + (creature.y - tower.y)^2)
                 if distance <= 100 then
                     creature.health = creature.health - 1
+                    game.creature.default.damage(nearestEnemy, creature.meleeDamage)
                     if creature.health <= 0 then
                         table.remove(getCreatureStore(), j)
                         if creature.player == 1 then

@@ -11,7 +11,10 @@ local ghostImage = love.graphics.newImage("game/Sprites/Ghost.png")
 
 
 function game.creature.ghost.draw(creature)
-    love.graphics.setColor(255, 255, 255)
+    love.graphics.setColor(1, 1, 1)
+    if creature.damaged and creature.damaged > 0 then
+        love.graphics.setColor(1, 0, 0)
+    end
     local transform = love.math.newTransform(creature.x, creature.y, 0, 0.23, 0.23, 32, 32)
     if (creature.player == 2) then
         transform:scale(-1, 1)

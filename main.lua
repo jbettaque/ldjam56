@@ -77,14 +77,13 @@ function love.draw()
         mainMenu.changePlayButtonText("Start new Game")
     elseif currentState == "game" then
 
-        game.manager.draw()
         game.map.draw()
         game.creatures.draw()
         game.towerPlacement.draw()
         game.tMenu.draw()
         game.enemyAi.draw()
         game.powerUps.draw()
-        love.graphics.setColor(1, 1, 1)
+        game.manager.draw()
     end
 end
 
