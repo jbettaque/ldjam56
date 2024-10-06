@@ -3,6 +3,7 @@
 - [ ] building system
   - [x] build
   - [x] destroy
+  - [ ] Show DMG and LVL on each Upgrade
 - [ ] creatures
   - [x] spawn
   - [x] move
