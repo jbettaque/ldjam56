@@ -15,8 +15,8 @@ function initiateLaserTurrets()
         y = screenHeight/2,
         spawnType = "attacker",
         player = 2,
-        health = 10000,
-        maxHealth = 10000,
+        health = 3000,
+        maxHealth = 3000,
         powerLv = 1,
         speedLv = 1,
         healthLv = 1,
@@ -31,8 +31,8 @@ function initiateLaserTurrets()
         y = 300,
         spawnType = "attacker",
         player = 1,
-        health = 10000,
-        maxHealth = 10000,
+        health = 1,
+        maxHealth = 3000,
         powerLv = 1,
         speedLv = 1,
         healthLv = 1,
@@ -41,7 +41,7 @@ function initiateLaserTurrets()
         laserTurret = true
     })
 end
-game.towerPlacement.towerTypes = {"circle", "rectangle", "image"}
+game.towerPlacement.towerTypes = {"circle", "rectangle", "mine", "image"}
 game.powerType = {1, 2, 3}
 game.towerPlacement.currentPlacingTower = nil
 
@@ -75,6 +75,26 @@ towerConfig = {
         height = 30,
         cost = 50,
         spawnType = "attacker",
+        spawningCooldown = 3,
+        draw = function(tower, mode)
+            love.graphics.rectangle(mode, tower.x - 10, tower.y - 10, 40, 30)
+        end,
+        checkClick = function(x, y, tower)
+            return x >= tower.x - 10 and x <= tower.x + 30 and
+                    y >= tower.y - 10 and y <= tower.y + 20
+        end
+    },
+    mine = {
+        health = 600,
+        maxHealth = 600,
+        powerLv = 1,
+        speedLv = 1,
+        healthLv = 1,
+        width = 40,
+        height = 30,
+        spawnType = "none",
+        cost = 50,
+        trickle = 5,
         spawningCooldown = 3,
         draw = function(tower, mode)
             love.graphics.rectangle(mode, tower.x - 10, tower.y - 10, 40, 30)
@@ -169,6 +189,7 @@ function game.towerPlacement.createTower(x, y, towerType, player)
         powerLv = config.powerLv,
         speedLv = config.speedLv,
         healthLv = 1,
+        trickle = config.trickle,
     }
     return newTower
 end
@@ -254,31 +275,10 @@ function game.towerPlacement.update(dt)
             end
         end
     end
-
-
 end
 
 function game.towerPlacement.placeTowerForAi(x, y, towerType, player)
-    --local config = towerConfig[towerType] or towerConfig.circle
-
-    --local newTower = {
-    --    id = #game.towerPlacement.towers + 1,
-    --    x = x,
-    --    y = y,
-    --    type = towerType,
-    --    spawnType = config.spawnType,
-    --    player = player or 1,
-    --    currentSpawnCooldown = 0,
-    --    spawningCooldown = config.spawningCooldown,
-    --    currentSpawnCooldown = 0,
-    --    health = config.health,
-    --    powerLv = config.powerLv,
-    --    speedLv = config.speedLv,
-    --    healthLv = 1,
-    --}
     local newTower = game.towerPlacement.createTower(x, y, towerType, player)
-    --game.towerPlacement.currentPlacingTower = newTower
-    --game.towerPlacement.changeType(towerType)
     game.towerPlacement.addTower(newTower)
 end
 

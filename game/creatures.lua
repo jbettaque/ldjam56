@@ -32,8 +32,10 @@ function game.creatures.update(dt)
 
     for i, v in ipairs(game.towerPlacement.towers) do
         if v.currentSpawnCooldown == 0 then
-            game.creatures.spawnCreature(v.spawnType, v.x, v.y, v.player, v.powerLv, v.healthLv)
-            v.currentSpawnCooldown = v.spawningCooldown
+            if v.spawnType ~= "none" then
+                game.creatures.spawnCreature(v.spawnType, v.x, v.y, v.player, v.powerLv, v.healthLv)
+                v.currentSpawnCooldown = v.spawningCooldown
+            end
         end
     end
 end

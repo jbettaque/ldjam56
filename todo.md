@@ -27,7 +27,7 @@
   - [ ] settings
   - [x] exit
 - [x] "nexus" building
-- [ ] game over screen
+- [ ] better game over screen
 - [x] enemy ai (or maybe waves?)
 - [ ] map with obstacles that split map into lanes
   - [ ] render obstacles on map
@@ -35,7 +35,7 @@
 - [x] towers that attack enemies
 - [ ] buildings that produce currency
 - [ ] sound effects and music
-- [ ] pause menu
+- [x] pause menu
 - [ ] balancing
   - [ ] better system for balancing cost of buildings/upgrades
 - [ ] rework turret system (low priority)

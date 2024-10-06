@@ -19,6 +19,10 @@ function switchToPause()
     currentState = "pause"
 end
 
+function endGame()
+    currentState = "menu"
+end
+
 function love.load()
     print("running on " .. love.system.getOS())
     love.window.setMode(1080, 880)
