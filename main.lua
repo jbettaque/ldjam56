@@ -60,7 +60,7 @@ function love.update(dt)
 end
 
 function love.draw()
-    love.graphics.scale(love.graphics.getWidth()/screenWidth + 0.2, love.graphics.getHeight()/screenHeight + 0.2)
+    --love.graphics.scale(love.graphics.getWidth()/screenWidth + 0.2, love.graphics.getHeight()/screenHeight + 0.2)
     --love.graphics.scale(screenWidth/love.graphics.getWidth(), screenHeight/love.graphics.getHeight())
 
     if currentState == "menu" then
