@@ -20,17 +20,17 @@ function settingsMenu.load()
     font = love.graphics.newFont(32)
 
     table.insert(settingsMenu.buttons, newButton("Res:        640x480", function()
-
+        print("Res:    640x480")
     end))
 
     table.insert(settingsMenu.buttons, newButton("Res:      1080x720", function()
-
+        print("Res:    1080x720")
     end))
     table.insert(settingsMenu.buttons, newButton("Res:    1920x1080", function()
-
+        print("Res:    1920x1080")
     end))
     table.insert(settingsMenu.buttons, newButton("Res:    2560x1440", function()
-
+        print("Res:    2560x1440")
     end))
 
     table.insert(settingsMenu.buttons, newButton("Back to Main Menu", function()
