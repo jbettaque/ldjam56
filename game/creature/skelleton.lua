@@ -1,9 +1,21 @@
-game.creature.attacker = {}
+game.creature.skelleton = {}
 
-game.creature.attacker.health = 100
-game.creature.attacker.meleeDamage = 3
-game.creature.attacker.rangedDamage = 0
-game.creature.attacker.speed = 1
-game.creature.attacker.cooldown = 0.3
-game.creature.attacker.range = 1
+game.creature.skelleton.health = 100
+game.creature.skelleton.meleeDamage = 3
+game.creature.skelleton.rangedDamage = 0
+game.creature.skelleton.speed = 1
+game.creature.skelleton.cooldown = 0.3
+game.creature.skelleton.range = 1
+local skelletonImage = love.graphics.newImage("game/Sprites/Skeleton.png")
 
+
+function game.creature.skelleton.draw(creature)
+    love.graphics.setColor(255, 255, 255)
+    local transform = love.math.newTransform(creature.x, creature.y, 0, 0.1, 0.1, 32, 32)
+    if (creature.player == 2) then
+        transform:scale(-1, 1)
+    end
+
+    love.graphics.draw(skelletonImage, transform)
+
+end

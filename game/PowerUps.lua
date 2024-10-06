@@ -23,6 +23,7 @@ function powerUps.spawnCoin()
 end
 
 function powerUps.update(dt)
+    -- Timer für Münzen-Spawns
     coinSpawnTimer = coinSpawnTimer + dt
     if coinSpawnTimer >= coinSpawnInterval then
         powerUps.spawnCoin()
@@ -49,7 +50,6 @@ function powerUps.mousepressed(x, y, button)
     if button == 1 then
         for i = #coins, 1, -1 do
             local coin = coins[i]
-
             if x > coin.x and x < coin.x + coinImage:getWidth() and y > coin.y and y < coin.y + coinImage:getHeight() then
                 table.remove(coins, i)
                 print("Coin collected!")
