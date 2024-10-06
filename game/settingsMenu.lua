@@ -52,6 +52,11 @@ function settingsMenu.draw()
     local ww = love.graphics.getWidth()
     local wh = love.graphics.getHeight()
 
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.setFont(font)
+    love.graphics.print("Current Resolution: " .. ww .. "x" .. wh, 10, 10)
+
+
     local button_width = ww * (1 / 3)
     local buttonspace = 16
     local cursor_y = 0
@@ -104,14 +109,10 @@ function setResolution(res)
         width, height = 1920, 1080
     elseif res == "2560x1440" then
         width, height = 2560, 1440
-    else
-        print("Unbekannte Auflösung: " .. res)
-        return
     end
 
     love.window.setMode(width, height)
-    print("Auflösung geändert zu: " .. width .. "x" .. height)
-
+    print("changed Resolution to: " .. width .. "x" .. height)
     font = love.graphics.newFont(calculateFontSize())
 end
 
