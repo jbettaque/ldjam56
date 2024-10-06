@@ -30,6 +30,7 @@ function mainMenu.load(switchToGame)
     table.insert(buttons, newButton("Exit Game", function()
         print("Exiting game")
         blob:play()
+        print("Sound blob plays")
         love.timer.sleep(0.5)
         love.event.quit(0)
     end))
@@ -61,6 +62,7 @@ function mainMenu.draw()
             color = {0, 1, 0}
             if not button.soundPlayed then
                 racket:play()
+                print("Sound racket plays")
                 button.soundPlayed = true
             end
         else
@@ -94,6 +96,7 @@ function mainMenu.mousepressed(x, y, button)
         if button == 1 and x > buttonx and x < buttonx + (love.graphics.getWidth() * (1/3)) and
                 y > buttony and y < buttony + button_height then
             blob:play()
+            print("Sound blob plays")
             btn.fn()
         end
     end
