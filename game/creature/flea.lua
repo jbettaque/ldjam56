@@ -18,6 +18,7 @@ function game.creature.flea.attack(dt, creature, creatureStore)
                 creature.currentCooldown = game.creature.flea.cooldown
                 creature.attacking = nearestEnemy
                 nearestEnemy.health = nearestEnemy.health - creature.rangedDamage
+                game.creature.default.damage(nearestEnemy, creature.meleeDamage)
                 if nearestEnemy.health <= 0 then
                     for i, otherCreature in ipairs(creatureStore) do
                         if otherCreature == nearestEnemy then

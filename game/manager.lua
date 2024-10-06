@@ -54,15 +54,10 @@ function game.manager.update(dt)
 end
 
 function game.manager.draw()
+    local fps = love.timer.getFPS()
     love.graphics.print("FPS: " .. fps, 10, 10)
     love.graphics.setColor(1, 1, 1)
-    love.graphics.print("Money: " .. game.manager.player1.money, 10, 10)
-
-    love.graphics.print("Trickle cooldown: " .. trickleCooldown, 10, 30)
-
-    if (game.manager.playerWon == 1) then
-        love.graphics.print("Player 1 wins", love.graphics.getWidth() / 2, love.graphics.getHeight() / 2)
-    end
+    love.graphics.print("Money: " .. game.manager.player1.money, 10, 30)
 end
 
 function game.manager.checkForGameOver()

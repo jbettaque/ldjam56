@@ -20,6 +20,7 @@ function game.creature.kamikaze.attack(dt, creature, creatureStore)
                 creature.currentCooldown = game.creature.kamikaze.cooldown
                 creature.attacking = nearestEnemy
                 nearestEnemy.health = nearestEnemy.health - creature.rangedDamage
+                game.creature.default.damage(nearestEnemy, creature.meleeDamage)
                 checkHealth(nearestEnemy, creatureStore, creature)
                 for i, otherCreature in ipairs(creatureStore) do
                     local distance = math.sqrt((otherCreature.x - nearestEnemy.x)^2 + (otherCreature.y - nearestEnemy.y)^2)
