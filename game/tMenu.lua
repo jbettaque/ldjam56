@@ -216,9 +216,7 @@ function game.tMenu.mousepressed(x, y, button, isTouch)
                 y >= 0 and y <= love.graphics.getHeight() then
             for i, v in ipairs(game.towerPlacement.towers) do
                 local distance = game.utils.distance(x, y, v.x, v.y)
-                print("Distance: " .. distance)
                 if distance < 60 then
-                    print("Clicked on tower " .. v.id)
                     if v.spawnType ~= "none" then
                         selectedTower = v
                         game.tMenu.openMenu("upgrade", x, y)
