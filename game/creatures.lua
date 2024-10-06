@@ -43,6 +43,16 @@ end
 function game.creatures.update(dt)
     for i, creature in ipairs(creatureStore) do
         game.creature.default.update(dt, creature, creatureStore)
+
+        if creature.isBoosted then
+            creature.boostDuration = creature.boostDuration - dt
+            if creature.boostDuration <= 0 then
+
+                creature.speed = creature.originalSpeed
+                creature.isBoosted = false
+                print("Speed Boost ended for creature of player " .. creature.player)
+            end
+        end
     end
 
 
@@ -61,6 +71,22 @@ function game.creatures.draw()
         game.creature.default.draw(creature)
     end
 end
+
+function game.creatures.applySpeedBoostToPlayer(playerId, speedMultiplier, duration)
+    for i, creature in ipairs(creatureStore) do
+        if creature.player == playerId then
+
+            if not creature.isBoosted then
+                creature.originalSpeed = creature.speed
+                creature.speed = creature.speed * speedMultiplier
+                creature.boostDuration = duration
+                creature.isBoosted = true
+                print("Speed Boost applied to creature of player " .. playerId)
+            end
+        end
+    end
+end
+
 
 function game.creatures.spawnCreature(type, x, y, player, powerLv, healthLv)
 
@@ -82,4 +108,5 @@ function game.creatures.spawnCreature(type, x, y, player, powerLv, healthLv)
     }
     table.insert(creatureStore, newCreature)
 end
+
 
