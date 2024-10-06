@@ -166,4 +166,7 @@ function game.creatures.spawnCreature(type, x, y, player, powerLv, healthLv)
     table.insert(creatureStore, newCreature)
 end
 
+function game.creatures.resetCreatureStore()
+    creatureStore = {}
+end
 

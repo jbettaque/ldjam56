@@ -9,9 +9,9 @@ require("game.enemyAi")
 game.powerUps = require("game.powerUps")
 
 local mainMenu = require("game.mainMenu")
+local gameOverScreen = require("game.gameOverScreen")
 
 local currentState = "menu"
-
 
 function switchToGame()
     currentState = "game"
@@ -22,7 +22,7 @@ function switchToPause()
 end
 
 function endGame()
-    currentState = "menu"
+    currentState = "gameover"
 end
 
 screenWidth = 1280
@@ -35,8 +35,9 @@ function love.load()
     game.towerPlacement.load()
     game.manager.load()
     game.creatures.load()
-
+    game.gameOverScreen.load()
     mainMenu.load(switchToGame)
+
     game.enemyAi.load()
 
     game.powerUps.load()
@@ -47,6 +48,8 @@ function love.update(dt)
         mainMenu.update(dt)
     elseif currentState =="pause" then
         mainMenu.update(dt)
+    elseif currentState == "gameover" then
+        game.gameOverScreen.update(dt)
     elseif currentState == "game" then
         game.map.update(dt)
         game.manager.update(dt)
@@ -69,6 +72,9 @@ function love.draw()
     elseif currentState == "pause" then
         mainMenu.changePlayButtonText("Resume Game")
         mainMenu.draw()
+    elseif currentState == "gameover" then
+        game.gameOverScreen.draw()
+        mainMenu.changePlayButtonText("Start new Game")
     elseif currentState == "game" then
 
         game.manager.draw()
@@ -104,10 +110,31 @@ function love.mousepressed(x, y, button, istouch, presses)
 end
 
  function love.keypressed(key)
-     if key == "escape" then
+     if currentState =="gameover" then
+         currentState= "menu"
+         resetGame()
+
+     elseif key == "escape" then
          currentState = "pause"
      end
      if key == "c" then
          game.map.editorMode = not game.map.editorMode
      end
  end
+
+function resetGame()
+    local font
+    font = love.graphics.newFont(12)
+    love.graphics.setFont(font)
+    game.towerPlacement.towers = {}
+    game.creatures.resetCreatureStore()
+    game.map.load()
+    game.towerPlacement.load()
+
+    game.creatures.load()
+    game.manager.load()
+    game.gameOverScreen.load()
+    game.enemyAi.load()
+    game.powerUps.load()
+    love.update(dt)
+end

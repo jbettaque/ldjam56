@@ -1,17 +1,7 @@
 game.manager = {}
 require("game.towerPlacement")
-game.manager.player1 = {
-    money = 200,
-    trickle = 1
-}
-game.manager.player2 = {
-    money = 200,
-    trickle = 1
-}
-game.manager.playerWon = 0
 
 local trickleCooldown = 0
-
 function game.manager.addMoney(money, player)
     if player == 1 then
         game.manager.player1.money = game.manager.player1.money + money
@@ -36,6 +26,16 @@ function game.manager.isEnoughMoney(money, player)
 end
 
 function game.manager.load()
+    game.manager.player1 = {
+        money = 200,
+        trickle = 1
+    }
+    game.manager.player2 = {
+        money = 200,
+        trickle = 1
+    }
+    game.manager.playerWon = 0
+
 
 end
 
@@ -65,7 +65,6 @@ end
 function game.manager.checkForGameOver()
     local p1Count = 0
     local p2Count = 0
-
     for i, tower in ipairs(game.towerPlacement.towers) do
         if tower.player == 1 then
             p1Count = p1Count + 1
