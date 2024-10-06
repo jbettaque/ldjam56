@@ -2,7 +2,7 @@ local powerUps = {}
 local activePowerUps = {}
 
 local powerUpSpawnTimer = 0
-local powerUpSpawnInterval = 1
+local powerUpSpawnInterval = 10
 local powerUpLifetime = 3
 
 local powerUpTypes = {
@@ -12,23 +12,26 @@ local powerUpTypes = {
             game.manager.addMoney(100, 1)
             print("Coin collected!")
         end,
-        lifetime = powerUpLifetime
+        lifetime = powerUpLifetime,
+        weight = 70-- % Wahrscheinlichkeit
     },
     noDMG = {
-      image = love.graphics.newImage("game/Sprites/noDMG.png"),
-       effect = function()
-           game.creatures.applyHealthBoostToPlayer(1, 10, 10)
-         print("No DMG Power-Up collected!")
-       end,
-       lifetime = powerUpLifetime
-   },
+        image = love.graphics.newImage("game/Sprites/noDMG.png"),
+        effect = function()
+            game.creatures.applyHealthBoostToPlayer(1, 10, 10)
+            print("No DMG Power-Up collected!")
+        end,
+        lifetime = powerUpLifetime,
+        weight = 10 -- % Wahrscheinlichkeit
+    },
     speedBoost = {
         image = love.graphics.newImage("game/Sprites/SpeedBoost.png"),
         effect = function()
             print("Speed Boost collected!")
             game.creatures.applySpeedBoostToPlayer(1, 10, 5)
         end,
-        lifetime = powerUpLifetime
+        lifetime = powerUpLifetime,
+        weight = 10 -- % Wahrscheinlichkeit
     },
     doubleDMG = {
         image = love.graphics.newImage("game/Sprites/doubleDMG.png"),
@@ -36,21 +39,39 @@ local powerUpTypes = {
             print("Double DMG collected!")
             game.creatures.applyDoubleDamageToPlayer(1, 2, 10)
         end,
-        lifetime = powerUpLifetime
+        lifetime = powerUpLifetime,
+        weight = 10 --  % Wahrscheinlichkeit
     }
 }
 
 function powerUps.load()
 end
 
+
+local function choosePowerUp()
+    local totalWeight = 0
+    for _, powerUp in pairs(powerUpTypes) do
+        totalWeight = totalWeight + powerUp.weight
+    end
+
+    local randomWeight = love.math.random(0, totalWeight)
+    local cumulativeWeight = 0
+
+    for key, powerUp in pairs(powerUpTypes) do
+        cumulativeWeight = cumulativeWeight + powerUp.weight
+        if randomWeight <= cumulativeWeight then
+            return key
+        end
+    end
+end
+
 function powerUps.spawnPowerUp()
-    local powerUpKeys = {"coin", "noDMG", "speedBoost","doubleDMG"}
-    local chosenType = powerUpKeys[love.math.random(#powerUpKeys)]
+    local chosenType = choosePowerUp()
 
     local add_x = love.math.random(1, love.graphics.getWidth())
     local add_y = love.math.random(1, love.graphics.getHeight())
 
-    print("PowerUp:" .. chosenType .. "  Spawned at: X:" .. add_x.. "  Y:" .. add_y)
+    print("PowerUp: " .. chosenType .. " Spawned at: X:" .. add_x .. " Y:" .. add_y)
 
     local powerUp = {
         type = chosenType,
@@ -67,7 +88,6 @@ function powerUps.update(dt)
         powerUps.spawnPowerUp()
         powerUpSpawnTimer = 0
     end
-
 
     for i = #activePowerUps, 1, -1 do
         activePowerUps[i].lifetime = activePowerUps[i].lifetime - dt
