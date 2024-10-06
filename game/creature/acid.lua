@@ -2,12 +2,12 @@ game.creature.acid = {}
 
 game.creature.acid.health = 20
 game.creature.acid.meleeDamage = 0
-game.creature.acid.rangedDamage = 30
+game.creature.acid.rangedDamage = 1
 game.creature.acid.speed = 0.3
 game.creature.acid.cooldown = 2.5
-game.creature.acid.range = 150
+game.creature.acid.range = 30
 game.creature.acid.bombRange = 100
-game.creature.acid.backOffDistance = 100
+game.creature.acid.backOffDistance = 1
 
 
 function game.creature.acid.attack(dt, creature, creatureStore)

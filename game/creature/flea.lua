@@ -8,6 +8,8 @@ game.creature.flea.cooldown = 1.2
 game.creature.flea.range = 150
 game.creature.flea.backOffDistance = 75
 
+local fleaImage = love.graphics.newImage("game/Sprites/Flea_Granade_Shooter.png")
+
 function game.creature.flea.attack(dt, creature, creatureStore)
     if creature.currentCooldown == 0 then
         local nearestEnemy = game.creature.default.findNearestEnemy(creature, creatureStore)
@@ -89,9 +91,6 @@ function game.creature.flea.move(dt, creature, creatureStore)
         end
     end
 end
-
-local fleaImage = love.graphics.newImage("game/Sprites/Flea_Granade_Shooter.png")
-
 
 function game.creature.flea.draw(creature)
     love.graphics.setColor(1, 1, 1)
