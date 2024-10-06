@@ -21,8 +21,8 @@ end
 
 function love.load()
     print("running on " .. love.system.getOS())
-    love.window.setMode(1920, 1080)
-
+    love.window.setMode(1080, 880)
+    game.towerPlacement.load()
     game.manager.load()
     game.creatures.load()
 

@@ -1,6 +1,6 @@
 game.manager = {}
 game.manager.player1 = {
-    money = 200
+    money = 300
 }
 game.manager.player2 = {
     money = 200
@@ -34,6 +34,7 @@ function game.manager.load()
 end
 
 function game.manager.update(dt)
+
 end
 
 function game.manager.draw()
