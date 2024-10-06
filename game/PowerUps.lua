@@ -34,7 +34,6 @@ local powerUpTypes = {
 function powerUps.load()
 end
 
-
 function powerUps.spawnPowerUp()
     local powerUpKeys = {"coin", "noDMG", "speedBoost"}
     local chosenType = powerUpKeys[love.math.random(#powerUpKeys)]
