@@ -1,8 +1,8 @@
 game.creature.bomber = {}
 
-game.creature.bomber.health = 20
+game.creature.bomber.health = 200
 game.creature.bomber.meleeDamage = 0
-game.creature.bomber.rangedDamage = 30
+game.creature.bomber.rangedDamage = 40
 game.creature.bomber.speed = 0.3
 game.creature.bomber.cooldown = 2.5
 game.creature.bomber.range = 150

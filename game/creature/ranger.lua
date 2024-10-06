@@ -1,6 +1,6 @@
 game.creature.ranger = {}
 
-game.creature.ranger.health = 50
+game.creature.ranger.health = 150
 game.creature.ranger.meleeDamage = 0
 game.creature.ranger.rangedDamage = 10
 game.creature.ranger.speed = 0.7
