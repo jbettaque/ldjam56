@@ -48,6 +48,7 @@ function game.manager.update(dt)
     game.manager.playerWon = game.manager.checkForGameOver()
 
     if game.manager.playerWon ~= 0 then
+
         endGame()
     end
 end
@@ -77,6 +78,7 @@ function game.manager.checkForGameOver()
 
     if p1Count == 0 then
         print("Player 2 wins")
+
         return 2
     end
 

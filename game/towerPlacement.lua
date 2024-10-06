@@ -31,7 +31,7 @@ function initiateLaserTurrets()
         y = 300,
         spawnType = "skelleton",
         player = 1,
-        health = 3000,
+        health = 3,
         maxHealth = 3000,
         powerLv = 1,
         speedLv = 1,

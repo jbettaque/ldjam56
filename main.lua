@@ -73,6 +73,7 @@ function love.draw()
         mainMenu.changePlayButtonText("Resume Game")
         mainMenu.draw()
     elseif currentState == "gameover" then
+
         game.gameOverScreen.draw()
         mainMenu.changePlayButtonText("Start new Game")
     elseif currentState == "game" then
