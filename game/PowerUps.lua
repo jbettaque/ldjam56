@@ -2,7 +2,7 @@ local powerUps = {}
 local activePowerUps = {}
 
 local powerUpSpawnTimer = 0
-local powerUpSpawnInterval = 2
+local powerUpSpawnInterval = 10
 local powerUpLifetime = 3
 
 local powerUpTypes = {
@@ -26,7 +26,7 @@ local powerUpTypes = {
         image = love.graphics.newImage("game/Sprites/SpeedBoost.png"),
         effect = function()
             print("Speed Boost collected!")
-            game.creatures.applySpeedBoostToPlayer(1, 10, 10)
+            game.creatures.applySpeedBoostToPlayer(1, 10, 5)
         end,
         lifetime = powerUpLifetime
     }
