@@ -1,10 +1,12 @@
 game.tMenu = {}
-local menuTileX = 40
-local menuTileY = 40
+local menuTileX = 80
+local menuTileY = 60
 local gap = 5
 local activeMenus = {}
 local hoveredTile = nil
 local selectedTower = nil
+
+
 
 require("game/utils")
 -- Menu configurations
@@ -34,7 +36,6 @@ menuTypes = {
         drawItem = function(item, x, y, width, height)
             -- Draw tile name
             love.graphics.setColor(0, 0, 0)
-
 
             love.graphics.printf(
                     item,
@@ -93,11 +94,10 @@ menuTypes = {
                     width,
                     "center"
             )
-            love.graphics.setColor(1, 1, 1)
             love.graphics.printf(
                     "Cost: " .. 20 * (selectedTower.powerLv + selectedTower.speedLv + selectedTower.healthLv) + 10,
                     x,
-                    y + height / 2 + 20,
+                    y + height / 2 - 20,
                     width,
                     "center"
             )
