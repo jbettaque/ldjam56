@@ -39,6 +39,7 @@ end
 function game.creature.default.draw(creature)
     if game.creature[creature.type].draw then
         game.creature[creature.type].draw(creature)
+
     else
         if creature.player == 1 then
             love.graphics.setColor(0, 0, 1)
@@ -50,10 +51,15 @@ function game.creature.default.draw(creature)
 
     if (creature.health < game.creature[creature.type].health) then
         local healthbarColor = creature.health / game.creature[creature.type].health
-        love.graphics.setColor(0.5, healthbarColor, 0)
+        if creature.player == 1 then
+            love.graphics.setColor(0, healthbarColor, 1)
+        else
+            love.graphics.setColor(1, healthbarColor, 0)
+        end
         love.graphics.rectangle("fill", creature.x - 10, creature.y - 15, creature.health / game.creature[creature.type].health * 20, 5)
         love.graphics.setColor(1, 1, 1)
         love.graphics.rectangle("line", creature.x - 10, creature.y - 15, 20, 5)
+
 
     end
 
