@@ -48,6 +48,7 @@ function love.load()
     mainMenu.load(switchToGame)
 
     game.enemyAi.load()
+    game.tMenu.load()
 
     game.powerUps.load()
 end
