@@ -23,8 +23,8 @@
         - [x] functionality
         - [x] sprite
       - [ ] horde
-        - [ ] functionality
-        - [ ] sprite
+        - [x] functionality
+        - [x] sprite
     - [ ] ranged
       - [ ] egg
         - [x] functionality
@@ -47,11 +47,11 @@
         - [ ] sprite
     - [ ] magic
       - [ ] ghost
-        - [ ] functionality
+        - [x] functionality
         - [x] sprite
       - [ ] fairy
-        - [ ] functionality
-        - [ ] sprite
+        - [x] functionality
+        - [x] sprite
       - [x] zombie
         - [x] functionality
         - [x] sprite
@@ -91,12 +91,12 @@
 - [ ] balancing
   - [ ] better system for balancing cost of buildings/upgrades
 - [x] fix bug where sometimes buildings are not placed
-- [ ] implement nexus in a better way
+- [x] implement nexus in a better way
 - [ ] rock-paper-scissors system for creatures
 - [ ] tutorial
 - [ ] better graphics
   - [ ] sprites for creatures and buildings
   - [ ] animations
-    - [ ] on-hit
+    - [x] on-hit
     - [ ] death
-    - [ ] ranged attack (maybe projectile?)
+    - [x] ranged attack (maybe projectile?)

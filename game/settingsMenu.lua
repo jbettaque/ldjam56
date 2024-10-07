@@ -6,7 +6,7 @@ settingsMenu.buttons = {}
 
 local racket = love.audio.newSource("game/SFX/Racket.mp3", "static")
 
-mapsize = 2
+mapsize = 1
 
 local function newButton(text, fn)
     return {

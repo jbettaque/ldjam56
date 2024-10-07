@@ -30,8 +30,8 @@ end
 function switchToMainMenu()
     mainMenu.currentMenu = "main"
 end
-screenWidth = 1080
-screenHeight = 720
+screenWidth = 1920
+screenHeight = 1080
 
 
 function love.load()
@@ -110,6 +110,9 @@ function love.draw()
 
     elseif currentState == "game" then
 
+        font = love.graphics.newFont(12)
+        love.graphics.setFont(font)
+
         game.map.draw()
         game.creatures.draw()
         game.towerPlacement.draw()
@@ -166,6 +169,7 @@ function resetGame()
     font = love.graphics.newFont(12)
     love.graphics.setFont(font)
     game.towerPlacement.towers = {}
+
     game.creatures.resetCreatureStore()
     game.map.load()
     game.towerPlacement.load()

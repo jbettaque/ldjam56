@@ -31,7 +31,7 @@ function initiateLaserTurrets()
         y = 300,
         spawnType = "skelleton",
         player = 1,
-        health = 3,
+        health = 3000,
         maxHealth = 3000,
         powerLv = 1,
         speedLv = 1,
@@ -150,6 +150,9 @@ towerConfig = {
         end
     }
 }
+function game.towerPlacement.getTowerConfig()
+    return towerConfig
+end
 function game.towerPlacement.changeType(type)
     local config = towerConfig[type]
     game.towerPlacement.currentPlacingTower.type = type
@@ -203,13 +206,66 @@ function game.towerPlacement.draw()
     game.towerPlacement.drawLaserTurret()
 end
 
+local defaultFont = love.graphics.getFont() -- Store the default font size
+local smallFont = love.graphics.newFont(8) -- Smaller font size (10 px, example)
 
 function game.towerPlacement.drawTowers()
 
     for i, tower in ipairs(game.towerPlacement.towers) do
         drawTower(tower, "fill")
-        love.graphics.setColor(1, 0, 0) -- Weiß für den Text
-        love.graphics.print("Lv: " .. tower.powerLv + tower.speedLv + tower.healthLv, tower.x + 25, tower.y - 10)
+        love.graphics.setColor(1, 0, 0)
+
+        -- Calculate the width and height of each line of text
+        local totalText = "Lv: " .. (tower.type ~= "mine" and (tower.powerLv + tower.speedLv + tower.healthLv) or 1)
+        local powerText = "Power: " .. (tower.powerLv or 0)
+        local speedText = "Speed: " .. (tower.speedLv or 0)
+        local healthText = "Health: " .. (tower.healthLv or 0)
+
+        -- Set the font to measure text accurately
+        love.graphics.setFont(defaultFont)
+        local totalTextWidth = defaultFont:getWidth(totalText)
+        love.graphics.setFont(smallFont)
+        local subTextWidth = math.max(smallFont:getWidth(powerText), smallFont:getWidth(speedText), smallFont:getWidth(healthText))
+
+        -- Calculate rectangle size based on the widest text and total height of all lines
+        local bgWidth = math.max(totalTextWidth, subTextWidth) + 10 -- add padding
+        local bgHeight
+        if tower.type ~= "mine" then
+            bgHeight = defaultFont:getHeight() + 3 * smallFont:getHeight() + 15 -- include spacing and padding for sub-levels
+        else
+            bgHeight = defaultFont:getHeight() + 10 -- padding for "Lv: 1" only
+        end
+        local cornerRadius = 8 -- Corner radius for rounded corners
+
+        -- Draw the background with rounded corners
+        love.graphics.setColor(0.2, 0.2, 0.2, 0.8) -- Dark, semi-transparent background
+        love.graphics.rectangle("fill", tower.x + 30, tower.y - 15, bgWidth, bgHeight, cornerRadius, cornerRadius)
+        love.graphics.setColor(1, 1, 1, 1) -- Dark, semi-transparent background
+        love.graphics.rectangle("line", tower.x + 30, tower.y - 15, bgWidth, bgHeight, cornerRadius, cornerRadius)
+        -- Display the text content
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.setFont(defaultFont)
+
+        if tower.type ~= "mine" then
+            -- Display total level (default font size)
+            love.graphics.print(totalText, tower.x + 35, tower.y - 10)
+
+            -- Display sub-levels in smaller font size
+            love.graphics.setFont(smallFont)
+            love.graphics.setColor(0.8, 0, 0)
+            love.graphics.print(powerText, tower.x + 35, tower.y + 5)
+            love.graphics.setColor(0, 0, 0.8)
+            love.graphics.print(speedText, tower.x + 35, tower.y + 14)
+            love.graphics.setColor(0, 0.8, 0)
+            love.graphics.print(healthText, tower.x + 35, tower.y + 23)
+        else
+            -- Display only "Lv: 1" for mines
+            love.graphics.print("Lv: 1", tower.x + 35, tower.y - 10)
+        end
+
+        -- Reset font to default
+        love.graphics.setFont(defaultFont)
+        love.graphics.setColor(1, 0, 0) -- Reset color for other drawings
 
         if tower.currentSpawnCooldown > 0 then
             love.graphics.setColor(1, 1, 1)
@@ -268,6 +324,7 @@ end
 function game.towerPlacement.placeTowerForAi(x, y, towerType, player)
     local newTower = game.towerPlacement.createTower(x, y, towerType, player)
     game.towerPlacement.addTower(newTower)
+    return newTower
 end
 
 function game.towerPlacement.handleLaserTurret(tower, dt)
