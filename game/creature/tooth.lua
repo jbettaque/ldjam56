@@ -14,8 +14,8 @@ function game.creature.tooth.attack(dt, creature, creatureStore)
 
         if nearestEnemy then
             local distance = math.sqrt((creature.x - nearestEnemy.x)^2 + (creature.y - nearestEnemy.y)^2)
-            if distance < game.creature.egg.range and distance > 20 then
-                creature.currentCooldown = game.creature.egg.cooldown
+            if distance < game.creature.tooth.range and distance > 20 then
+                creature.currentCooldown = game.creature.tooth.cooldown
                 creature.attacking = nearestEnemy
                 -- Schaden zufügen und die zentrale Funktion aufrufen
                 game.creature.default.damage(nearestEnemy, creature.rangedDamage)
@@ -90,13 +90,6 @@ function game.creature.tooth.draw(creature)
         love.graphics.setColor(1, 0, 0)
     end
     love.graphics.circle("fill", creature.x, creature.y, 10)
-
-    if creature.attacking then
-        if creature.attacking.health > 0 then
-            love.graphics.setColor(1, 0, 0)
-            love.graphics.line(creature.x, creature.y, creature.attacking.x, creature.attacking.y)
-        end
-    end
 
     local projectiles = creature.projectiles or {}
     for _, projectile in ipairs(projectiles) do

@@ -2,11 +2,11 @@ game.creature.flea = {}
 
 game.creature.flea.health = 150
 game.creature.flea.meleeDamage = 0
-game.creature.flea.rangedDamage = 10
+game.creature.flea.rangedDamage = 2
 game.creature.flea.speed = 0.7
-game.creature.flea.cooldown = 1.2
-game.creature.flea.range = 150
-game.creature.flea.backOffDistance = 75
+game.creature.flea.cooldown = 0.2
+game.creature.flea.range = 350
+game.creature.flea.backOffDistance = 100
 
 local fleaImage = love.graphics.newImage("game/Sprites/Flea_Granade_Shooter.png")
 
@@ -17,17 +17,26 @@ function game.creature.flea.attack(dt, creature, creatureStore)
         if nearestEnemy then
             local distance = math.sqrt((creature.x - nearestEnemy.x)^2 + (creature.y - nearestEnemy.y)^2)
             if distance < game.creature.flea.range and distance > 20 then
-                -- Set the attack cooldown
                 creature.currentCooldown = game.creature.flea.cooldown
                 creature.attacking = nearestEnemy
-
-                -- Deal ranged damage and call centralized damage function
+                -- Schaden zufügen und die zentrale Funktion aufrufen
                 game.creature.default.damage(nearestEnemy, creature.rangedDamage)
-
-                -- Reset attacking target if the enemy is defeated
+                -- Überprüfen, ob der Gegner zerstört wurde (falls health <= 0 in der damage Funktion gehandhabt wird)
                 if nearestEnemy.health <= 0 then
                     creature.attacking = nil
                 end
+
+                local projectile = {
+                    x = creature.x,
+                    y = creature.y,
+                    target = nearestEnemy,
+                    speed = 7,
+                    damage = creature.rangedDamage
+                }
+
+                creature.projectiles = creature.projectiles or {}
+                table.insert(creature.projectiles, projectile)
+
             end
         end
     end
@@ -86,5 +95,22 @@ function game.creature.flea.draw(creature)
     end
 
     love.graphics.draw(fleaImage, transform)
+
+    local projectiles = creature.projectiles or {}
+    for _, projectile in ipairs(projectiles) do
+        game.creature.flea.drawProjectile(projectile)
+    end
+
+end
+
+function game.creature.flea.drawProjectile(projectile)
+    love.graphics.setColor(0.3, 1, 0.2)
+
+    for i = 1, 10 do
+        local randomX = love.math.random(-5, 5)
+        local randomY = love.math.random(-5, 5)
+        love.graphics.circle("fill", projectile.x + randomX, projectile.y + randomY, 2)
+    end
+
 
 end

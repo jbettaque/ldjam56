@@ -27,6 +27,22 @@ function initiateLaserTurrets()
 
     table.insert(game.towerPlacement.towers,     {
         id = 2,
+        x = screenWidth - 100,
+        y = screenHeight/2,
+        spawnType = "tooth",
+        player = 2,
+        health = 3000,
+        maxHealth = 3000,
+        powerLv = 1,
+        speedLv = 1,
+        healthLv = 1,
+        spawningCooldown = 10,
+        currentSpawnCooldown = 0,
+        laserTurret = false
+    })
+
+    table.insert(game.towerPlacement.towers,     {
+        id = 3,
         x = 100,
         y = 300,
         spawnType = "skelleton",
