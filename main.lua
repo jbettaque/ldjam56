@@ -42,8 +42,8 @@ end
 screenWidth = 1080
 screenHeight = 720
 
-music1 = love.audio.newSource("game/SFX/Audio/Music/LOOP_1_LD56.wav", "stream")
-music2 = love.audio.newSource("game/SFX/Audio/Music/LOOP_2_LD56.wav", "stream")
+music1 = love.audio.newSource("game/SFX/Audio/Music/LOOP_1_LD56.mp3", "stream")
+music2 = love.audio.newSource("game/SFX/Audio/Music/LOOP_2_LD56.mp3", "stream")
 
 function love.load()
     print("running on " .. love.system.getOS())
