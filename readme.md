@@ -20,6 +20,10 @@
 8. [License](#license)
 9. [Contact](#contact)
 
+## Game Releases
+---------------
+[![Releases](https://img.shields.io/badge/Releases-View%20Releases-blue?style=flat-square)](https://github.com/jbettaque/ldjam56/releases)
+
 ## Game Description
 ---------------
 
@@ -90,4 +94,4 @@ If you'd like to contribute to the game, please fork the repository and submit a
 ### Reporting Issues
 -----------------
 
-If you encounter any issues while playing the game, please report them to us at [bettaque@gmail.com]. We'll do our best to resolve the issue as quickly as possible.
+If you encounter any issues while playing the game, please report them to us at [bettaque@gmail.com]. We'll probably do our best to resolve the issue as quickly as possible.
