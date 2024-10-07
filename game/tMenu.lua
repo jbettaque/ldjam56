@@ -32,7 +32,7 @@ menuTypes = {
             end
 
 
-
+            game.tMenu.playTowerPlacementSound(towerType)
 
         end,
         beforeOpen = function(x, y)
@@ -416,5 +416,4 @@ function game.tMenu.playTowerPlacementSound(towerType)
     if towerSounds[towerType] then
         towerSounds[towerType]:play()
     end
-
 end
