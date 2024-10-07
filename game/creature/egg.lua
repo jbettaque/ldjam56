@@ -7,7 +7,7 @@ game.creature.egg.speed = 0.7
 game.creature.egg.cooldown = 1.2
 game.creature.egg.range = 150
 game.creature.egg.backOffDistance = 75
-
+local eggImage = love.graphics.newImage("game/Sprites/Egg_Thrower.png")
 function game.creature.egg.attack(dt, creature, creatureStore)
     if creature.currentCooldown == 0 then
         local nearestEnemy = game.creature.default.findNearestEnemy(creature, creatureStore)
@@ -96,22 +96,17 @@ end
 
 function game.creature.egg.draw(creature)
 
-    if creature.player == 1 then
-        love.graphics.setColor(0, 0, 1)
-    else
+
+    love.graphics.setColor(1, 1, 1)
+    if creature.damaged and creature.damaged > 0 then
         love.graphics.setColor(1, 0, 0)
     end
-    love.graphics.circle("fill", creature.x, creature.y, 10)
-    --
-    --if creature.attacking then
-    --    if creature.attacking.health > 0 then
-    --        love.graphics.setColor(1, 0, 0)
-    --        love.graphics.line(creature.x, creature.y, creature.attacking.x, creature.attacking.y)
-    --    end
-    --
-    --
-    --
-    --end
+    local transform = love.math.newTransform(creature.x, creature.y, 0, 0.20, 0.20, 32, 32)
+    if (creature.player == 1) then
+        transform:scale(1, 1)
+    end
+
+    love.graphics.draw(eggImage, transform)
 
     local projectiles = creature.projectiles or {}
     for _, projectile in ipairs(projectiles) do
@@ -119,7 +114,6 @@ function game.creature.egg.draw(creature)
     end
 
 end
-
 
 function game.creature.egg.drawProjectile(projectile)
     love.graphics.setColor(1, 1, 1)

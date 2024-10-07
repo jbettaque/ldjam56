@@ -15,7 +15,7 @@ tutorialConfig = {
             drawPlayAreas()
 
             --love.graphics.print(tutorialText[currentTutorial], screenWidth/2 - font:getWidth(tutorialText[currentTutorial])/2, screenHeight/6)
-            drawText("Welcome to the game! \nLeft click in the highlighted Blue area to Place a tower to spawn creatures.\n\nMines generate mine and others spawn creatures")
+            drawText("Left click in the highlighted Blue area to Place a tower to spawn creatures.\nYou cant place towers on top of other towers\n\nCenter of play area is the main hq\nMines generate coin and others spawn creatures")
             drawText("Red area is enemies area, where enemy places tower", screenWidth/1.5 , screenHeight/1.3)
         end,
         update = function(dt)
