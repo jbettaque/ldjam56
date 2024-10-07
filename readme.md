@@ -71,7 +71,7 @@ Prepare for an addictive gaming experience that combines the thrill of base-buil
 
 * **Code & Game Design**: [Jo Bettaque](https://github.com/jbettaque), sheaksadi, Phillip, Immi
 * **Graphics**: Stephen
-* **Music & Sounds**: Markus, Sascha
+* **Music & Sounds**: Markus Maiwald, Sascha Kirschberger
 * 
 ## Special Thanks
 --------------
