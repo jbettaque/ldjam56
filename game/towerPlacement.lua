@@ -31,7 +31,7 @@ function initiateLaserTurrets()
         y = 300,
         spawnType = "skelleton",
         player = 1,
-        health = 3000,
+        health = 3,
         maxHealth = 3000,
         powerLv = 1,
         speedLv = 1,
@@ -44,6 +44,8 @@ end
 game.towerPlacement.towerTypes = {"aoe", "range", "mage", "infantry", "mine"}
 game.powerType = {1, 2, 3}
 game.towerPlacement.currentPlacingTower = nil
+
+local aoeImage = love.graphics.newImage("game/Sprites/AOE_Building.png")
 
 -- Tower type definitions
 towerConfig = {
@@ -59,7 +61,9 @@ towerConfig = {
         possibleSpawnTypes = {"kamikaze", "electro", "acid"},
         spawningCooldown = 5,
         draw = function(tower, mode)
-            love.graphics.circle(mode, tower.x, tower.y, 20)
+            love.graphics.setColor(1, 1, 1)
+            -- draw tower in the middle of the tile
+            love.graphics.draw(aoeImage, tower.x, tower.y, 0, 0.4, 0.4, 300, 400)
         end,
         checkClick = function(x, y, tower)
             local distance = math.sqrt((x - tower.x)^2 + (y - tower.y)^2)
@@ -75,7 +79,7 @@ towerConfig = {
         radius = 20,
         cost = 100,
         spawnType = "ghost",
-        possibleSpawnTypes = {"ghost", "ghost", "ghost"},
+        possibleSpawnTypes = {"ghost", "zombie", "toothFairy"},
         spawningCooldown = 5,
         draw = function(tower, mode)
             love.graphics.circle(mode, tower.x, tower.y, 20)
@@ -277,6 +281,7 @@ function game.towerPlacement.handleLaserTurret(tower, dt)
                 local distance = math.sqrt((creature.x - tower.x)^2 + (creature.y - tower.y)^2)
                 if distance <= 100 then
                     creature.health = creature.health - 1
+                    game.creature.default.damage(nearestEnemy, creature.meleeDamage)
                     if creature.health <= 0 then
                         table.remove(getCreatureStore(), j)
                         if creature.player == 1 then

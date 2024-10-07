@@ -20,6 +20,8 @@ require("game/creature/skelleton")
 
 --MAGIC
 require("game/creature/ghost")
+require("game/creature/zombie")
+require("game/creature/toothFairy")
 
 
 
@@ -168,4 +170,10 @@ function game.creatures.spawnCreature(type, x, y, player, powerLv, healthLv)
     table.insert(creatureStore, newCreature)
 end
 
+function game.creatures.resetCreatureStore()
+    creatureStore = {}
+end
 
+function game.creatures.getCreatureStore()
+    return creatureStore
+end

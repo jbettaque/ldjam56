@@ -2,7 +2,7 @@ local powerUps = {}
 local activePowerUps = {}
 
 local powerUpSpawnTimer = 0
-local powerUpSpawnInterval = 10
+local powerUpSpawnInterval = 1
 local powerUpLifetime = 3
 
 local powerUpTypes = {

@@ -8,6 +8,8 @@ game.creature.flea.cooldown = 1.2
 game.creature.flea.range = 150
 game.creature.flea.backOffDistance = 75
 
+local fleaImage = love.graphics.newImage("game/Sprites/Flea_Granade_Shooter.png")
+
 function game.creature.flea.attack(dt, creature, creatureStore)
     if creature.currentCooldown == 0 then
         local nearestEnemy = game.creature.default.findNearestEnemy(creature, creatureStore)
@@ -15,36 +17,20 @@ function game.creature.flea.attack(dt, creature, creatureStore)
         if nearestEnemy then
             local distance = math.sqrt((creature.x - nearestEnemy.x)^2 + (creature.y - nearestEnemy.y)^2)
             if distance < game.creature.flea.range and distance > 20 then
+                -- Set the attack cooldown
                 creature.currentCooldown = game.creature.flea.cooldown
                 creature.attacking = nearestEnemy
-                nearestEnemy.health = nearestEnemy.health - creature.rangedDamage
-                if nearestEnemy.health <= 0 then
-                    for i, otherCreature in ipairs(creatureStore) do
-                        if otherCreature == nearestEnemy then
-                            table.remove(creatureStore, i)
-                            if nearestEnemy.player == 1 then
-                                game.manager.player2.money = game.manager.player2.money + 5
-                            else
-                                game.manager.player1.money = game.manager.player1.money + 5
-                            end
-                            creature.attacking = nil
-                            break
-                        end
-                    end
 
-                    for i, tower in ipairs(game.towerPlacement.towers) do
-                        if tower == nearestEnemy then
-                            table.remove(game.towerPlacement.towers, i)
-                            creature.attacking = nil
-                            break
-                        end
-                    end
+                -- Deal ranged damage and call centralized damage function
+                game.creature.default.damage(nearestEnemy, creature.rangedDamage)
+
+                -- Reset attacking target if the enemy is defeated
+                if nearestEnemy.health <= 0 then
+                    creature.attacking = nil
                 end
             end
         end
-
     end
-
 end
 
 
@@ -90,19 +76,15 @@ function game.creature.flea.move(dt, creature, creatureStore)
 end
 
 function game.creature.flea.draw(creature)
-
-    if creature.player == 1 then
-        love.graphics.setColor(0, 0, 1)
-    else
+    love.graphics.setColor(1, 1, 1)
+    if creature.damaged and creature.damaged > 0 then
         love.graphics.setColor(1, 0, 0)
     end
-    love.graphics.circle("fill", creature.x, creature.y, 10)
-
-    if creature.attacking then
-        if creature.attacking.health > 0 then
-            love.graphics.setColor(1, 0, 0)
-            love.graphics.line(creature.x, creature.y, creature.attacking.x, creature.attacking.y)
-        end
+    local transform = love.math.newTransform(creature.x, creature.y, 0, 0.2, 0.2, 32, 32)
+    if (creature.player == 2) then
+        transform:scale(-1, 1)
     end
+
+    love.graphics.draw(fleaImage, transform)
 
 end

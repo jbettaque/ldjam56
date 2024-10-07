@@ -17,34 +17,15 @@ function game.creature.egg.attack(dt, creature, creatureStore)
             if distance < game.creature.egg.range and distance > 20 then
                 creature.currentCooldown = game.creature.egg.cooldown
                 creature.attacking = nearestEnemy
-                nearestEnemy.health = nearestEnemy.health - creature.rangedDamage
+                -- Schaden zufügen und die zentrale Funktion aufrufen
+                game.creature.default.damage(nearestEnemy, creature.rangedDamage)
+                -- Überprüfen, ob der Gegner zerstört wurde (falls health <= 0 in der damage Funktion gehandhabt wird)
                 if nearestEnemy.health <= 0 then
-                    for i, otherCreature in ipairs(creatureStore) do
-                        if otherCreature == nearestEnemy then
-                            table.remove(creatureStore, i)
-                            if nearestEnemy.player == 1 then
-                                game.manager.player2.money = game.manager.player2.money + 5
-                            else
-                                game.manager.player1.money = game.manager.player1.money + 5
-                            end
-                            creature.attacking = nil
-                            break
-                        end
-                    end
-
-                    for i, tower in ipairs(game.towerPlacement.towers) do
-                        if tower == nearestEnemy then
-                            table.remove(game.towerPlacement.towers, i)
-                            creature.attacking = nil
-                            break
-                        end
-                    end
+                    creature.attacking = nil
                 end
             end
         end
-
     end
-
 end
 
 

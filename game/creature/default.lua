@@ -9,6 +9,13 @@ function game.creature.default.update(dt, creature, creatureStore)
         end
     end
 
+    if creature.damaged and creature.damaged > 0 then
+        creature.damaged = creature.damaged - dt
+        if creature.damaged < 0 then
+            creature.damaged = 0
+        end
+    end
+
     if game.creature[creature.type].move then
         game.creature[creature.type].move(dt, creature, creatureStore)
     else
@@ -32,8 +39,6 @@ function game.creature.default.draw(creature)
             love.graphics.setColor(1, 0, 0)
         end
         love.graphics.circle("fill", creature.x, creature.y, 10, 5)
-
-
     end
 
     if (creature.health < game.creature[creature.type].health) then
@@ -400,8 +405,10 @@ function game.creature.default.attack(dt, creature, creatureStore)
     if creature.currentCooldown == 0 then
         local nearestEnemy = game.creature.default.findNearestEnemy(creature, creatureStore)
         if nearestEnemy then
+
             local distance = math.sqrt((creature.x - nearestEnemy.x)^2 + (creature.y - nearestEnemy.y)^2)
             if distance < 20 then
+                game.creature.default.damage(nearestEnemy, creature.meleeDamage)
                 nearestEnemy.health = nearestEnemy.health - creature.meleeDamage
                 creature.currentCooldown = game.creature[creature.type].cooldown
                 if nearestEnemy.health <= 0 then
@@ -429,4 +436,39 @@ function game.creature.default.attack(dt, creature, creatureStore)
         end
     end
 
+end
+
+
+function game.creature.default.damage(creature, damage)
+    if not creature then
+        return
+    end
+ local creatureStore = game.creatures.getCreatureStore()
+    creature.damaged = 0.1
+    creature.health = creature.health - damage
+
+    -- check if creature dies
+    if creature.health <= 0 then
+        -- remove creature from creatureStore
+        for i, otherCreature in ipairs(creatureStore) do
+            if otherCreature == creature then
+                table.remove(creatureStore, i)
+                -- add money to the attacking player
+                if creature.player == 1 then
+                    game.manager.player2.money = game.manager.player2.money + 5
+                else
+                    game.manager.player1.money = game.manager.player1.money + 5
+                end
+                break
+            end
+        end
+
+        -- remove tower
+        for i, tower in ipairs(game.towerPlacement.towers) do
+            if tower == creature then
+                table.remove(game.towerPlacement.towers, i)
+                break
+            end
+        end
+    end
 end

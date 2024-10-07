@@ -7,6 +7,48 @@ game.map.editorMode = false
 
 local LINE_THICKNESS = 5
 local bgImage = love.graphics.newImage("game/Sprites/Map.png")
+mapsize  = 1
+
+
+game.map.areaEffects = {
+
+}
+
+function game.map.addAreaEffect(x, y, radius, effect, ttl, color, owner)
+    local newAreaEffect = {
+        x = x,
+        y = y,
+        radius = radius,
+        effect = effect,
+        ttl = ttl,
+        color = color,
+        owner = owner,
+    }
+    table.insert(game.map.areaEffects, newAreaEffect)
+end
+
+function game.map.handleAreaEffects(dt)
+    for i, effect in ipairs(game.map.areaEffects) do
+        effect.ttl = effect.ttl - dt
+        if effect.ttl <= 0 then
+            table.remove(game.map.areaEffects, i)
+        end
+
+        for j, creature in ipairs(getCreatureStore()) do
+            if math.sqrt((creature.x - effect.x)^2 + (creature.y - effect.y)^2) < effect.radius + 20 then
+                effect.effect(creature, effect.owner)
+            end
+        end
+    end
+end
+
+
+function game.map.drawAreaEffects()
+    for i, effect in ipairs(game.map.areaEffects) do
+        love.graphics.setColor(effect.color)
+        love.graphics.circle("fill", effect.x, effect.y, effect.radius)
+    end
+end
 
 function game.map.createObstacle(x, y, width, height)
     local newObstacle = {
@@ -75,6 +117,7 @@ function game.map.mousepressed(x, y, button)
     end
 end
 function game.map.update(dt)
+    game.map.handleAreaEffects(dt)
 end
 function game.map.load()
 
@@ -91,14 +134,26 @@ function game.map.draw()
 
 
     love.graphics.setColor(1, 1, 1)
-    love.graphics.draw(bgImage, 0, 0, 0, 0.7, 0.7)
+
+
+    if mapsize  == 1 then
+    love.graphics.draw(bgImage, 0, 0, 0, 0.57, 0.7)
+    elseif mapsize  == 2 then
+        love.graphics.draw(bgImage, 0, 0, 0, 1, 1)
+    elseif mapsize  == 3 then
+        love.graphics.draw(bgImage, 0, 0, 0, 1.35, 1.35)
+    end
+
+
+
     --display if in editorMode
     if game.map.editorMode then
-        love.graphics.setColor(1, 1, 1, 0.2)
-        love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
+    love.graphics.setColor(1, 1, 1, 0.2)
+    love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
     end
     --drawPlayAreas()
     drawObstacles()
+    game.map.drawAreaEffects()
 end
 
 function drawPlayAreas()

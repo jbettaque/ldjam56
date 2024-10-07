@@ -2,12 +2,13 @@ game.creature.acid = {}
 
 game.creature.acid.health = 20
 game.creature.acid.meleeDamage = 0
-game.creature.acid.rangedDamage = 30
-game.creature.acid.speed = 0.3
+game.creature.acid.rangedDamage = 1
+game.creature.acid.speed = 1.3
 game.creature.acid.cooldown = 2.5
-game.creature.acid.range = 150
+game.creature.acid.range = 30
 game.creature.acid.bombRange = 100
-game.creature.acid.backOffDistance = 100
+game.creature.acid.backOffDistance = 1
+game.creature.acid.aoeTimer = 5
 
 
 function game.creature.acid.attack(dt, creature, creatureStore)
@@ -17,22 +18,24 @@ function game.creature.acid.attack(dt, creature, creatureStore)
         if nearestEnemy then
             local distance = math.sqrt((creature.x - nearestEnemy.x)^2 + (creature.y - nearestEnemy.y)^2)
             if distance < game.creature.acid.range and distance > 20 then
-                creature.currentCooldown = game.creature.acid.cooldown
-                creature.attacking = nearestEnemy
-                nearestEnemy.health = nearestEnemy.health - creature.rangedDamage
-                checkHealth(nearestEnemy, creatureStore, creature)
+                game.map.addAreaEffect(creature.x, creature.y, 70, game.creature.acid.areaEffect, game.creature.acid.aoeTimer, {0.2, 1, 0.2, 0.5}, creature.player)
+                -- remove creature from creatureStore
                 for i, otherCreature in ipairs(creatureStore) do
-                    local distance = math.sqrt((otherCreature.x - nearestEnemy.x)^2 + (otherCreature.y - nearestEnemy.y)^2)
-
-                    if distance < game.creature.acid.bombRange and creature.player ~= otherCreature.player then
-                        local damage = creature.rangedDamage * (1 - distance / game.creature.acid.bombRange)
-                        otherCreature.health = otherCreature.health - damage
-                        checkHealth(otherCreature, creatureStore, creature)
+                    if otherCreature == creature then
+                        table.remove(creatureStore, i)
+                        break
                     end
                 end
             end
         end
     end
+end
+
+function game.creature.acid.areaEffect(creature, owner)
+    if creature.player ~= owner then
+        game.creature.default.damage(creature, game.creature.acid.rangedDamage)
+    end
+    print("Acid attack")
 end
 function checkHealth(creature, creatureStore, parentCreature)
     if not creature then
