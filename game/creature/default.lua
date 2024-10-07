@@ -4,6 +4,9 @@ game.creature.targetingRules = {
     ghost = {"none"}
     -- Add more creature targeting rules here
 }
+
+game.creature.canGoThroughObstacle = {"ghost"}
+game.creature.canSeeThroughObstacle = {"ghost"}
 function game.creature.default.update(dt, creature, creatureStore)
 
     if creature.currentCooldown > 0 then
@@ -140,7 +143,7 @@ function game.creature.default.findNearestEnemy(creature, creatureStore)
 
             local distance = game.creature.default.getDistance(creature.x, creature.y, otherCreature.x, otherCreature.y)
             local hasLineOfSight = game.creature.default.hasLineOfSight(creature, otherCreature)
-            if creature.type == "ghost" then
+            if tableContainsString(game.creature.canSeeThroughObstacle, creature.type) then
                 hasLineOfSight = true
             end
             if distance < nearestDistance and hasLineOfSight then
@@ -163,6 +166,14 @@ function game.creature.default.findNearestEnemy(creature, creatureStore)
     end
 
     return nearestTowerDistance <= nearestDistance and nearestTower or nearestCreature
+end
+function tableContainsString(tbl, str)
+    for _, value in pairs(tbl) do
+        if value == str then
+            return true
+        end
+    end
+    return false
 end
 
 
@@ -347,7 +358,7 @@ function game.creature.default.move(dt, creature, creatureStore)
         end
     end
 
-    if creature.type == "ghost" then
+    if tableContainsString(game.creature.canGoThroughObstacle, creature.type) then
         canMove = true
         newY = creature.y + moveY
         newX = creature.x + moveX
