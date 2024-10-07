@@ -34,10 +34,14 @@ local updateInterval = 1 -- Set the interval to 5 seconds
 
 -- **Table to Store AI's Towers**
 local aiTowers = {}
-
+local availableTowers = {}
+local mineCount = 0
 function game.enemyAi.load()
     print("enemyAi loaded")
     -- No need to repopulate towerOptions here unless necessary
+    mineCount = 0
+    availableTowers = {}
+    aiTowers = {}
 end
 
 function game.enemyAi.update(dt)
@@ -65,7 +69,7 @@ function game.enemyAi.update(dt)
         end
 
         -- **Create a Filtered List of Towers**
-        local availableTowers = {}
+        availableTowers = {}
         for _, towerOption in ipairs(towerOptions) do
             if mineCount < 5 or string.lower(towerOption.type) ~= "mine" then
                 table.insert(availableTowers, towerOption)
