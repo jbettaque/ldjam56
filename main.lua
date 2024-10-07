@@ -48,8 +48,17 @@ music2 = love.audio.newSource("game/SFX/Audio/Music/LOOP_2_LD56.mp3", "stream")
 function love.load()
     print("running on " .. love.system.getOS())
 
-    love.window.setMode(screenWidth, screenHeight)
 
+
+
+    --check if resolution could be set to 1920x1080
+    local width, height = love.window.getDesktopDimensions( 1 )
+    if width >= 1920 and height >= 1080 then
+        screenWidth = 1920
+        screenHeight = 1080
+        mapsize = 2
+    end
+    love.window.setMode(screenWidth, screenHeight)
 
     game.manager.load()
     game.map.load()

@@ -46,6 +46,7 @@ game.powerType = {1, 2, 3}
 game.towerPlacement.currentPlacingTower = nil
 
 local aoeImage = love.graphics.newImage("game/Sprites/AOE_Building.png")
+local paranormalImage = love.graphics.newImage("game/Sprites/Paranomal_Building.png")
 
 -- Tower type definitions
 towerConfig = {
@@ -121,7 +122,8 @@ towerConfig = {
         possibleSpawnTypes = {"ghost", "zombie", "toothFairy"},
         spawningCooldown = 30,
         draw = function(tower, mode)
-            love.graphics.circle(mode, tower.x, tower.y, 20)
+            love.graphics.setColor(1, 1, 1)
+            love.graphics.draw(paranormalImage, tower.x, tower.y, 0, 0.2, 0.2, 300, 400)
         end,
         checkClick = function(x, y, tower)
             local distance = math.sqrt((x - tower.x)^2 + (y - tower.y)^2)
@@ -142,7 +144,7 @@ towerConfig = {
         draw = function(tower, mode)
             love.graphics.setColor(1, 1, 1)
             -- draw tower in the middle of the tile
-            love.graphics.draw(aoeImage, tower.x, tower.y, 0, 0.3, 0.3, 300, 400)
+            love.graphics.draw(aoeImage, tower.x, tower.y, 0, 0.2, 0.2, 300, 400)
         end,
         checkClick = function(x, y, tower)
             local distance = math.sqrt((x - tower.x)^2 + (y - tower.y)^2)
