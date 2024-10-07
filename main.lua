@@ -12,10 +12,19 @@ game.powerUps = require("game.powerUps")
 local mainMenu = require("game.mainMenu")
 local gameOverScreen = require("game.gameOverScreen")
 
-local currentState = "tutorial"
+local currentState = "menu"
+local tutorialDirty = false
 
 function switchToGame()
-    currentState = "game"
+    if not tutorialDirty then
+        currentState = "tutorial"
+        tutorialDirty = true
+    else
+        currentState = "game"
+
+    end
+    music1:stop()
+    music2:play()
 end
 
 function switchToPause()
@@ -33,6 +42,8 @@ end
 screenWidth = 1080
 screenHeight = 720
 
+music1 = love.audio.newSource("game/SFX/Audio/Music/LOOP_1_LD56.wav", "stream")
+music2 = love.audio.newSource("game/SFX/Audio/Music/LOOP_2_LD56.wav", "stream")
 
 function love.load()
     print("running on " .. love.system.getOS())
@@ -51,6 +62,10 @@ function love.load()
     game.tMenu.load()
 
     game.powerUps.load()
+
+    music1:setLooping(true)
+    music2:setLooping(true)
+    music1:play()
 end
 
 function love.update(dt)
@@ -65,8 +80,8 @@ function love.update(dt)
         if not game.tutorial.updatePause then
             game.map.update(dt)
             game.manager.update(dt)
-            game.creatures.update(dt)
             game.towerPlacement.update(dt)
+            game.creatures.update(dt)
             game.tMenu.update(dt)
             game.enemyAi.update(dt)
         end
@@ -75,8 +90,8 @@ function love.update(dt)
     elseif currentState == "game" then
         game.map.update(dt)
         game.manager.update(dt)
-        game.creatures.update(dt)
         game.towerPlacement.update(dt)
+        game.creatures.update(dt)
         game.tMenu.update(dt)
         game.enemyAi.update(dt)
         game.powerUps.update(dt)
