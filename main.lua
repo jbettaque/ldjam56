@@ -12,10 +12,17 @@ game.powerUps = require("game.powerUps")
 local mainMenu = require("game.mainMenu")
 local gameOverScreen = require("game.gameOverScreen")
 
-local currentState = "tutorial"
+local currentState = "menu"
+local tutorialDirty = false
 
 function switchToGame()
-    currentState = "game"
+    if not tutorialDirty then
+        currentState = "tutorial"
+        tutorialDirty = true
+    else
+        currentState = "game"
+
+    end
     music1:stop()
     music2:play()
 end
