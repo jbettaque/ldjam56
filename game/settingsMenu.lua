@@ -70,7 +70,7 @@ function settingsMenu.draw()
 
     local button_width = ww * (1 / 3)
     local buttonspace = 16
-    local cursor_y = 0
+    local cursor_y = -200
 
     for i, button in ipairs(settingsMenu.buttons) do
         local buttonx = (ww * 0.5) - (button_width * 0.5)
