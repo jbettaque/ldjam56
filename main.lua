@@ -134,6 +134,7 @@ function love.mousepressed(x, y, button, istouch, presses)
 
         game.tutorial.mousepressed(x, y, button)
         --game.map.mousepressed(x, y, button)
+        game.powerUps.mousepressed(x, y, button)
         game.tMenu.mousepressed(x, y, button, istouch, presses)
     elseif currentState == "game" then
         if game.map.editorMode then

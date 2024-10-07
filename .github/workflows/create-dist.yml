@@ -83,37 +83,6 @@ jobs:
           name: linux
           path: ./LDJAM56.AppImage
 
-  create-mac-bundle:
-    runs-on: ubuntu-latest
-    needs: [ create-love-file ]
-    steps:
-      - uses: actions/checkout@v4
-      - name: download required mac file
-        run: |
-          curl -sSL https://github.com/love2d/love/releases/download/11.5/love-11.5-macos.zip -o ./love.zip
-      - name: download love file
-        uses: actions/download-artifact@v4
-        with:
-          name: LDJAM56.love
-          path: ./
-      - name: create mac release
-        run: |
-          unzip love.zip
-          mv love.app LDJAM56.app
-          mv LDJAM56.love LDJAM56.app/Contents/Resources/
-          sed -i 's/<string>org\.love2d\.love<\/string>/<string>com.ldjam.LDJAM56<\/string>/' ./LDJAM56.app/Contents/Info.plist
-          sed -i 's/<string>LÖVE<\/string>/<string>LDJAM56<\/string>/' ./LDJAM56.app/Contents/Info.plist
-          sed -i 's/OS X AppIcon/homunculus/' ./LDJAM56.app/Contents/Info.plist
-          sed -i '106,+28 d' ./LDJAM56.app/Contents/Info.plist
-          cp press_material/homunculus.icns ./LDJAM56.app/Contents/Resources/homunculus.icns
-          zip -yr LDJAM56_macos.zip ./LDJAM56.app
-
-      - name: upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: mac
-          path: ./LDJAM56_macos.zip
-
 
   create-web-bundle:
     runs-on: ubuntu-latest

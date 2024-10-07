@@ -356,8 +356,9 @@ end
 function game.towerPlacement.drawLaserTurret()
     for i, tower in ipairs(game.towerPlacement.towers) do
         if tower.laserTurret then
-            love.graphics.setColor(1, 0, 0)
+            love.graphics.setColor(1, 1, 1)
             love.graphics.circle("line", tower.x, tower.y, 100)
+            love.graphics.circle("line", tower.x, tower.y, 101)
         end
     end
 end

@@ -112,7 +112,7 @@ tutorialConfig = {
         end,
         nextFunction = function()
             game.tutorial.updatePause = false
-            game.manager.player1.money = 6900
+            game.manager.player1.money = 1000
             tutorialOver = true
         end
     },
