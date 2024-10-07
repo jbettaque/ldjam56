@@ -4,12 +4,13 @@
 [//]: # ()
 [//]: # (In ###, you have to carefully balance between building new structures and upgrading them, while also spawning creatures to defend your base. The enemy is doing the same - may the better stategist win!)
 
-# Tiny Creatures Battle Royale
+# Tiny Trooper Empire
 ==========================
 
 ## Table of Contents
 -----------------
 
+0. [Game Releases](#game-releases)
 1. [Game Description](#game-description)
 2. [Gameplay Overview](#gameplay-overview)
 3. [Features](#features)
@@ -27,8 +28,11 @@
 ## Game Description
 ---------------
 
-Tiny Creatures is a real-time strategy game where you build and defend your base against an onslaught of tiny creatures. Gather resources, build structures, and spawn creatures to outmaneuver your opponents (our state of the art ai) and emerge victorious.
+Tiny Trooper Empire is an exhilarating real-time strategy game that thrusts you into a world of microscopic warfare! Take command of your miniature forces as you build and fortify your base against relentless waves of tiny, yet formidable creatures. Immerse yourself in a captivating battlefield where every decision counts!
 
+Face off against our state-of-the-art AI opponents, meticulously designed to challenge even the most seasoned strategists. Engage in heart-pounding battles where quick thinking and adaptive strategies are your keys to victory. Will you outsmart the artificial intelligence and lead your minuscule militia to glory?
+
+Prepare for an addictive gaming experience that combines the thrill of base-building, the excitement of creature spawning, and the satisfaction of outwitting your opponents. Tiny Trooper Empire: Where epic battles unfold on a microscopic scale!
 ## Gameplay Overview
 -----------------
 
