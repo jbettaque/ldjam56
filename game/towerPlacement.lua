@@ -31,7 +31,7 @@ function initiateLaserTurrets()
         y = 300,
         spawnType = "skelleton",
         player = 1,
-        health = 3000,
+        health = 30,
         maxHealth = 3000,
         powerLv = 1,
         speedLv = 1,
@@ -345,7 +345,7 @@ function game.towerPlacement.drawTowers()
             end
         end
 
-
+        love.graphics.setColor(1, 0, 0)
 
 
 
