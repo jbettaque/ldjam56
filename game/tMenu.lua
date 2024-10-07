@@ -7,6 +7,8 @@ local hoveredTile = nil
 local selectedTower = nil
 
 towerSounds = { aoe = nil, infantry = nil, mage = nil, range = nil}
+
+unitSounds = { acid = {}, carl = {}, dog = {}, egg = {}, electro = {}, flea = {}, ghost = {}, horde = {}, kamikaze = {}, skelleton = {}, tooth = {}, toothFairy = {}, zombie = {} }
 towerPlacementSound = nil
 
 require("game/utils")
@@ -16,7 +18,6 @@ menuTypes = {
         items = game.towerPlacement.towerTypes,
         color = { 0, 0, 1 },
         onHover = function(itemIndex)
-
             game.towerPlacement.changeType(game.towerPlacement.towerTypes[itemIndex])
         end,
         onSelect = function(x, y, itemIndex)
@@ -51,8 +52,6 @@ menuTypes = {
             )
         end
     },
-
-
     upgrade = {
         items = { "Damage", "Speed", "Health", "Destroy" },
         color = { 0, 1, 0 },
@@ -117,6 +116,9 @@ menuTypes = {
         onSelect = function(x, y, itemIndex)
             local unitType = menuTypes.unitSelect.items[itemIndex]
             selectedTower.spawnType = unitType
+            local numUnitSounds = #unitSounds[unitType]
+            local randomSound = math.random(1, numUnitSounds)
+            unitSounds[unitType][randomSound]:play()
         end,
         beforeOpen = function(x, y)
             menuTypes.unitSelect.items = selectedTower.possibleSpawnTypes
@@ -148,8 +150,59 @@ function game.tMenu.load()
     towerSounds.infantry = love.audio.newSource("game/SFX/Audio/Tower Sounds/Infantrie Tower Ambiente_mixdown.mp3", "static")
     towerSounds.mage = love.audio.newSource("game/SFX/Audio/Tower Sounds/Magic Tower Ambiente_mixdown.mp3", "static")
     towerSounds.range = love.audio.newSource("game/SFX/Audio/Tower Sounds/Range Tower Ambiente.mp3", "static")
-
     towerPlacementSound = love.audio.newSource("game/SFX/Audio/Tower Sounds/Tower Placement.mp3", "static")
+
+
+    table.insert(unitSounds.acid, love.audio.newSource("game/SFX/Audio/Units Sounds/Acid Tick/Acid Tick1.mp3", "static"))
+    table.insert(unitSounds.acid, love.audio.newSource("game/SFX/Audio/Units Sounds/Acid Tick/Acid Tick2.mp3", "static"))
+    table.insert(unitSounds.acid, love.audio.newSource("game/SFX/Audio/Units Sounds/Acid Tick/Acid Tick3.mp3", "static"))
+
+    table.insert(unitSounds.carl, love.audio.newSource("game/SFX/Audio/Units Sounds/Carl/Carl1.mp3", "static"))
+    table.insert(unitSounds.carl, love.audio.newSource("game/SFX/Audio/Units Sounds/Carl/Carl2.mp3", "static"))
+    table.insert(unitSounds.carl, love.audio.newSource("game/SFX/Audio/Units Sounds/Carl/Carl3.mp3", "static"))
+
+    table.insert(unitSounds.dog, love.audio.newSource("game/SFX/Audio/Units Sounds/Dog/Dog1.mp3", "static"))
+    table.insert(unitSounds.dog, love.audio.newSource("game/SFX/Audio/Units Sounds/Dog/Dog2.mp3", "static"))
+
+    table.insert(unitSounds.egg, love.audio.newSource("game/SFX/Audio/Units Sounds/Egg Thrower/Egg Thrower1.mp3", "static"))
+    table.insert(unitSounds.egg, love.audio.newSource("game/SFX/Audio/Units Sounds/Egg Thrower/Egg Thrower2.mp3", "static"))
+    table.insert(unitSounds.egg, love.audio.newSource("game/SFX/Audio/Units Sounds/Egg Thrower/Egg Thrower3.mp3", "static"))
+
+    table.insert(unitSounds.electro, love.audio.newSource("game/SFX/Audio/Units Sounds/Electric Hedgehog/Electric Hedgehog1.mp3", "static"))
+    table.insert(unitSounds.electro, love.audio.newSource("game/SFX/Audio/Units Sounds/Electric Hedgehog/Electric Hedgehog2.mp3", "static"))
+    table.insert(unitSounds.electro, love.audio.newSource("game/SFX/Audio/Units Sounds/Electric Hedgehog/Electric Hedgehog3.mp3", "static"))
+
+    table.insert(unitSounds.flea, love.audio.newSource("game/SFX/Audio/Units Sounds/Flea Grenade/Flea Grenade1.mp3", "static"))
+    table.insert(unitSounds.flea, love.audio.newSource("game/SFX/Audio/Units Sounds/Flea Grenade/Flea Grenade2.mp3", "static"))
+    table.insert(unitSounds.flea, love.audio.newSource("game/SFX/Audio/Units Sounds/Flea Grenade/Flea Grenade3.mp3", "static"))
+
+    table.insert(unitSounds.ghost, love.audio.newSource("game/SFX/Audio/Units Sounds/Ghost/Ghost1.mp3", "static"))
+    table.insert(unitSounds.ghost, love.audio.newSource("game/SFX/Audio/Units Sounds/Ghost/Ghost2.mp3", "static"))
+    table.insert(unitSounds.ghost, love.audio.newSource("game/SFX/Audio/Units Sounds/Ghost/Ghost3.mp3", "static"))
+
+    table.insert(unitSounds.horde, love.audio.newSource("game/SFX/Audio/Units Sounds/Horde/Horde1.mp3", "static"))
+    table.insert(unitSounds.horde, love.audio.newSource("game/SFX/Audio/Units Sounds/Horde/Horde2.mp3", "static"))
+
+    table.insert(unitSounds.kamikaze, love.audio.newSource("game/SFX/Audio/Units Sounds/Kamikaze Armadillo/Kamikaze Armadillo1.mp3", "static"))
+    table.insert(unitSounds.kamikaze, love.audio.newSource("game/SFX/Audio/Units Sounds/Kamikaze Armadillo/Kamikaze Armadillo2.mp3", "static"))
+
+    table.insert(unitSounds.skelleton, love.audio.newSource("game/SFX/Audio/Units Sounds/Skeletton/Skeletton1.mp3", "static"))
+    table.insert(unitSounds.skelleton, love.audio.newSource("game/SFX/Audio/Units Sounds/Skeletton/Skeletton2.mp3", "static"))
+    table.insert(unitSounds.skelleton, love.audio.newSource("game/SFX/Audio/Units Sounds/Skeletton/Skeletton3.mp3", "static"))
+
+    table.insert(unitSounds.tooth, love.audio.newSource("game/SFX/Audio/Units Sounds/ToothSpitter/ToothSpitter 1.mp3", "static"))
+    table.insert(unitSounds.tooth, love.audio.newSource("game/SFX/Audio/Units Sounds/ToothSpitter/ToothSpitter 2.mp3", "static"))
+    table.insert(unitSounds.tooth, love.audio.newSource("game/SFX/Audio/Units Sounds/ToothSpitter/ToothSpitter 3.mp3", "static"))
+    table.insert(unitSounds.tooth, love.audio.newSource("game/SFX/Audio/Units Sounds/ToothSpitter/ToothSpitter 4.mp3", "static"))
+
+    table.insert(unitSounds.toothFairy, love.audio.newSource("game/SFX/Audio/Units Sounds/Tooth Fairy/Tooth Fairy1.mp3", "static"))
+    table.insert(unitSounds.toothFairy, love.audio.newSource("game/SFX/Audio/Units Sounds/Tooth Fairy/Tooth Fairy2.mp3", "static"))
+    table.insert(unitSounds.toothFairy, love.audio.newSource("game/SFX/Audio/Units Sounds/Tooth Fairy/Tooth Fairy3.mp3", "static"))
+
+    table.insert(unitSounds.zombie, love.audio.newSource("game/SFX/Audio/Units Sounds/Zombie/Zombie1.mp3", "static"))
+    table.insert(unitSounds.zombie, love.audio.newSource("game/SFX/Audio/Units Sounds/Zombie/Zombie2.mp3", "static"))
+    table.insert(unitSounds.zombie, love.audio.newSource("game/SFX/Audio/Units Sounds/Zombie/Zombie3.mp3", "static"))
+
 
 end
 
