@@ -108,6 +108,10 @@ end
 
 function mainMenu.mousepressed(x, y, button)
     local currentButtons = mainMenu.currentMenu == "main" and buttons or settingsMenu.buttons
+
+    if currentButtons == settingsMenu.buttons then
+       y= y +200
+    end
     for _, btn in ipairs(currentButtons) do
         local buttonx = (love.graphics.getWidth() * 0.5) - (love.graphics.getWidth() * (1 / 3) * 0.5)
         local buttony = (love.graphics.getHeight() * 0.5) - (button_height * 0.5) + (button_height + 16) * (_ - 1)
