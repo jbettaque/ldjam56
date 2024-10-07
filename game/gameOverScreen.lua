@@ -7,6 +7,7 @@ local winnerAlpha = 0
 local showWinnerText = false
 local fadeSpeed = 0.5
 local looseSounds ={}
+local winnSounds ={}
 local gameoverSoundPlayed = false
 
 
@@ -19,7 +20,11 @@ function game.gameOverScreen.load(endGame)
         love.audio.newSource("game/SFX/Audio/Game Over/You Lose/You Lose3.mp3", "static"),
         love.audio.newSource("game/SFX/Audio/Game Over/You Lose/You Lose4.mp3", "static")
     }
+    winnSounds = {
+        love.audio.newSource("game/SFX/Audio/Game Over/You Win/YouWin1.mp3", "static"),
+        love.audio.newSource("game/SFX/Audio/Game Over/You Win/YouWin2.mp3", "static"),
 
+    }
     gameOverAlpha = 0
     winnerAlpha = 0
     showWinnerText = false
@@ -63,7 +68,9 @@ function game.gameOverScreen.draw()
         if game.manager.checkForGameOver() == 1 then
             winnerText = "You Win!"
             if gameoverSoundPlayed == false then
-                --Sad winn sound here
+                local randomIndex = math.random(1, #winnSounds)  -- Choose a random index
+                winnSounds[randomIndex]:play()  -- Play the selected sound
+                gameoverSoundPlayed = true  -- Set flag to avoid replaying
             end
         elseif game.manager.checkForGameOver() == 2 and gameoverSoundPlayed == false then
             local randomIndex = math.random(1, #looseSounds)  -- Choose a random index
