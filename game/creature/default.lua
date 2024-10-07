@@ -139,7 +139,11 @@ function game.creature.default.findNearestEnemy(creature, creatureStore)
             end
 
             local distance = game.creature.default.getDistance(creature.x, creature.y, otherCreature.x, otherCreature.y)
-            if distance < nearestDistance and game.creature.default.hasLineOfSight(creature, otherCreature) then
+            local hasLineOfSight = game.creature.default.hasLineOfSight(creature, otherCreature)
+            if creature.type == "ghost" then
+                hasLineOfSight = true
+            end
+            if distance < nearestDistance and hasLineOfSight then
                 nearestDistance = distance
                 nearestCreature = otherCreature
             end
