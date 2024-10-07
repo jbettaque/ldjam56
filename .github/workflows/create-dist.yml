@@ -16,6 +16,8 @@ jobs:
       artifact-url: ${{ steps.upload-artifact.outputs.artifact-url }}
     steps:
       - uses: actions/checkout@v4
+      - name: Make create_archive.sh executable
+        run: chmod +x ./create_archive.sh
       - name: create game archive
         run: ./create_archive.sh
       - name: upload artifact
