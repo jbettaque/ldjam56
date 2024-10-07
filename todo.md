@@ -77,9 +77,13 @@
 - [ ] better enemy ai
   - [ ] random strategy
   - [ ] smarter strategy
-- [ ] map with obstacles that split map into lanes
-  - [ ] render obstacles on map
-  - [ ] pathfinding
+- [x] map with obstacles that split map into lanes
+  - [x] render obstacles on map
+    - [x] useless obstacle edit mode
+  - [x] pathfinding
+    - [ ] avoid getting out of game area
+      - [x] melee
+      - [x] ranged
 - [x] towers that attack enemies
 - [x] buildings that produce currency
 - [ ] sound effects and music
