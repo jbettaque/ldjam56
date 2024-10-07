@@ -6,7 +6,9 @@ local gameOverAlpha = 0
 local winnerAlpha = 0
 local showWinnerText = false
 local fadeSpeed = 0.5
-local looseSound
+local looseSounds ={}
+local gameoverSoundPlayed = false
+
 
 function game.gameOverScreen.load(endGame)
     largefont = love.graphics.newFont(50)
@@ -17,6 +19,11 @@ function game.gameOverScreen.load(endGame)
         love.audio.newSource("game/SFX/Audio/Game Over/You Lose/You Lose3.mp3", "static"),
         love.audio.newSource("game/SFX/Audio/Game Over/You Lose/You Lose4.mp3", "static")
     }
+
+    gameOverAlpha = 0
+    winnerAlpha = 0
+    showWinnerText = false
+    gameoverSoundPlayed = false
 
 end
 
@@ -55,17 +62,18 @@ function game.gameOverScreen.draw()
         local winnerText = "You lose!"
         if game.manager.checkForGameOver() == 1 then
             winnerText = "You Win!"
+            if gameoverSoundPlayed == false then
+                --Sad winn sound here
+            end
+        elseif game.manager.checkForGameOver() == 2 and gameoverSoundPlayed == false then
+            local randomIndex = math.random(1, #looseSounds)  -- Choose a random index
+            looseSounds[randomIndex]:play()  -- Play the selected sound
+            gameoverSoundPlayed = true  -- Set flag to avoid replaying
         end
         love.graphics.setColor(1, 1, 1, winnerAlpha) -- Alpha-Wert für den Winner-Text
         local winnerWidth = font1:getWidth(winnerText)
         love.graphics.print(winnerText, (windowWidth - winnerWidth) / 2, (windowHeight / 2) - font1:getHeight())
 
-        if winnerText == "You loose!" then
-            -- Choose a random index from 1 to 4
-            local randomIndex = math.random(1, #looseSounds)
-            -- Play the selected sound
-            sounds[randomIndex]:play()
-        end
     end
 
 

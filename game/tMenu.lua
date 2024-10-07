@@ -6,7 +6,8 @@ local activeMenus = {}
 local hoveredTile = nil
 local selectedTower = nil
 
-
+towerSounds = { aoe = nil, infantry = nil, mage = nil, range = nil}
+towerPlacementSound = nil
 
 require("game/utils")
 -- Menu configurations
@@ -28,6 +29,9 @@ menuTypes = {
             else
                 game.towerPlacement.currentPlacingTower = nil
             end
+
+
+            game.tMenu.playTowerPlacementSound(towerType)
 
         end,
         beforeOpen = function(x, y)
@@ -55,6 +59,7 @@ menuTypes = {
         end,
         onSelect = function(x, y, itemIndex)
             local cost = calculateUpgradeCost()
+
             if itemIndex == 1 then
                 if game.manager.isEnoughMoney(cost, 1) then
                     selectedTower.powerLv = selectedTower.powerLv + 1
@@ -136,6 +141,18 @@ function calculateUpgradeCost()
     local totalLevel = selectedTower.powerLv + selectedTower.speedLv + selectedTower.healthLv
     return math.floor(towerConfig[selectedTower.type].cost * (totalLevel - 2) / 3)
 end
+
+function game.tMenu.load()
+    towerSounds.aoe = love.audio.newSource("game/SFX/Audio/Tower Sounds/AOE Tower Ambiente_mixdown.mp3", "static")
+    towerSounds.infantry = love.audio.newSource("game/SFX/Audio/Tower Sounds/Infantrie Tower Ambiente_mixdown.mp3", "static")
+    towerSounds.mage = love.audio.newSource("game/SFX/Audio/Tower Sounds/Magic Tower Ambiente_mixdown.mp3", "static")
+    towerSounds.range = love.audio.newSource("game/SFX/Audio/Tower Sounds/Range Tower Ambiente.mp3", "static")
+
+    towerPlacementSound = love.audio.newSource("game/SFX/Audio/Tower Sounds/Tower Placement.mp3", "static")
+
+end
+
+
 local function createMenu(menuType, x, y)
     local config = menuTypes[menuType]
     if not config then
@@ -171,6 +188,10 @@ function game.tMenu.openMenu(menuType, x, y)
     local newMenu = createMenu(menuType, x, y)
     if newMenu then
         table.insert(activeMenus, newMenu)
+    end
+
+    if menuType == "upgrade" or menuType == "unitSelect" then
+        game.tMenu.playTowerSound()
     end
 end
 
@@ -354,6 +375,7 @@ function game.tMenu.mousepressed(x, y, button)
 end
 
 function game.tMenu.update(dt)
+
     local mx, my = love.mouse.getPosition()
     hoveredTile = nil
 
@@ -382,4 +404,13 @@ function game.tMenu.update(dt)
         end
         :: continue ::
     end
+end
+
+function game.tMenu.playTowerSound()
+    towerSounds[selectedTower.type]:play()
+end
+
+function game.tMenu.playTowerPlacementSound(towerType)
+    towerPlacementSound:play()
+    towerSounds[towerType]:play()
 end
