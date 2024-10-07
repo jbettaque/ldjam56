@@ -11,7 +11,7 @@ require("game/utils")
 menuTypes = {
     tower = {
         items = game.towerPlacement.towerTypes,
-        color = {0, 0, 1},
+        color = { 0, 0, 1 },
         onHover = function(itemIndex)
 
             game.towerPlacement.changeType(game.towerPlacement.towerTypes[itemIndex])
@@ -47,20 +47,20 @@ menuTypes = {
 
 
     upgrade = {
-        items = {"Damage", "Speed", "Health", "Destroy"},
-        color = {0, 1, 0},
+        items = { "Damage", "Speed", "Health", "Destroy" },
+        color = { 0, 1, 0 },
         onHover = function(itemIndex)
         end,
         onSelect = function(x, y, itemIndex)
             local cost = calculateUpgradeCost()
             if itemIndex == 1 then
                 if game.manager.isEnoughMoney(cost, 1) then
-                    selectedTower.powerLv = selectedTower.powerLv+1
+                    selectedTower.powerLv = selectedTower.powerLv + 1
                     game.manager.subtractMoney(cost, 1)
                 end
             elseif itemIndex == 2 then
                 if game.manager.isEnoughMoney(cost, 1) then
-                    selectedTower.speedLv = selectedTower.speedLv+1
+                    selectedTower.speedLv = selectedTower.speedLv + 1
                     game.manager.subtractMoney(cost, 1)
                 end
             elseif itemIndex == 3 then
@@ -99,8 +99,8 @@ menuTypes = {
         end
     },
     unitSelect = {
-        items = {"Carl", "Dog", "Horde", "Skelleton"},
-        color = {1, 0, 0},
+        items = { "Carl", "Dog", "Horde", "Skelleton" },
+        color = { 1, 0, 0 },
         onHover = function(itemIndex)
         end,
         onSelect = function(x, y, itemIndex)
@@ -128,12 +128,14 @@ menuTypes = {
 
 }
 function calculateUpgradeCost()
-    local totalLevel = selectedTower.powerLv +  selectedTower.speedLv + selectedTower.healthLv
+    local totalLevel = selectedTower.powerLv + selectedTower.speedLv + selectedTower.healthLv
     return 20 * totalLevel + 10
 end
 local function createMenu(menuType, x, y)
     local config = menuTypes[menuType]
-    if not config then return end
+    if not config then
+        return
+    end
 
     local menuWidth = (menuTileX * #config.items) + (gap * (#config.items + 1))
     local screenWidth = love.graphics.getWidth()
@@ -170,7 +172,9 @@ end
 function game.tMenu.draw()
     for _, menu in ipairs(activeMenus) do
         local config = menuTypes[menu.type]
-        if not config then return end
+        if not config then
+            return
+        end
 
         -- Draw background
         love.graphics.setColor(1, 1, 1)
@@ -208,13 +212,89 @@ function game.tMenu.draw()
         end
     end
 end
+game.keySequence = {}
+game.cheats = { "irwinner", "wimpywimpywimpy", "ninjalui", "berlinwall", "iwantyoutoticklemyfoot" }
+game.activeCheats = {}
+function game.tMenu.keypressed(key)
+    -- Insert the pressed key into the key sequence
+    table.insert(game.keySequence, key)
 
+    -- Ensure the key sequence doesn't exceed 20 keys
+    if #game.keySequence > 20 then
+        table.remove(game.keySequence, 1)
+    end
+
+    -- Check if any cheat code has been entered
+    game.checkForSeq()
+end
+
+function game.checkForSeq()
+    -- Concatenate the key sequence into a string for comparison
+    local currentSequence = table.concat(game.keySequence)
+
+    -- Loop through all cheat codes and check if they exist in the current key sequence
+    for _, cheatCode in ipairs(game.cheats) do
+        if currentSequence:find(cheatCode) then
+            -- If the cheat code is already active, remove it (toggle off)
+            if game.activeCheats[cheatCode] then
+                game.activeCheats[cheatCode] = nil
+                game.triggerCheat(cheatCode, false)
+                print("Cheat deactivated: " .. cheatCode)
+            else
+                -- If the cheat code is not active, activate it (toggle on)
+                game.activeCheats[cheatCode] = true
+                game.triggerCheat(cheatCode, true)
+                print("Cheat activated: " .. cheatCode)
+            end
+            game.keySequence = {}
+        end
+    end
+end
+
+function game.triggerCheat(cheatCode, isActivated)
+    if cheatCode == "irwinner" then
+        if isActivated then
+            for i = #game.towerPlacement.towers, 1, -1 do
+                if game.towerPlacement.towers[i].player == 2 then
+                    table.remove(game.towerPlacement.towers, i)
+                end
+            end
+            game.activeCheats[cheatCode] = nil
+        end
+    end
+    if cheatCode == "wimpywimpywimpy" then
+        if isActivated then
+            for i = #game.towerPlacement.towers, 1, -1 do
+                if game.towerPlacement.towers[i].player == 1 then
+                    table.remove(game.towerPlacement.towers, i)
+                end
+            end
+            game.activeCheats[cheatCode] = nil
+        end
+    end
+    if cheatCode == "ninjalui" then
+        if isActivated then
+            game.manager.player1.money = 100000
+            print("gave player 100000 money")
+            game.activeCheats[cheatCode] = nil
+        end
+    end
+    if cheatCode == "berlinwall" then
+        if isActivated then
+            game.map.obstacles = {}
+            print("gave player 100000 money")
+            game.activeCheats[cheatCode] = nil
+        end
+    end
+end
 function game.tMenu.mousepressed(x, y, button)
     local clickedMenu = false
 
     for _, menu in ipairs(activeMenus) do
         local config = menuTypes[menu.type]
-        if not config then goto continue end
+        if not config then
+            goto continue
+        end
 
         if x >= menu.x and x <= menu.x + menu.width and
                 y >= menu.y and y <= menu.y + menu.height then
@@ -239,11 +319,11 @@ function game.tMenu.mousepressed(x, y, button)
             selectedTower = nil
             game.towerPlacement.currentPlacingTower = nil
         end
-        ::continue::
+        :: continue ::
     end
 
     if not clickedMenu then
-        if x >= 0 and x <= love.graphics.getWidth()/6 and
+        if x >= 0 and x <= love.graphics.getWidth() / 6 and
                 y >= 0 and y <= love.graphics.getHeight() then
             for i, v in ipairs(game.towerPlacement.towers) do
                 local distance = game.utils.distance(x, y, v.x, v.y)
@@ -272,7 +352,9 @@ function game.tMenu.update(dt)
 
     for _, menu in ipairs(activeMenus) do
         local config = menuTypes[menu.type]
-        if not config then goto continue end
+        if not config then
+            goto continue
+        end
 
         if mx >= menu.x and mx <= menu.x + menu.width and
                 my >= menu.y and my <= menu.y + menu.height then
@@ -291,6 +373,6 @@ function game.tMenu.update(dt)
                 end
             end
         end
-        ::continue::
+        :: continue ::
     end
 end

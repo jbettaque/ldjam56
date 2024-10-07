@@ -113,6 +113,7 @@ function love.mousepressed(x, y, button, istouch, presses)
 end
 
  function love.keypressed(key)
+     game.tMenu.keypressed(key)
      if currentState =="gameover" then
          currentState= "menu"
          resetGame()
