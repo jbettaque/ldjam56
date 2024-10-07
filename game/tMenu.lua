@@ -95,7 +95,7 @@ menuTypes = {
                     "center"
             )
             love.graphics.printf(
-                    "Cost: " .. 20 * (selectedTower.powerLv + selectedTower.speedLv + selectedTower.healthLv) + 10,
+                    "Cost: " .. calculateUpgradeCost(),
                     x,
                     y + height / 2 - 20,
                     width,
@@ -134,7 +134,7 @@ menuTypes = {
 }
 function calculateUpgradeCost()
     local totalLevel = selectedTower.powerLv + selectedTower.speedLv + selectedTower.healthLv
-    return 20 * totalLevel + 10
+    return math.floor(towerConfig[selectedTower.type].cost * (totalLevel - 2) / 3)
 end
 local function createMenu(menuType, x, y)
     local config = menuTypes[menuType]
