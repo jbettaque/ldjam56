@@ -101,32 +101,6 @@ function settingsMenu.draw()
     end
 end
 
-
-function love.mousepressed(x, y, button, istouch, presses)
-    if button == 1 then
-        local ww = love.graphics.getWidth()
-        local wh = love.graphics.getHeight()
-
-        local button_width = ww * (1 / 3)
-        local cursor_y =  0
-
-        for i, button in ipairs(settingsMenu.buttons) do
-            local buttonx = (ww * 0.5) - (button_width * 0.5)
-            local buttony = (wh * 0.5) - (button_height * 0.5) + cursor_y
-
-            local hover = x > buttonx and x < buttonx + button_width and
-                    y > buttony and y < buttony + button_height
-
-            if hover then
-                button.fn()
-                break
-            end
-
-            cursor_y = cursor_y + (button_height + 16)
-        end
-    end
-end
-
 function setResolution(res)
     local width, height
 
