@@ -101,9 +101,9 @@ function settingsMenu.draw()
     end
 end
 
--- Use love.mousepressed to handle clicks
+
 function love.mousepressed(x, y, button, istouch, presses)
-    if button == 1 then -- Left mouse button
+    if button == 1 then
         local ww = love.graphics.getWidth()
         local wh = love.graphics.getHeight()
 
@@ -119,10 +119,10 @@ function love.mousepressed(x, y, button, istouch, presses)
 
             if hover then
                 button.fn()
-                break -- Optional: Stop after the first button is clicked
+                break
             end
 
-            cursor_y = cursor_y + (button_height + 16) -- buttonspace
+            cursor_y = cursor_y + (button_height + 16)
         end
     end
 end
