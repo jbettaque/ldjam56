@@ -1,7 +1,7 @@
 game.creature.horde = {}
 
-game.creature.horde.health = 20
-game.creature.horde.meleeDamage = 2
+game.creature.horde.health = 10
+game.creature.horde.meleeDamage = 1
 game.creature.horde.rangedDamage = 2
 game.creature.horde.speed = 2
 game.creature.horde.cooldown = 0.3
