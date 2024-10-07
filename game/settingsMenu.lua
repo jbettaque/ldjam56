@@ -13,8 +13,6 @@ local function newButton(text, fn)
     return {
         text = text,
         fn = fn,
-        now = false,
-        last = false,
         soundPlayed = false
     }
 end
@@ -42,11 +40,13 @@ function settingsMenu.load()
         setResolution("2560x1440")
         mapsize = 3
     end))
+
     table.insert(settingsMenu.buttons, newButton("Volume Up", function()
         volume = math.min(volume + 0.1, 1)
         love.audio.setVolume(volume)
         print("Volume increased to: " .. volume)
     end))
+
     table.insert(settingsMenu.buttons, newButton("Volume Down", function()
         volume = math.max(volume - 0.1, 0)
         love.audio.setVolume(volume)
@@ -73,8 +73,6 @@ function settingsMenu.draw()
     local cursor_y = 0
 
     for i, button in ipairs(settingsMenu.buttons) do
-        button.last = button.now
-
         local buttonx = (ww * 0.5) - (button_width * 0.5)
         local buttony = (wh * 0.5) - (button_height * 0.5) + cursor_y
 
@@ -93,11 +91,6 @@ function settingsMenu.draw()
             button.soundPlayed = false
         end
 
-        button.now = love.mouse.isDown(1)
-        if button.now and not button.last and hover then
-            button.fn()
-        end
-
         love.graphics.setColor(unpack(color))
         love.graphics.rectangle("fill", buttonx, buttony, button_width, button_height)
 
@@ -105,6 +98,32 @@ function settingsMenu.draw()
         love.graphics.print(button.text, font, (ww * 0.5) - (font:getWidth(button.text) * 0.5), buttony + (button_height / 2) - (font:getHeight(button.text) / 2))
 
         cursor_y = cursor_y + (button_height + buttonspace)
+    end
+end
+
+
+function love.mousepressed(x, y, button, istouch, presses)
+    if button == 1 then
+        local ww = love.graphics.getWidth()
+        local wh = love.graphics.getHeight()
+
+        local button_width = ww * (1 / 3)
+        local cursor_y = 0
+
+        for i, button in ipairs(settingsMenu.buttons) do
+            local buttonx = (ww * 0.5) - (button_width * 0.5)
+            local buttony = (wh * 0.5) - (button_height * 0.5) + cursor_y
+
+            local hover = x > buttonx and x < buttonx + button_width and
+                    y > buttony and y < buttony + button_height
+
+            if hover then
+                button.fn()
+                break
+            end
+
+            cursor_y = cursor_y + (button_height + 16)
+        end
     end
 end
 
@@ -126,7 +145,7 @@ function setResolution(res)
     end
 
     love.window.setMode(width, height)
-    print("changed Resolution to: " .. width .. "x" .. height)
+    print("Changed Resolution to: " .. width .. "x" .. height)
 
     resetGame()
 end
