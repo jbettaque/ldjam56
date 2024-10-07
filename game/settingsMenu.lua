@@ -5,6 +5,7 @@ local font = 0
 settingsMenu.buttons = {}
 
 local racket = love.audio.newSource("game/SFX/Racket.mp3", "static")
+local volume = 0.5
 
 mapsize = 1
 
@@ -24,8 +25,6 @@ local resolutionToSize = {
     ["2560x1440"] = 3
 }
 
-
-
 function settingsMenu.load()
     font = love.graphics.newFont(32)
 
@@ -43,6 +42,15 @@ function settingsMenu.load()
         setResolution("2560x1440")
         mapsize = 3
     end))
+    table.insert(settingsMenu.buttons, newButton("Volume Up", function()
+        volume = math.min(volume + 0.1, 1)
+        love.audio.setVolume(volume)
+        print("Volume increased to: " .. volume)
+    end))
+    table.insert(settingsMenu.buttons, newButton("Volume Down", function()
+        volume = math.max(volume - 0.1, 0)
+        print("Volume decreased to: " .. volume)
+    end))
 
     table.insert(settingsMenu.buttons, newButton("Back to Main Menu", function()
         print("Returning to Main Menu")
@@ -57,7 +65,7 @@ function settingsMenu.draw()
     love.graphics.setColor(1, 1, 1)
     love.graphics.setFont(font)
     love.graphics.print("Current Resolution: " .. ww .. "x" .. wh, 10, 10)
-
+    love.graphics.print("Current Volume: " .. math.floor(volume * 100) .. "%", 10, 50)
 
     local button_width = ww * (1 / 3)
     local buttonspace = 16
@@ -99,7 +107,6 @@ function settingsMenu.draw()
     end
 end
 
-
 function setResolution(res)
     local width, height
 
@@ -121,9 +128,6 @@ function setResolution(res)
     print("changed Resolution to: " .. width .. "x" .. height)
 
     resetGame()
-
-  --  game.map.load()
 end
-
 
 return settingsMenu
