@@ -81,15 +81,15 @@ function initializePlayArea(screenWidth, screenHeight, playAreaWidth)
     table.insert(game.map.playAreas, {
         x = 0,
         y = 0,
-        width = playAreaWidth,
+        width = love.graphics.getWidth()/6,
         height = screenHeight,
         color = {0, 0, 1, 0.5},
         player = 1
     })
     table.insert(game.map.playAreas, {
-        x = screenWidth - playAreaWidth,
+        x = love.graphics.getWidth() - love.graphics.getWidth() / 6,
         y = 0,
-        width = playAreaWidth,
+        width = love.graphics.getWidth()/6,
         height = screenHeight,
         color = {1, 0, 0, 0.5},
         player = 2
