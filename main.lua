@@ -136,6 +136,7 @@ function resetGame()
     font = love.graphics.newFont(12)
     love.graphics.setFont(font)
     game.towerPlacement.towers = {}
+
     game.creatures.resetCreatureStore()
     game.map.load()
     game.towerPlacement.load()
