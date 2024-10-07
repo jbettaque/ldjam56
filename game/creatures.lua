@@ -76,6 +76,8 @@ for i, creature in ipairs(creatureStore) do
             print("Double Damage ended for creature of player " .. creature.player)
         end
     end
+
+    game.creatures.updateProjectiles(dt)
 end
 
 
@@ -176,4 +178,35 @@ end
 
 function game.creatures.getCreatureStore()
     return creatureStore
+end
+
+--local projectile = {
+--    x = creature.x,
+--    y = creature.y,
+--    target = nearestEnemy,
+--    speed = 200,
+--    damage = creature.rangedDamage
+--}
+
+function game.creatures.updateProjectiles(dt)
+    for i, creature in ipairs(creatureStore) do
+        if creature.projectiles then
+            for j, projectile in ipairs(creature.projectiles) do
+                local distance = game.creature.default.getDistance(projectile.x, projectile.y, projectile.target.x, projectile.target.y)
+                local angle = math.atan2(projectile.target.y - projectile.y, projectile.target.x - projectile.x)
+                local speed = projectile.speed * dt
+                local moveX = math.cos(angle) * speed
+                local moveY = math.sin(angle) * speed
+                projectile.x = projectile.x + moveX
+                projectile.y = projectile.y + moveY
+
+                if distance < 10 then
+                    game.creature.default.damage(projectile.target, projectile.damage)
+                    table.remove(creature.projectiles, j)
+
+                end
+            end
+
+        end
+    end
 end

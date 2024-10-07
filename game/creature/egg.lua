@@ -23,6 +23,18 @@ function game.creature.egg.attack(dt, creature, creatureStore)
                 if nearestEnemy.health <= 0 then
                     creature.attacking = nil
                 end
+
+                local projectile = {
+                    x = creature.x,
+                    y = creature.y,
+                    target = nearestEnemy,
+                    speed = 10,
+                    damage = creature.rangedDamage
+                }
+
+                creature.projectiles = creature.projectiles or {}
+                table.insert(creature.projectiles, projectile)
+
             end
         end
     end
@@ -127,12 +139,26 @@ function game.creature.egg.draw(creature)
         love.graphics.setColor(1, 0, 0)
     end
     love.graphics.circle("fill", creature.x, creature.y, 10)
+    --
+    --if creature.attacking then
+    --    if creature.attacking.health > 0 then
+    --        love.graphics.setColor(1, 0, 0)
+    --        love.graphics.line(creature.x, creature.y, creature.attacking.x, creature.attacking.y)
+    --    end
+    --
+    --
+    --
+    --end
 
-    if creature.attacking then
-        if creature.attacking.health > 0 then
-            love.graphics.setColor(1, 0, 0)
-            love.graphics.line(creature.x, creature.y, creature.attacking.x, creature.attacking.y)
-        end
+    local projectiles = creature.projectiles or {}
+    for _, projectile in ipairs(projectiles) do
+        game.creature.egg.drawProjectile(projectile)
     end
 
+end
+
+
+function game.creature.egg.drawProjectile(projectile)
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.circle("fill", projectile.x, projectile.y, 5)
 end
