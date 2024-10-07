@@ -27,6 +27,12 @@ function mainMenu.load(switchToGame)
         switchToGame()
     end))
 
+    --table.insert(buttons, newButton("Tutorial", function()
+    --    print("Opening Tutorial")
+    --    mainMenu.currentMenu = "tutorial"
+    --    switchToTutorial()
+    --end))
+
     table.insert(buttons, newButton("Settings", function()
         print("Opening Settings")
         mainMenu.currentMenu = "settings"

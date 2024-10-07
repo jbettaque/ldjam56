@@ -83,7 +83,7 @@ function initializePlayArea(screenWidth, screenHeight, playAreaWidth)
         y = 0,
         width = playAreaWidth,
         height = screenHeight,
-        color = {0, 1, 0, 0.5},
+        color = {0, 0, 1, 0.5},
         player = 1
     })
     table.insert(game.map.playAreas, {
