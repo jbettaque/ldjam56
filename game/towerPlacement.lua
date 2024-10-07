@@ -63,7 +63,7 @@ towerConfig = {
         draw = function(tower, mode)
             love.graphics.setColor(1, 1, 1)
             -- draw tower in the middle of the tile
-            love.graphics.draw(aoeImage, tower.x, tower.y, 0, 0.4, 0.4, 300, 400)
+            love.graphics.draw(aoeImage, tower.x, tower.y, 0, 0.3, 0.3, 300, 400)
         end,
         checkClick = function(x, y, tower)
             local distance = math.sqrt((x - tower.x)^2 + (y - tower.y)^2)
@@ -280,7 +280,7 @@ function game.towerPlacement.handleLaserTurret(tower, dt)
             if creature.player ~= tower.player then
                 local distance = math.sqrt((creature.x - tower.x)^2 + (creature.y - tower.y)^2)
                 if distance <= 100 then
-                    creature.health = creature.health - 1
+                    creature.health = creature.health - 0.2
                     game.creature.default.damage(nearestEnemy, creature.meleeDamage)
                     if creature.health <= 0 then
                         table.remove(getCreatureStore(), j)
