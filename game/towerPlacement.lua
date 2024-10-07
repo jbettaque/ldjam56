@@ -150,6 +150,9 @@ towerConfig = {
         end
     }
 }
+function game.towerPlacement.getTowerConfig()
+    return towerConfig
+end
 function game.towerPlacement.changeType(type)
     local config = towerConfig[type]
     game.towerPlacement.currentPlacingTower.type = type
