@@ -170,6 +170,30 @@ function game.creatures.spawnCreature(type, x, y, player, powerLv, healthLv)
 
     }
     table.insert(creatureStore, newCreature)
+
+
+    if type == "horde" then
+        print("Spawning horde")
+        for i = 1, 5 do
+            local newCreature = {
+                x = x,
+                y = y,
+                type = type,
+                player = player,
+                health = health,
+                meleeDamage = meleeDamage,
+                rangedDamage = rangedDamage,
+                speed = game.creature[type].speed,
+                currentCooldown = 0,
+                stuckTime = 0,
+                lastPosition = { x = x, y = y }
+
+            }
+            newCreature.x = x + math.random(-20, 20)
+            newCreature.y = y + math.random(-20, 20)
+            table.insert(creatureStore, newCreature)
+        end
+    end
 end
 
 function game.creatures.resetCreatureStore()
