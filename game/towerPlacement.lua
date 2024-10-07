@@ -206,83 +206,165 @@ function game.towerPlacement.draw()
     game.towerPlacement.drawLaserTurret()
 end
 
+local displayRadius = 100 -- Radius around the mouse to display tower stats
 local defaultFont = love.graphics.getFont() -- Store the default font size
-local smallFont = love.graphics.newFont(8) -- Smaller font size (10 px, example)
+local smallFont = love.graphics.newFont(8) -- Smaller font size for sub-levels
+
+-- Function to check if a tower is within the radius of the mouse
+local function isTowerWithinRadius(tower, mouseX, mouseY, radius)
+    local distance = math.sqrt((tower.x - mouseX)^2 + (tower.y - mouseY)^2)
+    return distance <= radius
+end
 
 function game.towerPlacement.drawTowers()
-
-    for i, tower in ipairs(game.towerPlacement.towers) do
+    -- Draw each tower normally
+    for _, tower in ipairs(game.towerPlacement.towers) do
         drawTower(tower, "fill")
-        love.graphics.setColor(1, 0, 0)
+    end
 
-        -- Calculate the width and height of each line of text
-        local totalText = "Lv: " .. (tower.type ~= "mine" and (tower.powerLv + tower.speedLv + tower.healthLv) or 1)
-        local powerText = "Power: " .. (tower.powerLv or 0)
-        local speedText = "Speed: " .. (tower.speedLv or 0)
-        local healthText = "Health: " .. (tower.healthLv or 0)
+    -- Get mouse position
+    local mouseX, mouseY = love.mouse.getPosition()
 
-        -- Set the font to measure text accurately
-        love.graphics.setFont(defaultFont)
-        local totalTextWidth = defaultFont:getWidth(totalText)
-        love.graphics.setFont(smallFont)
-        local subTextWidth = math.max(smallFont:getWidth(powerText), smallFont:getWidth(speedText), smallFont:getWidth(healthText))
+    -- Iterate over towers to display stats for those within radius
+    for _, tower in ipairs(game.towerPlacement.towers) do
+        if isTowerWithinRadius(tower, mouseX, mouseY, displayRadius) then
+            -- Get the tower type
+            local typeText = tower.type or "HQ"
 
-        -- Calculate rectangle size based on the widest text and total height of all lines
-        local bgWidth = math.max(totalTextWidth, subTextWidth) + 10 -- add padding
-        local bgHeight
-        if tower.type ~= "mine" then
-            bgHeight = defaultFont:getHeight() + 3 * smallFont:getHeight() + 15 -- include spacing and padding for sub-levels
-        else
-            bgHeight = defaultFont:getHeight() + 10 -- padding for "Lv: 1" only
+            if typeText ~= "mine" and typeText ~= "HQ" then
+                -- Activate code for towers that are not "mine" or "HQ"
+
+                -- Prepare tower stats text
+                local totalText = "Lv: " .. (tower.powerLv + tower.speedLv + tower.healthLv)
+                local powerText = "Power: " .. (tower.powerLv or 0)
+                local speedText = "Speed: " .. (tower.speedLv or 0)
+                local healthText = "Health: " .. (tower.healthLv or 0)
+                local spawnTypeText = "Spawn: " .. (tower.spawnType or "None")  -- Added label for consistency
+
+                -- Set fonts to measure text accurately
+                love.graphics.setFont(defaultFont)
+                local typeTextWidth = defaultFont:getWidth(typeText)
+                local totalTextWidth = defaultFont:getWidth(totalText)
+                local defaultFontHeight = defaultFont:getHeight()
+
+                love.graphics.setFont(smallFont)
+                local powerTextWidth = smallFont:getWidth(powerText)
+                local speedTextWidth = smallFont:getWidth(speedText)
+                local healthTextWidth = smallFont:getWidth(healthText)
+                local spawnTypeTextWidth = smallFont:getWidth(spawnTypeText)
+                local smallFontHeight = smallFont:getHeight()
+
+                -- Calculate rectangle width based on the widest text
+                local bgWidth = math.max(
+                        typeTextWidth,
+                        totalTextWidth,
+                        powerTextWidth,
+                        speedTextWidth,
+                        healthTextWidth,
+                        spawnTypeTextWidth
+                ) + 10  -- Add padding
+
+                -- Calculate rectangle height based on the total height of all lines plus padding
+                local bgHeight = defaultFontHeight * 2 + smallFontHeight * 4 + 20  -- Adjusted padding
+
+                local cornerRadius = 8
+
+                -- Determine position based on tower's location
+                local screenWidth = love.graphics.getWidth()
+                local offsetX
+
+                if tower.x > screenWidth / 2 then
+                    -- Tower is on the right half; display rectangle to the left
+                    offsetX = -15 - bgWidth
+                else
+                    -- Tower is on the left half; display rectangle to the right
+                    offsetX = 35
+                end
+
+                -- Draw background with rounded corners next to the tower
+                love.graphics.setColor(0.2, 0.2, 0.2, 0.8)
+                love.graphics.rectangle("fill", tower.x + offsetX, tower.y - bgHeight / 2, bgWidth, bgHeight, cornerRadius, cornerRadius)
+                love.graphics.setColor(1, 1, 1)
+                love.graphics.rectangle("line", tower.x + offsetX, tower.y - bgHeight / 2, bgWidth, bgHeight, cornerRadius, cornerRadius)
+
+                -- Display the text content next to the tower position
+                local textX = tower.x + offsetX + 5  -- Starting X position for text (5 pixels inside the rectangle)
+                local textY = tower.y - bgHeight / 2 + 5  -- Starting Y position for text
+
+                love.graphics.setColor(1, 1, 1)
+                love.graphics.setFont(defaultFont)
+                love.graphics.print(typeText, textX, textY)  -- Type at the top
+                textY = textY + defaultFontHeight  -- Move down for next line
+                love.graphics.print(totalText, textX, textY)
+                textY = textY + defaultFontHeight
+                love.graphics.setFont(smallFont)
+                love.graphics.setColor(0.8, 0, 0)
+                love.graphics.print(powerText, textX, textY)
+                textY = textY + smallFontHeight
+                love.graphics.setColor(0, 0, 0.8)
+                love.graphics.print(speedText, textX, textY)
+                textY = textY + smallFontHeight
+                love.graphics.setColor(0, 0.8, 0)
+                love.graphics.print(healthText, textX, textY)
+                textY = textY + smallFontHeight
+                love.graphics.setColor(1, 1, 1)
+                love.graphics.print(spawnTypeText, textX, textY)
+            else
+                -- Place a rectangle next to the tower that just contains the typeText
+
+                -- Set the font to measure text accurately
+                love.graphics.setFont(defaultFont)
+                local typeTextWidth = defaultFont:getWidth(typeText)
+                local defaultFontHeight = defaultFont:getHeight()
+
+                -- Calculate rectangle size based on the width of typeText
+                local bgWidth = typeTextWidth + 10  -- Add padding
+                local bgHeight = defaultFontHeight + 10  -- Add padding
+                local cornerRadius = 8
+
+                -- Determine position based on tower's location
+                local screenWidth = love.graphics.getWidth()
+                local offsetX
+
+                if tower.x > screenWidth / 2 then
+                    offsetX = -15 - bgWidth
+                else
+                    offsetX = 35
+                end
+
+                -- Draw background with rounded corners next to the tower
+                love.graphics.setColor(0.2, 0.2, 0.2, 0.8)
+                love.graphics.rectangle("fill", tower.x + offsetX, tower.y - bgHeight / 2, bgWidth, bgHeight, cornerRadius, cornerRadius)
+                love.graphics.setColor(1, 1, 1)
+                love.graphics.rectangle("line", tower.x + offsetX, tower.y - bgHeight / 2, bgWidth, bgHeight, cornerRadius, cornerRadius)
+
+                -- Display the typeText next to the tower position
+                love.graphics.setColor(1, 1, 1)
+                love.graphics.setFont(defaultFont)
+                love.graphics.print(typeText, tower.x + offsetX + 5, tower.y - bgHeight / 2 + 5)
+            end
         end
-        local cornerRadius = 8 -- Corner radius for rounded corners
 
-        -- Draw the background with rounded corners
-        love.graphics.setColor(0.2, 0.2, 0.2, 0.8) -- Dark, semi-transparent background
-        love.graphics.rectangle("fill", tower.x + 30, tower.y - 15, bgWidth, bgHeight, cornerRadius, cornerRadius)
-        love.graphics.setColor(1, 1, 1, 1) -- Dark, semi-transparent background
-        love.graphics.rectangle("line", tower.x + 30, tower.y - 15, bgWidth, bgHeight, cornerRadius, cornerRadius)
-        -- Display the text content
-        love.graphics.setColor(1, 1, 1)
-        love.graphics.setFont(defaultFont)
 
-        if tower.type ~= "mine" then
-            -- Display total level (default font size)
-            love.graphics.print(totalText, tower.x + 35, tower.y - 10)
 
-            -- Display sub-levels in smaller font size
-            love.graphics.setFont(smallFont)
-            love.graphics.setColor(0.8, 0, 0)
-            love.graphics.print(powerText, tower.x + 35, tower.y + 5)
-            love.graphics.setColor(0, 0, 0.8)
-            love.graphics.print(speedText, tower.x + 35, tower.y + 14)
-            love.graphics.setColor(0, 0.8, 0)
-            love.graphics.print(healthText, tower.x + 35, tower.y + 23)
-        else
-            -- Display only "Lv: 1" for mines
-            love.graphics.print("Lv: 1", tower.x + 35, tower.y - 10)
-        end
 
-        -- Reset font to default
-        love.graphics.setFont(defaultFont)
-        love.graphics.setColor(1, 0, 0) -- Reset color for other drawings
 
         if tower.currentSpawnCooldown > 0 then
-            love.graphics.setColor(1, 1, 1)
-            love.graphics.rectangle("fill", tower.x - 10, tower.y + 20, tower.currentSpawnCooldown / tower.spawningCooldown * 40, 5)
-            love.graphics.setColor(1, 1, 1)
-            love.graphics.rectangle("line", tower.x - 10, tower.y + 20, 40, 5)
-        end
+                love.graphics.setColor(1, 1, 1)
+                love.graphics.rectangle("fill", tower.x - 10, tower.y + 20, tower.currentSpawnCooldown / tower.spawningCooldown * 40, 5)
+                love.graphics.setColor(1, 1, 1)
+                love.graphics.rectangle("line", tower.x - 10, tower.y + 20, 40, 5)
+            end
 
-        if tower.health < tower.maxHealth then
-            local healthbarColor = tower.health / tower.maxHealth
-            love.graphics.setColor(0.5, healthbarColor, 0)
-            love.graphics.rectangle("fill", tower.x - 10, tower.y + 25, tower.health / tower.maxHealth * 40, 5)
-            love.graphics.setColor(1, 1, 1)
-            love.graphics.rectangle("line", tower.x - 10, tower.y + 25, 40, 5)
-        end
+            if tower.health < tower.maxHealth then
+                local healthbarColor = tower.health / tower.maxHealth
+                love.graphics.setColor(0.5, healthbarColor, 0)
+                love.graphics.rectangle("fill", tower.x - 10, tower.y + 25, tower.health / tower.maxHealth * 40, 5)
+                love.graphics.setColor(1, 1, 1)
+                love.graphics.rectangle("line", tower.x - 10, tower.y + 25, 40, 5)
+            end
 
-    end
+        end
     if game.towerPlacement.currentPlacingTower then
         drawTower(game.towerPlacement.currentPlacingTower, "line")
     end

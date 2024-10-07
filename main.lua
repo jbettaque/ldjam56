@@ -39,9 +39,10 @@ function love.load()
 
     love.window.setMode(screenWidth, screenHeight)
 
-    game.towerPlacement.load()
+
     game.manager.load()
     game.map.load()
+    game.towerPlacement.load()
     game.creatures.load()
     game.gameOverScreen.load()
     mainMenu.load(switchToGame)
