@@ -61,7 +61,7 @@ function love.update(dt)
         game.creatures.update(dt)
         game.towerPlacement.update(dt)
         game.tMenu.update(dt)
-        game.enemyAi.update(50)
+        game.enemyAi.update(dt)
         game.powerUps.update(dt)
     end
 
