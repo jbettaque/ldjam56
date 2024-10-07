@@ -87,6 +87,8 @@ function love.draw()
     --love.graphics.scale(love.graphics.getWidth()/screenWidth + 0.2, love.graphics.getHeight()/screenHeight + 0.2)
     --love.graphics.scale(screenWidth/love.graphics.getWidth(), screenHeight/love.graphics.getHeight())
 
+    love.graphics.setDefaultFilter("nearest", "nearest")
+
     if currentState == "menu" then
 
         mainMenu.draw()

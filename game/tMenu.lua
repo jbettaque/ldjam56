@@ -181,6 +181,8 @@ function game.tMenu.draw()
             return
         end
 
+        font = love.graphics.newFont(12)
+        love.graphics.setFont(font)
         -- Draw background
         love.graphics.setColor(1, 1, 1)
         love.graphics.rectangle("fill", menu.x, menu.y, menu.width, menu.height)
