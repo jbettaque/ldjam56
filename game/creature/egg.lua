@@ -49,84 +49,47 @@ function game.creature.egg.move(dt, creature, creatureStore)
     local angle = math.atan2(nearestEnemy.y - creature.y, nearestEnemy.x - creature.x)
     local speed = 100 * dt * creature.speed
 
-    -- Calculate base movement direction (either towards or away from enemy)
-    local moveDirection = distance < game.creature[creature.type].backOffDistance and -1 or 1
+    -- Calculate movement direction with smooth transition
+    local moveDirection = 1
+    local transitionRange = 20
+    if distance < game.creature[creature.type].backOffDistance then
+        local transitionFactor = math.min(1, (game.creature[creature.type].backOffDistance - distance) / transitionRange)
+        moveDirection = -transitionFactor
+    end
+
     local moveX = math.cos(angle) * speed * moveDirection
     local moveY = math.sin(angle) * speed * moveDirection
 
-    -- Calculate repulsion from obstacles
-    local repulsionX, repulsionY = 0, 0
-    local repulsionRange = radius * 3
-    local repulsionStrength = 300
-
-    for _, obstacle in ipairs(game.map.obstacles) do
-        local closestX = math.max(obstacle.x, math.min(creature.x, obstacle.x + obstacle.width))
-        local closestY = math.max(obstacle.y, math.min(creature.y, obstacle.y + obstacle.height))
-
-        local dx = creature.x - closestX
-        local dy = creature.y - closestY
-        local obstacleDistance = math.sqrt(dx * dx + dy * dy)
-
-        if obstacleDistance < repulsionRange then
-            local repulsion = ((repulsionRange - obstacleDistance) / repulsionRange) ^ 2
-            local repulsionAngle = math.atan2(dy, dx)
-            repulsionX = repulsionX + math.cos(repulsionAngle) * repulsion * repulsionStrength * dt
-            repulsionY = repulsionY + math.sin(repulsionAngle) * repulsion * repulsionStrength * dt
-        end
-    end
-
-    -- Calculate repulsion from other creatures
-    for _, otherCreature in pairs(creatureStore) do
-        if otherCreature ~= creature then
-            local dx = creature.x - otherCreature.x
-            local dy = creature.y - otherCreature.y
-            local dist = math.sqrt(dx * dx + dy * dy)
-
-            if dist < radius * 3 and dist > 0 then
-                local repulsion = (radius * 3 - dist) / (radius * 3)
-                local repulsionAngle = math.atan2(dy, dx)
-                repulsionX = repulsionX + math.cos(repulsionAngle) * repulsion * 100 * dt
-                repulsionY = repulsionY + math.sin(repulsionAngle) * repulsion * 100 * dt
-            end
-        end
-    end
+    -- Calculate all movement components using shared functions
+    local edgeRepulsionX, edgeRepulsionY = game.creature.movement.calculateEdgeRepulsion(creature, radius * 1.25)  -- Slightly larger edge buffer for eggs
+    local obstacleRepulsionX, obstacleRepulsionY = game.creature.movement.calculateObstacleRepulsion(creature, radius, dt)
+    local creatureRepulsionX, creatureRepulsionY = game.creature.movement.calculateCreatureRepulsion(creature, creatureStore, radius, dt, true)
 
     -- Calculate final position
-    local newX = creature.x + moveX + repulsionX
-    local newY = creature.y + moveY + repulsionY
+    local newX = creature.x + moveX + obstacleRepulsionX + edgeRepulsionX * dt + creatureRepulsionX
+    local newY = creature.y + moveY + obstacleRepulsionY + edgeRepulsionY * dt + creatureRepulsionY
 
-    -- check if they are out of screen
+    -- Ensure staying within bounds
     newX = math.max(radius, math.min(newX, screenWidth - radius))
     newY = math.max(radius, math.min(newY, screenHeight - radius))
-    -- Check if new position is safe
+
+    local safetyMargin = radius * 1.1
     local canMove = true
+
     for _, obstacle in ipairs(game.map.obstacles) do
-        if game.creature.default.isCollidingWithObstacle(newX, newY, radius, obstacle) then
+        if game.creature.default.isCollidingWithObstacle(newX, newY, safetyMargin, obstacle) then
             canMove = false
             break
         end
     end
 
-    -- Apply movement
     if canMove then
         creature.x = newX
         creature.y = newY
+        game.creature.movement.handleStuckState(creature, dt, speed, safetyMargin)
     else
-        -- Try to apply just the repulsion movement if main movement is blocked
-        local safeX = creature.x + repulsionX
-        local safeY = creature.y + repulsionY
-
-        local isSafe = true
-        for _, obstacle in ipairs(game.map.obstacles) do
-            if game.creature.default.isCollidingWithObstacle(safeX, safeY, radius, obstacle) then
-                isSafe = false
-                break
-            end
-        end
-
-        if isSafe then
-            creature.x = safeX
-            creature.y = safeY
+        if not game.creature.movement.trySlideMovement(creature, obstacleRepulsionX + edgeRepulsionX, obstacleRepulsionY + edgeRepulsionY, speed, safetyMargin) then
+            game.creature.movement.handleStuckState(creature, dt, speed, safetyMargin)
         end
     end
 end
