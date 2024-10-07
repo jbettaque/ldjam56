@@ -14,13 +14,27 @@ function game.creature.tooth.attack(dt, creature, creatureStore)
 
         if nearestEnemy then
             local distance = math.sqrt((creature.x - nearestEnemy.x)^2 + (creature.y - nearestEnemy.y)^2)
-            if distance < game.creature.tooth.range and distance > 20 then
-                creature.currentCooldown = game.creature.tooth.cooldown
+            if distance < game.creature.egg.range and distance > 20 then
+                creature.currentCooldown = game.creature.egg.cooldown
                 creature.attacking = nearestEnemy
+                -- Schaden zufügen und die zentrale Funktion aufrufen
                 game.creature.default.damage(nearestEnemy, creature.rangedDamage)
+                -- Überprüfen, ob der Gegner zerstört wurde (falls health <= 0 in der damage Funktion gehandhabt wird)
                 if nearestEnemy.health <= 0 then
                     creature.attacking = nil
                 end
+
+                local projectile = {
+                    x = creature.x,
+                    y = creature.y,
+                    target = nearestEnemy,
+                    speed = 25,
+                    damage = creature.rangedDamage
+                }
+
+                creature.projectiles = creature.projectiles or {}
+                table.insert(creature.projectiles, projectile)
+
             end
         end
     end
@@ -83,5 +97,35 @@ function game.creature.tooth.draw(creature)
             love.graphics.line(creature.x, creature.y, creature.attacking.x, creature.attacking.y)
         end
     end
+
+    local projectiles = creature.projectiles or {}
+    for _, projectile in ipairs(projectiles) do
+        game.creature.tooth.drawProjectile(projectile)
+    end
+
+end
+
+
+function game.creature.tooth.drawProjectile(projectile)
+    love.graphics.setColor(1, 1, 1)
+    -- simple toothshape made with love.graphics.polygon (two triangles and one rectangle)
+    local x, y = projectile.x, projectile.y
+    local toothVertices = {
+        x + 5,    y,        -- Right center
+        x + 2.5,  y + 2.5,  -- Top right
+        x -2.5,   y + 3.5,  -- Top crown side
+        x -7.5,   y + 1.5,  -- Top root tip
+        x -5,     y,        -- Left center
+        x -7.5,   y -1.5,   -- Bottom root tip
+        x -2.5,   y -3.5,   -- Bottom crown side
+        x + 2.5,  y -2.5    -- Bottom right
+    }
+
+    -- Set the color of the tooth (optional)
+    love.graphics.setColor(1, 1, 1)  -- White color
+
+    -- Draw the tooth polygon
+    love.graphics.polygon("fill", toothVertices)
+
 
 end
