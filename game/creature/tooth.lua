@@ -7,7 +7,7 @@ game.creature.tooth.speed = 0.7
 game.creature.tooth.cooldown = 1.2
 game.creature.tooth.range = 150
 game.creature.tooth.backOffDistance = 75
-local toothImage = love.graphics.newImage("game/Sprites/Tooth_Spitter.png")
+local toothImage = love.graphics.newImage("game/Sprites/Tooth_Spitter2.png")
 function game.creature.tooth.attack(dt, creature, creatureStore)
     if creature.currentCooldown == 0 then
         local nearestEnemy = game.creature.default.findNearestEnemy(creature, creatureStore)
@@ -94,7 +94,10 @@ function game.creature.tooth.draw(creature)
     end
 
     love.graphics.draw(toothImage, transform)
-
+    local projectiles = creature.projectiles or {}
+    for _, projectile in ipairs(projectiles) do
+        game.creature.egg.drawProjectile(projectile)
+    end
 end
 
 

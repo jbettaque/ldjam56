@@ -8,7 +8,6 @@ game.creature.egg.cooldown = 1.2
 game.creature.egg.range = 150
 game.creature.egg.backOffDistance = 75
 local eggImage = love.graphics.newImage("game/Sprites/Egg_Thrower.png")
-
 function game.creature.egg.attack(dt, creature, creatureStore)
     if creature.currentCooldown == 0 then
         local nearestEnemy = game.creature.default.findNearestEnemy(creature, creatureStore)
@@ -108,6 +107,11 @@ function game.creature.egg.draw(creature)
     end
 
     love.graphics.draw(eggImage, transform)
+
+    local projectiles = creature.projectiles or {}
+    for _, projectile in ipairs(projectiles) do
+        game.creature.egg.drawProjectile(projectile)
+    end
 
 end
 
