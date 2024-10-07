@@ -30,8 +30,8 @@ end
 function switchToMainMenu()
     mainMenu.currentMenu = "main"
 end
-screenWidth = 1920
-screenHeight = 1080
+screenWidth = 1080
+screenHeight = 720
 
 
 function love.load()
