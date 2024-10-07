@@ -9,7 +9,7 @@ game.creature.acid.range = 30
 game.creature.acid.bombRange = 100
 game.creature.acid.backOffDistance = 1
 game.creature.acid.aoeTimer = 5
-
+local acidImage = love.graphics.newImage("game/Sprites/Acid_Tick.png")
 
 function game.creature.acid.attack(dt, creature, creatureStore)
     if creature.currentCooldown == 0 then
@@ -69,19 +69,16 @@ end
 
 function game.creature.acid.draw(creature)
 
-    if creature.player == 1 then
-        love.graphics.setColor(0, 0, 1)
-    else
-        love.graphics.setColor(1, 0, 0)
+
+        love.graphics.setColor(1, 1, 1)
+        if creature.damaged and creature.damaged > 0 then
+            love.graphics.setColor(1, 0, 0)
+        end
+        local transform = love.math.newTransform(creature.x, creature.y, 0, 0.25, 0.25, 32, 32)
+        if (creature.player == 1) then
+            transform:scale(-1, 1)
+        end
+
+        love.graphics.draw(acidImage, transform)
+
     end
-    love.graphics.circle("line", creature.x, creature.y, 10)
-
-    if creature.attacking then
-        love.graphics.setColor(1, 0, 0)
-        love.graphics.line(creature.x, creature.y, creature.attacking.x, creature.attacking.y)
-        love.graphics.circle("line", creature.attacking.x, creature.attacking.y, game.creature.acid.bombRange)
-    end
-
-
-
-end
