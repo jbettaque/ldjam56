@@ -27,9 +27,9 @@ end
 function switchToMainMenu()
     mainMenu.currentMenu = "main"
 end
-screenWidth = 1920
-screenHeight = 1080
 
+screenWidth = 1080
+screenHeight = 720
 
 function love.load()
     print("running on " .. love.system.getOS())
@@ -82,6 +82,9 @@ function love.draw()
         game.gameOverScreen.draw()
         mainMenu.changePlayButtonText("Start new Game")
     elseif currentState == "game" then
+
+        font = love.graphics.newFont(12)
+        love.graphics.setFont(font)
 
         game.map.draw()
         game.creatures.draw()
