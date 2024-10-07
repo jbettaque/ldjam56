@@ -16,7 +16,7 @@ require("game/utils")
 menuTypes = {
     tower = {
         items = game.towerPlacement.towerTypes,
-        color = { 0, 0, 1 },
+        color = { 0.2, 0.2, 0.2},
         onHover = function(itemIndex)
             game.towerPlacement.changeType(game.towerPlacement.towerTypes[itemIndex])
         end,
@@ -41,7 +41,7 @@ menuTypes = {
         end,
         drawItem = function(item, x, y, width, height)
             -- Draw tile name
-            love.graphics.setColor(0, 0, 0)
+            love.graphics.setColor(1, 1, 1)
 
             love.graphics.printf(
                     item,
@@ -54,7 +54,7 @@ menuTypes = {
     },
     upgrade = {
         items = { "Damage", "Speed", "Health", "Destroy" },
-        color = { 0, 1, 0 },
+        color = { 0.2, 0.2, 0.2 },
         onHover = function(itemIndex)
         end,
         onSelect = function(x, y, itemIndex)
@@ -91,7 +91,7 @@ menuTypes = {
         end,
         drawItem = function(item, x, y, width, height)
             -- Custom drawing for upgrade menu items
-            love.graphics.setColor(0, 0, 0)
+            love.graphics.setColor(1, 1, 1)
             love.graphics.printf(
                     item,
                     x,
@@ -110,7 +110,7 @@ menuTypes = {
     },
     unitSelect = {
         items = { "Carl", "Dog", "Horde", "Skelleton" },
-        color = { 1, 0, 0 },
+        color = { 0.2, 0.2, 0.2 },
         onHover = function(itemIndex)
         end,
         onSelect = function(x, y, itemIndex)
@@ -126,7 +126,7 @@ menuTypes = {
         end,
         drawItem = function(item, x, y, width, height)
             -- Draw tile name
-            love.graphics.setColor(0, 0, 0)
+            love.graphics.setColor(1, 1, 1)
 
             love.graphics.printf(
                     item,
