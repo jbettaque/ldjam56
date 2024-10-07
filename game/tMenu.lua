@@ -69,7 +69,13 @@ menuTypes = {
                     game.manager.subtractMoney(cost, 1)
                 end
             elseif itemIndex == 4 then
-                table.remove(game.towerPlacement.towers, selectedTower.id)
+                for i, tower in ipairs(game.towerPlacement.towers) do
+                    if tower == selectedTower then
+                        table.remove(game.towerPlacement.towers, i)
+                        break
+                    end
+                end
+
             end
         end,
         drawItem = function(item, x, y, width, height)
@@ -203,7 +209,7 @@ function game.tMenu.draw()
     end
 end
 
-function game.tMenu.mousepressed(x, y, button, isTouch)
+function game.tMenu.mousepressed(x, y, button)
     local clickedMenu = false
 
     for _, menu in ipairs(activeMenus) do

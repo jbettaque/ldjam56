@@ -117,7 +117,7 @@ end
 
 function mainMenu.changePlayButtonText(newText)
     for _, button in ipairs(buttons) do
-        if button.text == "Start Game" or button.text == "Resume Game" then
+        if button.text == "Start Game" or button.text == "Resume Game" or button.text == "Start new Game" then
             button.text = newText
         end
     end
