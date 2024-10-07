@@ -22,7 +22,11 @@ function initiateLaserTurrets()
         healthLv = 1,
         spawningCooldown = 10,
         currentSpawnCooldown = 0,
-        laserTurret = true
+        laserTurret = true,
+        draw = function(tower, mode)
+            love.graphics.setColor(1, 1, 1)
+            love.graphics.draw(hqImage, tower.x, tower.y, 0, 0.2, 0.2, 300, 400)
+        end,
     })
 
     table.insert(game.towerPlacement.towers,     {
@@ -38,7 +42,11 @@ function initiateLaserTurrets()
         healthLv = 1,
         spawningCooldown = 10,
         currentSpawnCooldown = 0,
-        laserTurret = true
+        laserTurret = true,
+        draw = function(tower, mode)
+            love.graphics.setColor(1, 1, 1)
+            love.graphics.draw(hqImage, tower.x, tower.y, 0, 0.2, 0.2, 300, 400)
+        end,
     })
 end
 game.towerPlacement.towerTypes = {"mine", "infantry", "range", "mage", "aoe"}
@@ -50,6 +58,7 @@ local paranormalImage = love.graphics.newImage("game/Sprites/Paranomal_Building.
 local infantryImage = love.graphics.newImage("game/Sprites/Infantry_Building.png")
 local rangeImage = love.graphics.newImage("game/Sprites/Range_Building.png")
 local mineImage = love.graphics.newImage("game/Sprites/Mine.png")
+local hqImage = love.graphics.newImage("game/Sprites/Headquaters.png")
 
 -- Tower type definitions
 towerConfig = {
@@ -386,10 +395,12 @@ function drawTower(tower, mode)
     else
         love.graphics.setColor(1,0,0)
     end
+
     if tower.type then
         local config = towerConfig[tower.type]
         config.draw(tower, mode)
     end
+
 
 end
 
@@ -447,6 +458,7 @@ function game.towerPlacement.drawLaserTurret()
     for i, tower in ipairs(game.towerPlacement.towers) do
         if tower.laserTurret then
             love.graphics.setColor(1, 1, 1)
+            love.graphics.draw(hqImage, tower.x, tower.y, 0, 0.2, 0.2, 300, 400)
             love.graphics.circle("line", tower.x, tower.y, 100)
             love.graphics.circle("line", tower.x, tower.y, 101)
         end
