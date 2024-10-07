@@ -47,6 +47,7 @@ game.towerPlacement.currentPlacingTower = nil
 
 local aoeImage = love.graphics.newImage("game/Sprites/AOE_Building.png")
 local paranormalImage = love.graphics.newImage("game/Sprites/Paranomal_Building.png")
+local infantryImage = love.graphics.newImage("game/Sprites/Infantry_Building.png")
 
 -- Tower type definitions
 towerConfig = {
@@ -83,7 +84,8 @@ towerConfig = {
         possibleSpawnTypes = {"carl", "dog", "horde", "skelleton"},
         spawningCooldown = 15,
         draw = function(tower, mode)
-            love.graphics.rectangle(mode, tower.x - 10, tower.y - 10, 40, 30)
+            love.graphics.setColor(1, 1, 1)
+            love.graphics.draw(infantryImage, tower.x, tower.y, 0, 0.2, 0.2, 300, 400)
         end,
         checkClick = function(x, y, tower)
             return x >= tower.x - 10 and x <= tower.x + 30 and
