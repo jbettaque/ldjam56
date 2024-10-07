@@ -67,7 +67,7 @@ function createSeparatorLines(n, screenWidth, screenHeight, playAreaWidth)
 
     for i = 1, n do
         local yPosition = (i * (screenHeight / (n + 1)))
-
+        print(centerX - (lineWidth / 2))
         game.map.createObstacle(
                 centerX - (lineWidth / 2),
                 yPosition,
@@ -125,7 +125,7 @@ function game.map.load()
     local screenWidth = love.graphics.getWidth()
     local screenHeight = love.graphics.getHeight()
     local playAreaWidth = screenWidth/4
-
+    game.map.obstacles = {}
     initializePlayArea(screenWidth, screenHeight, playAreaWidth)
     createSeparatorLines(game.map.laneCount - 1, screenWidth, screenHeight, playAreaWidth)
 end
