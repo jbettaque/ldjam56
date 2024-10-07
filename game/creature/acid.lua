@@ -2,7 +2,7 @@ game.creature.acid = {}
 
 game.creature.acid.health = 20
 game.creature.acid.meleeDamage = 0
-game.creature.acid.rangedDamage = 1
+game.creature.acid.rangedDamage = 0.1
 game.creature.acid.speed = 1.3
 game.creature.acid.cooldown = 2.5
 game.creature.acid.range = 30
