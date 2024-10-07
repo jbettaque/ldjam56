@@ -21,7 +21,7 @@
         - [x] sprite
       - [ ] carl
         - [x] functionality
-        - [ ] sprite
+        - [x] sprite
       - [ ] horde
         - [ ] functionality
         - [ ] sprite
@@ -33,8 +33,8 @@
         - [x] functionality
         - [ ] sprite
       - [ ] flea
-        - [ ] functionality
-        - [ ] sprite
+        - [x] functionality
+        - [x] sprite
     - [ ] aoe
       - [ ] kamikaze
         - [x] functionality

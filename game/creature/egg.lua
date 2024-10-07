@@ -28,7 +28,7 @@ function game.creature.egg.attack(dt, creature, creatureStore)
                     x = creature.x,
                     y = creature.y,
                     target = nearestEnemy,
-                    speed = 10,
+                    speed = 20,
                     damage = creature.rangedDamage
                 }
 

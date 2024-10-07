@@ -20,7 +20,7 @@ function initiateLaserTurrets()
         powerLv = 1,
         speedLv = 1,
         healthLv = 1,
-        spawningCooldown = 6,
+        spawningCooldown = 10,
         currentSpawnCooldown = 0,
         laserTurret = true
     })
@@ -36,12 +36,12 @@ function initiateLaserTurrets()
         powerLv = 1,
         speedLv = 1,
         healthLv = 1,
-        spawningCooldown = 6,
+        spawningCooldown = 10,
         currentSpawnCooldown = 0,
         laserTurret = true
     })
 end
-game.towerPlacement.towerTypes = {"aoe", "range", "mage", "infantry", "mine"}
+game.towerPlacement.towerTypes = {"mine", "infantry", "range", "mage", "aoe"}
 game.powerType = {1, 2, 3}
 game.towerPlacement.currentPlacingTower = nil
 
@@ -49,66 +49,6 @@ local aoeImage = love.graphics.newImage("game/Sprites/AOE_Building.png")
 
 -- Tower type definitions
 towerConfig = {
-    aoe = {
-        health = 1000,
-        maxHealth = 1000,
-        powerLv = 1,
-        speedLv = 1,
-        healthLv = 1,
-        radius = 20,
-        cost = 100,
-        spawnType = "kamikaze",
-        possibleSpawnTypes = {"kamikaze", "electro", "acid"},
-        spawningCooldown = 5,
-        draw = function(tower, mode)
-            love.graphics.setColor(1, 1, 1)
-            -- draw tower in the middle of the tile
-            love.graphics.draw(aoeImage, tower.x, tower.y, 0, 0.3, 0.3, 300, 400)
-        end,
-        checkClick = function(x, y, tower)
-            local distance = math.sqrt((x - tower.x)^2 + (y - tower.y)^2)
-            return distance <= 20
-        end
-    },
-    mage = {
-        health = 1000,
-        maxHealth = 1000,
-        powerLv = 1,
-        speedLv = 1,
-        healthLv = 1,
-        radius = 20,
-        cost = 100,
-        spawnType = "ghost",
-        possibleSpawnTypes = {"ghost", "zombie", "toothFairy"},
-        spawningCooldown = 5,
-        draw = function(tower, mode)
-            love.graphics.circle(mode, tower.x, tower.y, 20)
-        end,
-        checkClick = function(x, y, tower)
-            local distance = math.sqrt((x - tower.x)^2 + (y - tower.y)^2)
-            return distance <= 20
-        end
-    },
-    range = {
-        health = 1200,
-        maxHealth = 1200,
-        powerLv = 1,
-        speedLv = 1,
-        healthLv = 1,
-        width = 40,
-        height = 30,
-        cost = 50,
-        spawnType = "egg",
-        possibleSpawnTypes = {"egg", "tooth", "flea"},
-        spawningCooldown = 3,
-        draw = function(tower, mode)
-            love.graphics.rectangle(mode, tower.x - 10, tower.y - 10, 40, 30)
-        end,
-        checkClick = function(x, y, tower)
-            return x >= tower.x - 10 and x <= tower.x + 30 and
-                    y >= tower.y - 10 and y <= tower.y + 20
-        end
-    },
     mine = {
         health = 600,
         maxHealth = 600,
@@ -118,9 +58,9 @@ towerConfig = {
         width = 40,
         height = 30,
         spawnType = "none",
-        cost = 50,
+        cost = 75,
         trickle = 5,
-        spawningCooldown = 3,
+        spawningCooldown = 20,
         draw = function(tower, mode)
             love.graphics.rectangle(mode, tower.x - 10, tower.y - 10, 40, 30)
         end,
@@ -137,16 +77,76 @@ towerConfig = {
         healthLv = 1,
         width = 40,
         height = 40,
-        cost = 100,
+        cost = 200,
         spawnType = "skelleton",
         possibleSpawnTypes = {"carl", "dog", "horde", "skelleton"},
-        spawningCooldown = 9,
+        spawningCooldown = 15,
         draw = function(tower, mode)
             love.graphics.rectangle(mode, tower.x - 10, tower.y - 10, 40, 30)
         end,
         checkClick = function(x, y, tower)
             return x >= tower.x - 10 and x <= tower.x + 30 and
                     y >= tower.y - 10 and y <= tower.y + 20
+        end
+    },
+    range = {
+        health = 1200,
+        maxHealth = 1200,
+        powerLv = 1,
+        speedLv = 1,
+        healthLv = 1,
+        width = 40,
+        height = 30,
+        cost = 250,
+        spawnType = "egg",
+        possibleSpawnTypes = {"egg", "tooth", "flea"},
+        spawningCooldown = 25,
+        draw = function(tower, mode)
+            love.graphics.rectangle(mode, tower.x - 10, tower.y - 10, 40, 30)
+        end,
+        checkClick = function(x, y, tower)
+            return x >= tower.x - 10 and x <= tower.x + 30 and
+                    y >= tower.y - 10 and y <= tower.y + 20
+        end
+    },
+    mage = {
+        health = 1000,
+        maxHealth = 1000,
+        powerLv = 1,
+        speedLv = 1,
+        healthLv = 1,
+        radius = 20,
+        cost = 500,
+        spawnType = "ghost",
+        possibleSpawnTypes = {"ghost", "zombie", "toothFairy"},
+        spawningCooldown = 30,
+        draw = function(tower, mode)
+            love.graphics.circle(mode, tower.x, tower.y, 20)
+        end,
+        checkClick = function(x, y, tower)
+            local distance = math.sqrt((x - tower.x)^2 + (y - tower.y)^2)
+            return distance <= 20
+        end
+    },
+    aoe = {
+        health = 1000,
+        maxHealth = 1000,
+        powerLv = 1,
+        speedLv = 1,
+        healthLv = 1,
+        radius = 20,
+        cost = 600,
+        spawnType = "kamikaze",
+        possibleSpawnTypes = {"kamikaze", "electro", "acid"},
+        spawningCooldown = 30,
+        draw = function(tower, mode)
+            love.graphics.setColor(1, 1, 1)
+            -- draw tower in the middle of the tile
+            love.graphics.draw(aoeImage, tower.x, tower.y, 0, 0.3, 0.3, 300, 400)
+        end,
+        checkClick = function(x, y, tower)
+            local distance = math.sqrt((x - tower.x)^2 + (y - tower.y)^2)
+            return distance <= 20
         end
     }
 }
