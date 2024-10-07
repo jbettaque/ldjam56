@@ -65,6 +65,9 @@ function love.load()
 
     music1:setLooping(true)
     music2:setLooping(true)
+    music1:setVolume(0.5)
+    music2:setVolume(0.5)
+
     music1:play()
 end
 
