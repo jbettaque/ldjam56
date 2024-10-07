@@ -2,7 +2,7 @@ game.creature.electro = {}
 
 game.creature.electro.health = 200
 game.creature.electro.meleeDamage = 0
-game.creature.electro.rangedDamage = 0.1
+game.creature.electro.rangedDamage = 0.01
 game.creature.electro.speed = 0.2
 game.creature.electro.cooldown = 0.5
 game.creature.electro.range = 150
