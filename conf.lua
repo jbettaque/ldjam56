@@ -11,5 +11,5 @@ function love.conf(t)
     t.window.fullscreen = false
     t.modules.joystick = false
     t.modules.touch = false
-    t.console = true
+    t.console = false
 end

@@ -7,6 +7,7 @@ game.map.editorMode = false
 
 local LINE_THICKNESS = 5
 local bgImage = love.graphics.newImage("game/Sprites/Map.png")
+local fenceImage = love.graphics.newImage("game/Sprites/Fence.png")
 mapsize  = 1
 
 
