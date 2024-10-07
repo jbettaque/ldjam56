@@ -343,6 +343,12 @@ function game.creature.default.move(dt, creature, creatureStore)
         end
     end
 
+    if creature.type == "ghost" then
+        canMove = true
+        newY = creature.y + moveY
+        newX = creature.x + moveX
+    end
+
     if canMove then
         creature.x = newX
         creature.y = newY
