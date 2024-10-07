@@ -412,5 +412,7 @@ end
 
 function game.tMenu.playTowerPlacementSound(towerType)
     towerPlacementSound:play()
-    towerSounds[towerType]:play()
+    if towerSounds[towerType] then
+        towerSounds[towerType]:play()
+    end
 end
