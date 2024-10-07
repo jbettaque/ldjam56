@@ -58,16 +58,19 @@ menuTypes = {
                 if game.manager.isEnoughMoney(cost, 1) then
                     selectedTower.powerLv = selectedTower.powerLv + 1
                     game.manager.subtractMoney(cost, 1)
+                    print("upgraded to Power Lv: ".. selectedTower.powerLv)
                 end
             elseif itemIndex == 2 then
                 if game.manager.isEnoughMoney(cost, 1) then
                     selectedTower.speedLv = selectedTower.speedLv + 1
                     game.manager.subtractMoney(cost, 1)
+                    print("upgraded to Speed Lv: "..selectedTower.speedLv)
                 end
             elseif itemIndex == 3 then
                 if game.manager.isEnoughMoney(cost, 1) then
                     selectedTower.healthLv = selectedTower.healthLv + 1
                     game.manager.subtractMoney(cost, 1)
+                    print("upgraded to health Lv: "..selectedTower.healthLv)
                 end
             elseif itemIndex == 4 then
                 for i, tower in ipairs(game.towerPlacement.towers) do
@@ -78,6 +81,7 @@ menuTypes = {
                 end
 
             end
+            return selectedTower
         end,
         drawItem = function(item, x, y, width, height)
             -- Custom drawing for upgrade menu items
