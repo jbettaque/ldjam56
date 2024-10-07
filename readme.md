@@ -69,7 +69,7 @@ Prepare for an addictive gaming experience that combines the thrill of base-buil
 ## Development Team
 -----------------
 
-* **Code & Game Design**: [Jo Bettaque](https://github.com/jbettaque), sheaksadi, Phillip, Immi
+* **Code & Game Design**: [Jo Bettaque](https://github.com/jbettaque), sheaksadi, Phillip, Immanuel Pfeiler
 * **Graphics**: Stephen
 * **Music & Sounds**: Markus Maiwald, Sascha Kirschberger
 * 
