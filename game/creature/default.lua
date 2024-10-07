@@ -49,7 +49,7 @@ function game.creature.default.draw(creature)
         love.graphics.circle("fill", creature.x, creature.y, 10, 5)
     end
 
-    if (creature.health < game.creature[creature.type].health) then
+    if (creature.health < game.creature[creature.type].health or creature.currentCooldown > 0) then
         local healthbarColor = creature.health / game.creature[creature.type].health
         if creature.player == 1 then
             love.graphics.setColor(0, healthbarColor, 1)
@@ -63,13 +63,15 @@ function game.creature.default.draw(creature)
 
     end
 
-    if creature.currentCooldown > 0 then
-        love.graphics.setColor(1, 1, 1, 100)
-        love.graphics.rectangle("fill", creature.x - 10, creature.y + 15, 20 * (creature.currentCooldown / game.creature[creature.type].cooldown), 5)
-        love.graphics.setColor(1, 1, 1)
-        love.graphics.rectangle("line", creature.x - 10, creature.y + 15, 20, 5)
+    -- cooldown bar for attack above the healthbar
 
+    if creature.currentCooldown > 0 then
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.rectangle("fill", creature.x - 10, creature.y - 17, creature.currentCooldown / game.creature[creature.type].cooldown * 20, 2)
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.rectangle("line", creature.x - 10, creature.y - 17, 20, 2)
     end
+
 end
 
 function game.creature.default.getDistance(x1, y1, x2, y2)
