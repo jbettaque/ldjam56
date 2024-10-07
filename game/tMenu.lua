@@ -30,7 +30,8 @@ menuTypes = {
                 game.towerPlacement.currentPlacingTower = nil
             end
 
-            game.tMenu.playTowerPlacementSound()
+
+            game.tMenu.playTowerPlacementSound(towerType)
 
         end,
         beforeOpen = function(x, y)
@@ -409,6 +410,7 @@ function game.tMenu.playTowerSound()
     towerSounds[selectedTower.type]:play()
 end
 
-function game.tMenu.playTowerPlacementSound()
+function game.tMenu.playTowerPlacementSound(towerType)
     towerPlacementSound:play()
+    towerSounds[towerType]:play()
 end
