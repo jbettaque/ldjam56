@@ -94,7 +94,10 @@ function game.creature.tooth.draw(creature)
     end
 
     love.graphics.draw(toothImage, transform)
-
+    local projectiles = creature.projectiles or {}
+    for _, projectile in ipairs(projectiles) do
+        game.creature.egg.drawProjectile(projectile)
+    end
 end
 
 
