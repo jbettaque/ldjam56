@@ -10,6 +10,8 @@ game.creature.electro.bombRange = 100
 game.creature.electro.backOffDistance = 100
 game.creature.electro.aoeTimer = 0.5
 
+local electroImage = love.graphics.newImage("game/Sprites/Electro_Hedgehog.png")
+
 
 function game.creature.electro.attack(dt, creature, creatureStore)
     if creature.currentCooldown == 0 then
@@ -39,12 +41,8 @@ end
 
 function game.creature.electro.draw(creature)
 
-    if creature.player == 1 then
-        love.graphics.setColor(0, 0, 1)
-    else
-        love.graphics.setColor(1, 0, 0)
-    end
-    love.graphics.circle("line", creature.x, creature.y, 10)
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.draw(electroImage, creature.x, creature.y, 0, 0.2, 0.2, 32, 32)
 
     if creature.attacking then
         love.graphics.setColor(1, 0, 0)
