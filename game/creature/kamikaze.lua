@@ -8,6 +8,7 @@ game.creature.kamikaze.cooldown = 2.5
 game.creature.kamikaze.range = 30
 game.creature.kamikaze.bombRange = 200
 
+local kamikazeImage = love.graphics.newImage("game/Sprites/Kamikaze.png")
 
 function game.creature.kamikaze.attack(dt, creature, creatureStore)
     if creature.currentCooldown == 0 then
@@ -16,16 +17,15 @@ function game.creature.kamikaze.attack(dt, creature, creatureStore)
         if nearestEnemy then
             local distance = math.sqrt((creature.x - nearestEnemy.x)^2 + (creature.y - nearestEnemy.y)^2)
             if distance < game.creature.kamikaze.range and distance > 20 then
-
-                -- Setze den Angriffscooldown
+                -- Set attack cooldown
                 creature.currentCooldown = game.creature.kamikaze.cooldown
                 creature.attacking = nearestEnemy
 
-                -- Schaden beim nächsten Feind
+                -- Damage the nearest enemy
                 game.creature.default.damage(nearestEnemy, creature.meleeDamage)
 
-                -- Explosionsradius: Schaden an allen Feinden in der Nähe
-                for i, otherCreature in ipairs(creatureStore) do
+                -- Deal explosion damage to all nearby enemies
+                for _, otherCreature in ipairs(creatureStore) do
                     local explosionDistance = math.sqrt((otherCreature.x - nearestEnemy.x)^2 + (otherCreature.y - nearestEnemy.y)^2)
 
                     if explosionDistance < game.creature.kamikaze.bombRange and creature.player ~= otherCreature.player then
@@ -34,8 +34,8 @@ function game.creature.kamikaze.attack(dt, creature, creatureStore)
                     end
                 end
 
-                -- Entferne die Kamikaze-Kreatur selbst nach dem Angriff
-                game.creature.default.damage(creature, creature.health) -- Schaden gleich der gesamten Gesundheit der Kamikaze-Kreatur
+                -- Self-destruct after the attack
+                game.creature.default.damage(creature, creature.health) -- Inflict full health damage to destroy kamikaze creature
             end
         end
     end
@@ -43,19 +43,15 @@ end
 
 function game.creature.kamikaze.draw(creature)
 
-    if creature.player == 1 then
-        love.graphics.setColor(0, 0, 1)
-    else
+    love.graphics.setColor(1, 1, 1)
+    if creature.damaged and creature.damaged > 0 then
         love.graphics.setColor(1, 0, 0)
     end
-    love.graphics.circle("line", creature.x, creature.y, 10)
-
-    if creature.attacking then
-        love.graphics.setColor(1, 0, 0)
-        love.graphics.line(creature.x, creature.y, creature.attacking.x, creature.attacking.y)
-        love.graphics.circle("line", creature.attacking.x, creature.attacking.y, game.creature.kamikaze.bombRange)
+    local transform = love.math.newTransform(creature.x, creature.y, 0, 0.2, 0.2, 32, 32)
+    if (creature.player == 2) then
+        transform:scale(-1, 1)
     end
 
-
+    love.graphics.draw(kamikazeImage, transform)
 
 end

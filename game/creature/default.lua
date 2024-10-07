@@ -171,13 +171,13 @@ function game.creature.default.damage(creature, damage)
     creature.damaged = 0.1
     creature.health = creature.health - damage
 
-    -- Überprüfen, ob die Kreatur tot ist
+    -- check if creature dies
     if creature.health <= 0 then
-        -- Entferne die Kreatur aus dem creatureStore
+        -- remove creature from creatureStore
         for i, otherCreature in ipairs(creatureStore) do
             if otherCreature == creature then
                 table.remove(creatureStore, i)
-                -- Geld für den Spieler des Angreifers hinzufügen
+                -- add money to the attacking player
                 if creature.player == 1 then
                     game.manager.player2.money = game.manager.player2.money + 5
                 else
@@ -187,7 +187,7 @@ function game.creature.default.damage(creature, damage)
             end
         end
 
-        -- Entferne die Kreatur aus den Türmen, falls sie ein Turm war
+        -- remove tower
         for i, tower in ipairs(game.towerPlacement.towers) do
             if tower == creature then
                 table.remove(game.towerPlacement.towers, i)

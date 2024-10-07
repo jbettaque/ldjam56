@@ -26,15 +26,6 @@ function game.creature.egg.attack(dt, creature, creatureStore)
             end
         end
     end
-
-
-
-
-
-
-
-
-
 end
 
 

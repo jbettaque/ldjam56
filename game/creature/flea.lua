@@ -17,37 +17,20 @@ function game.creature.flea.attack(dt, creature, creatureStore)
         if nearestEnemy then
             local distance = math.sqrt((creature.x - nearestEnemy.x)^2 + (creature.y - nearestEnemy.y)^2)
             if distance < game.creature.flea.range and distance > 20 then
+                -- Set the attack cooldown
                 creature.currentCooldown = game.creature.flea.cooldown
                 creature.attacking = nearestEnemy
-                nearestEnemy.health = nearestEnemy.health - creature.rangedDamage
-                game.creature.default.damage(nearestEnemy, creature.meleeDamage)
-                if nearestEnemy.health <= 0 then
-                    for i, otherCreature in ipairs(creatureStore) do
-                        if otherCreature == nearestEnemy then
-                            table.remove(creatureStore, i)
-                            if nearestEnemy.player == 1 then
-                                game.manager.player2.money = game.manager.player2.money + 5
-                            else
-                                game.manager.player1.money = game.manager.player1.money + 5
-                            end
-                            creature.attacking = nil
-                            break
-                        end
-                    end
 
-                    for i, tower in ipairs(game.towerPlacement.towers) do
-                        if tower == nearestEnemy then
-                            table.remove(game.towerPlacement.towers, i)
-                            creature.attacking = nil
-                            break
-                        end
-                    end
+                -- Deal ranged damage and call centralized damage function
+                game.creature.default.damage(nearestEnemy, creature.rangedDamage)
+
+                -- Reset attacking target if the enemy is defeated
+                if nearestEnemy.health <= 0 then
+                    creature.attacking = nil
                 end
             end
         end
-
     end
-
 end
 
 
