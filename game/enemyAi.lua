@@ -116,10 +116,12 @@ function game.enemyAi.update(dt)
 
             -- Place the tower and get the instance
             local tower = game.towerPlacement.placeTowerForAi(
-                    randomx, randomy, selectedTower.type, 2, randomType
+                    randomx, randomy, selectedTower.type, 2
             )
             print("enemyAi bought a " .. selectedTower.type .. " spawning: " .. randomType .. " tower at " .. randomx .. ", " .. randomy)
 
+            tower.spawnType = randomType
+            print("Tower spawning:", tower.spawnType)
             -- **Add the Tower to aiTowers**
             table.insert(aiTowers, {type = selectedTower.type, instance = tower})
         else

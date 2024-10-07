@@ -31,7 +31,7 @@ function initiateLaserTurrets()
         y = 300,
         spawnType = "skelleton",
         player = 1,
-        health = 3,
+        health = 3000,
         maxHealth = 3000,
         powerLv = 1,
         speedLv = 1,
@@ -324,6 +324,7 @@ end
 function game.towerPlacement.placeTowerForAi(x, y, towerType, player)
     local newTower = game.towerPlacement.createTower(x, y, towerType, player)
     game.towerPlacement.addTower(newTower)
+    return newTower
 end
 
 function game.towerPlacement.handleLaserTurret(tower, dt)
