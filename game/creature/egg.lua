@@ -83,6 +83,9 @@ function game.creature.egg.move(dt, creature, creatureStore)
     local newX = creature.x + moveX + repulsionX
     local newY = creature.y + moveY + repulsionY
 
+    -- check if they are out of screen
+    newX = math.max(radius, math.min(newX, screenWidth - radius))
+    newY = math.max(radius, math.min(newY, screenHeight - radius))
     -- Check if new position is safe
     local canMove = true
     for _, obstacle in ipairs(game.map.obstacles) do
