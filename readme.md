@@ -7,24 +7,6 @@
 # Tiny Trooper Empire
 ==========================
 
-## Table of Contents
------------------
-
-0. [Game Releases](#game-releases)
-1. [Game Description](#game-description)
-2. [Gameplay Overview](#gameplay-overview)
-3. [Features](#features)
-4. [Game Modes](#game-modes)
-5. [System Requirements](#system-requirements)
-6. [Development Team](#development-team)
-7. [Special Thanks](#special-thanks)
-8. [License](#license)
-9. [Contact](#contact)
-
-## Game Releases
----------------
-[![Releases](https://img.shields.io/badge/Releases-View%20Releases-blue?style=flat-square)](https://github.com/jbettaque/ldjam56/releases)
-
 ## Game Description
 ---------------
 
