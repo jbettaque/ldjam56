@@ -26,12 +26,13 @@ menuTypes = {
                 game.towerPlacement.addTower(game.towerPlacement.createTower(game.towerPlacement.currentPlacingTower.x, game.towerPlacement.currentPlacingTower.y, towerType, 1))
                 game.towerPlacement.currentPlacingTower = nil
                 game.manager.subtractMoney(towerConfig[towerType].cost, 1)
+                game.tMenu.playTowerPlacementSound(towerType)
             else
                 game.towerPlacement.currentPlacingTower = nil
             end
 
 
-            game.tMenu.playTowerPlacementSound(towerType)
+
 
         end,
         beforeOpen = function(x, y)
