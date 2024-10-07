@@ -49,6 +49,7 @@ function settingsMenu.load()
     end))
     table.insert(settingsMenu.buttons, newButton("Volume Down", function()
         volume = math.max(volume - 0.1, 0)
+        love.audio.setVolume(volume)
         print("Volume decreased to: " .. volume)
     end))
 
