@@ -26,7 +26,7 @@ function initiateLaserTurrets()
     })
 
     table.insert(game.towerPlacement.towers,     {
-        id = 2,
+        id = 3,
         x = 100,
         y = 300,
         spawnType = "skelleton",
