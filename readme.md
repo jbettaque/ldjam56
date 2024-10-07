@@ -69,10 +69,9 @@ Prepare for an addictive gaming experience that combines the thrill of base-buil
 ## Development Team
 -----------------
 
-* **Lead Programmer**: [Joleif Bettaque](https://github.com/jbettaque)
-* **Game Designer**: [Joleif Bettaque](https://github.com/jbettaque)
-* **Programmer**: [Programmer's Name](https://programmer-website.com)
-* **Artist**: [Artist's Name](https://artist-website.com)
+* **Code & Game Design**: [Jo Bettaque](https://github.com/jbettaque), sheaksadi, Phillip, Immi
+* **Graphics**: Stephen
+* **Music & Sounds**: Markus, Sascha
 * 
 ## Special Thanks
 --------------
@@ -84,16 +83,6 @@ Prepare for an addictive gaming experience that combines the thrill of base-buil
 -------
 
 This game is licensed under the GNU GENERAL PUBLIC LICENSE Version 3. See LICENSE.txt for details.
-
-## Contact
--------
-
-For feedback, suggestions, or bug reports, please contact us at [bettaque@gmail.com].
-
-### Contributing
-------------
-
-If you'd like to contribute to the game, please fork the repository and submit a pull request. We welcome contributions of all kinds, including bug fixes, feature additions, and optimizations.
 
 ### Reporting Issues
 -----------------
