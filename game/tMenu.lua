@@ -35,6 +35,7 @@ menuTypes = {
             -- Draw tile name
             love.graphics.setColor(0, 0, 0)
 
+
             love.graphics.printf(
                     item,
                     x,

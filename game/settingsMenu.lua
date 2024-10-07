@@ -6,7 +6,7 @@ settingsMenu.buttons = {}
 
 local racket = love.audio.newSource("game/SFX/Racket.mp3", "static")
 
-mapsize = 2
+mapsize = 1
 
 local function newButton(text, fn)
     return {
@@ -105,10 +105,16 @@ function setResolution(res)
 
     if res == "1080x720" then
         width, height = 1080, 720
+        screenHeight = 720
+        screenWidth = 1080
     elseif res == "1920x1080" then
         width, height = 1920, 1080
+        screenHeight = 1080
+        screenWidth = 1920
     elseif res == "2560x1440" then
         width, height = 2560, 1440
+        screenHeight = 1440
+        screenWidth = 2560
     end
 
     love.window.setMode(width, height)
