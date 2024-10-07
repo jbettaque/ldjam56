@@ -78,6 +78,7 @@ function createSeparatorLines(n, screenWidth, screenHeight, playAreaWidth)
 end
 
 function initializePlayArea(screenWidth, screenHeight, playAreaWidth)
+    game.map.playAreas = {}
     table.insert(game.map.playAreas, {
         x = 0,
         y = 0,
