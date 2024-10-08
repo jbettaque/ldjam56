@@ -44,14 +44,14 @@ Prepare for an addictive gaming experience that combines the thrill of base-buil
 
 * **Operating System**: Windows 10 or macOS High Sierra (or later) or any Linux distribution (we support Linux Gaming)
 * **Processor**: 2.4 GHz dual-core processor (or equivalent)
-* **Memory**: 4 GB RAM (or more)
+* **Memory**: 2 GB RAM (or more)
 * **Graphics**: 1 GB VRAM (or more)
-* **Storage**: 500 MB available space (or more)
+* **Storage**: 50 MB available space (or more)
 
 ## Development Team
 -----------------
 
-* **Code & Game Design**: [Jo Bettaque](https://github.com/jbettaque), sheaksadi, Phillip, Immanuel Pfeiler
+* **Code & Game Design**: [Jo Bettaque](https://github.com/jbettaque), [Sheak Sadi](https://github.com/sheaksadi), [Phillip](https://github.com/pkottsiepe), [Immanuel Pfeiler](https://github.com/immihtw)
 * **Graphics**: Stephen
 * **Music & Sounds**: Markus Maiwald, Sascha Kirschberger
 * 
