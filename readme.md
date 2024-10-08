@@ -15,6 +15,9 @@ Tiny Trooper Empire is an exhilarating real-time strategy game that thrusts you 
 Face off against our state-of-the-art AI opponents, meticulously designed to challenge even the most seasoned strategists. Engage in heart-pounding battles where quick thinking and adaptive strategies are your keys to victory. Will you outsmart the artificial intelligence and lead your minuscule militia to glory?
 
 Prepare for an addictive gaming experience that combines the thrill of base-building, the excitement of creature spawning, and the satisfaction of outwitting your opponents. Tiny Trooper Empire: Where epic battles unfold on a microscopic scale!
+
+Contest page: [ludum-dare/56/tiny-trooper-empire](https://ldjam.com/events/ludum-dare/56/tiny-trooper-empire)
+
 ## Gameplay Overview
 -----------------
 
