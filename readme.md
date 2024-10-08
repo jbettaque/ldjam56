@@ -54,7 +54,7 @@ Prepare for an addictive gaming experience that combines the thrill of base-buil
 * **Code & Game Design**: [Jo Bettaque](https://github.com/jbettaque), [Sheak Sadi](https://github.com/sheaksadi), [Phillip](https://github.com/pkottsiepe), [Immanuel Pfeiler](https://github.com/immihtw)
 * **Graphics**: Stephen
 * **Music & Sounds**: Markus Maiwald, Sascha Kirschberger
-* 
+
 ## Special Thanks
 --------------
 
