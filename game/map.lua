@@ -155,7 +155,7 @@ function game.map.draw()
     end
     --drawPlayAreas()
     drawObstacles()
-    game.map.drawAreaEffects()
+    game.towerPlacement.draw()    game.map.drawAreaEffects()
 end
 
 function drawPlayAreas()

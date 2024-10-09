@@ -63,8 +63,8 @@ local hqImage = love.graphics.newImage("game/Sprites/Headquaters.png")
 -- Tower type definitions
 towerConfig = {
     mine = {
-        health = 600,
-        maxHealth = 600,
+        health = 10,
+        maxHealth = 10,
         powerLv = 1,
         speedLv = 1,
         healthLv = 1,
